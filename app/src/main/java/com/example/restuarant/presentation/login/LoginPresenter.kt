@@ -1,0 +1,73 @@
+package com.example.restuarant.presentation.login
+
+import com.example.restuarant.model.interactor.LoginInteractor
+import com.example.restuarant.presentation.global.BasePresenter
+import com.example.restuarant.model.starage.Prefs
+import com.example.restuarant.model.system.pull.FlowRouter
+import moxy.InjectViewState
+import javax.inject.Inject
+
+/**
+ * Created by shohboz on 11,Январь,2021
+ */
+@InjectViewState
+class LoginPresenter @Inject constructor(
+    private val router: FlowRouter,
+    private val interactor: LoginInteractor,
+    private val prefs: Prefs
+) : BasePresenter<LoginView>() {
+
+    fun onBackPressed() {
+        router.exit()
+    }
+
+//    fun login(data: LoginData) {
+//        viewState.makeLoadingVisible(true)
+//        intercepter.login(data)
+//            .subscribe({
+//                prefs.accessToken = it.objectData.body.accessToken
+//                getUserMe()
+//            }, {
+//                viewState.openErrorDialog(errorResponse(it),false)
+//                viewState.makeLoadingVisible(false)
+//            }).connect()
+//
+//
+//    }
+//
+//    private fun getUserMe() {
+//        intercepter.getUserMe()
+//            .doOnSubscribe {
+//                viewState.makeLoadingVisible(true)
+//            }
+//            .doAfterTerminate {
+//                viewState.makeLoadingVisible(false)
+//            }
+//            .subscribe({
+//                val ls = it.objectData.roles
+//                prefs.fullName = "${it.objectData.firstName} ${it.objectData.lastName}"
+//                prefs.phoneNUmber = it.objectData.phoneNumber
+//                if (ls.size > 1) {
+//                    prefs.directorOrNot = true
+//                    router.newRootScreen(Screens.MainDirector)
+//                } else {
+//                    when (ls[0].id) {
+//                        1 -> {
+//                            prefs.directorOrNot = false
+//                            router.newRootScreen(Screens.AdminPage)
+//                        }
+//                        3 -> {
+//                            router.newRootScreen(Screens.SellerPage)
+//                        }
+//                        4 -> {
+//                            router.newRootScreen(Screens.WareHousePage)
+//                        }
+//                    }
+//                }
+//            }, {
+//                viewState.openErrorDialog(errorResponse(it),false)
+//            }).connect()
+//
+//    }
+
+}
