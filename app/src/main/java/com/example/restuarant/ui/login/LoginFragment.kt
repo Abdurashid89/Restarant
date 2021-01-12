@@ -35,6 +35,7 @@ class LoginFragment : BaseFragment(), LoginView {
         super.onActivityCreated(savedInstanceState)
 
         binding = FragmentLoginBinding.bind(view)
+        //nochanged
 
 //        binding.btnLogin.setOnClickListener {
 //            val phoneNumber = binding.inputLogin.text.toString().trim()
