@@ -1,14 +1,16 @@
 package com.example.restuarant.ui.login
 
+import android.os.Build
 import android.os.Bundle
 import android.view.View
 import android.view.animation.AnimationUtils
-import android.widget.Toast
+import androidx.annotation.RequiresApi
 import com.example.restuarant.R
 import com.example.restuarant.databinding.FragmentLoginBinding
 import com.example.restuarant.extentions.customDialog
 import com.example.restuarant.extentions.showSnackMessage
 import com.example.restuarant.extentions.vibrate
+import com.example.restuarant.extentions.visible
 import com.example.restuarant.model.entities.LoginData
 import com.example.restuarant.presentation.login.LoginPresenter
 import com.example.restuarant.presentation.login.LoginView
@@ -39,9 +41,10 @@ class LoginFragment : BaseFragment(), LoginView {
         //nochanged
 
         binding.loginBtn.setOnClickListener {
-            val phoneNumber = binding.inputPhoneNumber.text.toString().trim()
+            val phoneNumber = "+998" + binding.inputPhoneNumber.unmaskedText.toString().trim()
             val password = binding.inputPassword.text.toString().trim()
-            if (phoneNumber == "") {
+
+            if (phoneNumber.isEmpty() || phoneNumber.length != 13) {
                 binding.inputPhoneNumber.startAnimation(
                     AnimationUtils.loadAnimation(
                         context,
@@ -50,19 +53,6 @@ class LoginFragment : BaseFragment(), LoginView {
                 )
                 vibrate(requireContext())
                 return@setOnClickListener
-
-            } else if (phoneNumber != "123" || phoneNumber.length != 13) {
-                binding.inputPhoneNumber.startAnimation(
-                    AnimationUtils.loadAnimation(
-                        context,
-                        R.anim.shake
-                    )
-                )
-                Toast.makeText(
-                    requireContext(),
-                    "Phone number xato kiritilyapti",
-                    Toast.LENGTH_SHORT
-                ).show()
             }
             if (password.isEmpty()) {
                 binding.inputPassword.startAnimation(
@@ -72,6 +62,7 @@ class LoginFragment : BaseFragment(), LoginView {
                     )
                 )
                 vibrate(requireContext())
+                showSnackMessage("Parol Xato")
                 return@setOnClickListener
             }
             presenter.login(LoginData(phoneNumber, password))
@@ -90,15 +81,13 @@ class LoginFragment : BaseFragment(), LoginView {
         showSnackMessage(message)
     }
 
+    @RequiresApi(Build.VERSION_CODES.O)
     override fun makeLoadingVisible(status: Boolean) {
-        if (status) {
-            binding.loadingLayoutLogin.isClickable = false
-            binding.progressBarLogin.loading.visibility = View.VISIBLE
-        } else {
-            binding.loadingLayoutLogin.isClickable = true
-            binding.progressBarLogin.loading.visibility = View.GONE
-        }
+        binding.loadingLayoutLogin.isClickable = !status
+        binding.loadingLayoutLogin.isFocusable = !status
+        binding.progressBarLogin.loading.visible(status)
     }
+
 
     override fun openErrorDialog(message: String, status: Boolean) {
         customDialog(message, status)
