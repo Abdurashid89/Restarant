@@ -14,7 +14,7 @@ class ServerModule : Module() {
     init {
         // Auth
         bind(String::class.java).withName(ServerPath::class.java)
-            .toInstance("http://192.168.0.136:5432")
+            .toInstance("http://165.22.178.228:2020")
 //            .toInstance(BuildConfig.PostUrl)
 
         // Network
