@@ -26,13 +26,12 @@ import android.widget.PopupMenu
 import android.widget.Toast
 import androidx.annotation.ColorRes
 import androidx.annotation.LayoutRes
-import androidx.appcompat.app.AlertDialog
 import androidx.core.content.ContextCompat
 import androidx.core.widget.ImageViewCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import androidx.recyclerview.widget.RecyclerView
-import com.example.restuarant.R
+import com.example.restuarant.presentation.responseDialog.ResponseStatusDialog
 import com.google.android.material.snackbar.Snackbar
 import com.google.gson.JsonSyntaxException
 import com.nabinbhandari.android.permissions.PermissionHandler
@@ -84,6 +83,11 @@ fun View.showSnackMessage(message: String) {
         )
     }
     Snackbar.make(this, ssb, Snackbar.LENGTH_LONG).show()
+}
+
+fun vibrate(context: Context) {
+    val vibrate = context.getSystemService(Context.VIBRATOR_SERVICE) as Vibrator
+    vibrate.vibrate(100)
 }
 
 fun ImageView.setTint(@ColorRes colorRes: Int) {
@@ -268,9 +272,14 @@ fun errorResponse(res: Throwable): String {
 
 fun customSubString(string: String): String {
     val substring = string.substring(6, (string.length - 2))
-    return if(substring == "null"){
+    return if (substring == "null") {
         "0"
-    }else{
+    } else {
         substring
     }
+}
+
+fun Fragment.customDialog(message: String, status: Boolean) {
+    val dialog = ResponseStatusDialog(requireContext(), message, status)
+    dialog.show()
 }
