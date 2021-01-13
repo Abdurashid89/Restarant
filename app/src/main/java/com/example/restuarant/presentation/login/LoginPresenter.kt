@@ -1,5 +1,6 @@
 package com.example.restuarant.presentation.login
 
+import com.example.restuarant.Screens
 import com.example.restuarant.extentions.errorResponse
 import com.example.restuarant.model.entities.LoginData
 import com.example.restuarant.model.interactor.LoginInteractor
@@ -14,26 +15,31 @@ import javax.inject.Inject
  */
 @InjectViewState
 class LoginPresenter @Inject constructor(
-        private val router: FlowRouter,
-        private val interactor: LoginInteractor,
-        private val prefs: Prefs
+    private val router: FlowRouter,
+    private val interactor: LoginInteractor,
+    private val prefs: Prefs
 ) : BasePresenter<LoginView>() {
 
     fun onBackPressed() {
         router.exit()
     }
 
+    fun signUpPage() {
+        router.newChain(Screens.Signup)
+    }
+
+
     fun login(data: LoginData) {
         viewState.makeLoadingVisible(true)
         interactor.login(data)
-                .subscribe({
-                    prefs.accessToken = it.body.accessToken
-                    viewState.showMessage("Success")
-                }, {
-                    viewState.openErrorDialog(errorResponse(it), false)
-                    viewState.makeLoadingVisible(false)
-                    viewState.showMessage("Error, Try again!")
-                }).connect()
+            .subscribe({
+                prefs.accessToken = it.body.accessToken
+                viewState.showMessage("Success")
+            }, {
+                viewState.openErrorDialog(errorResponse(it), false)
+                viewState.makeLoadingVisible(false)
+                viewState.showMessage("Error, Try again!")
+            }).connect()
 
 
     }

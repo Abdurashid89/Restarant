@@ -3,6 +3,7 @@ package com.example.restuarant.ui.login
 import android.os.Bundle
 import android.view.View
 import android.view.animation.AnimationUtils
+import android.widget.Toast
 import com.example.restuarant.R
 import com.example.restuarant.databinding.FragmentLoginBinding
 import com.example.restuarant.extentions.customDialog
@@ -40,17 +41,28 @@ class LoginFragment : BaseFragment(), LoginView {
         binding.loginBtn.setOnClickListener {
             val phoneNumber = binding.inputPhoneNumber.text.toString().trim()
             val password = binding.inputPassword.text.toString().trim()
-            if (phoneNumber != "123") {
-                if (phoneNumber.length != 13) {
-                    binding.inputPhoneNumber.startAnimation(
-                        AnimationUtils.loadAnimation(
-                            context,
-                            R.anim.shake
-                        )
+            if (phoneNumber == "") {
+                binding.inputPhoneNumber.startAnimation(
+                    AnimationUtils.loadAnimation(
+                        context,
+                        R.anim.shake
                     )
-                    vibrate(requireContext())
-                    return@setOnClickListener
-                }
+                )
+                vibrate(requireContext())
+                return@setOnClickListener
+
+            } else if (phoneNumber != "123" || phoneNumber.length != 13) {
+                binding.inputPhoneNumber.startAnimation(
+                    AnimationUtils.loadAnimation(
+                        context,
+                        R.anim.shake
+                    )
+                )
+                Toast.makeText(
+                    requireContext(),
+                    "Phone number xato kiritilyapti",
+                    Toast.LENGTH_SHORT
+                ).show()
             }
             if (password.isEmpty()) {
                 binding.inputPassword.startAnimation(
@@ -63,6 +75,10 @@ class LoginFragment : BaseFragment(), LoginView {
                 return@setOnClickListener
             }
             presenter.login(LoginData(phoneNumber, password))
+        }
+
+        binding.signUp.setOnClickListener {
+            presenter.signUpPage()
         }
     }
 

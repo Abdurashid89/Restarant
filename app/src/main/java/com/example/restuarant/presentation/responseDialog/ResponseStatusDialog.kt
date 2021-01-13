@@ -27,7 +27,7 @@ class ResponseStatusDialog(context: Context, message: String, status: Boolean) :
             binding.status.text = "Error"
             binding.status.setTextColor(Color.parseColor("#B30843"))
             binding.description.text = message
-            binding.image.setImageResource(R.drawable.ic_baseline_cancel_24)
+            binding.image.setImageResource(R.drawable.ic_baseline_cancel_presentation_24)
         }
         binding.btnOk.setOnClickListener { dismiss() }
 
