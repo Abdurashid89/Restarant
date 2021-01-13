@@ -11,6 +11,7 @@ interface SignUpView:MvpView {
     @StateStrategyType(OneExecutionStateStrategy::class)
     fun showMessage(message:String)
 
+    @StateStrategyType(OneExecutionStateStrategy::class)
     fun makeLoadingVisible(status:Boolean)
 
     @StateStrategyType(OneExecutionStateStrategy::class)
