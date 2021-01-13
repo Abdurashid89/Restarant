@@ -20,5 +20,9 @@ class Prefs @Inject constructor(
         get() = localStorage.getBoolean("ACCOUNT", false)
         set(value) = localStorage.edit().putBoolean("ACCOUNT", value).apply()
 
+    var accessToken: String?
+        get() = localStorage.getString("TOKEN","")
+        set(value) = localStorage.edit().putString("TOKEN", value).apply()
+
 
 }

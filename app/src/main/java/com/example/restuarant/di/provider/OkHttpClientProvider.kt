@@ -1,9 +1,13 @@
 package com.example.restuarant.di.provider
 
 import android.content.Context
-import com.example.restuarant.model.storage.Prefs
+import com.example.restuarant.BuildConfig
+import com.example.restuarant.model.starage.Prefs
+import com.google.android.gms.common.ConnectionResult.TIMEOUT
+import com.readystatesoftware.chuck.ChuckInterceptor
 import okhttp3.Cache
 import okhttp3.OkHttpClient
+import okhttp3.logging.HttpLoggingInterceptor
 import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 import javax.inject.Provider
@@ -19,22 +23,22 @@ class OkHttpClientProvider @Inject constructor(
         readTimeout(TIMEOUT, TimeUnit.SECONDS)
         addInterceptor {
             val requestOld = it.request()
-//            if (prefs.accessToken.isNotEmpty()) {
+            if (prefs.accessToken?.isNotEmpty() == true) {
                 val request = requestOld.newBuilder()
-//                    .addHeader("Authorization", "Bearer ${prefs.accessToken}")
+                    .addHeader("Authorization", "Bearer ${prefs.accessToken}")
                     .method(requestOld.method, requestOld.body)
                     .build()
                 val response = it.proceed(request)
                 response
             }
-//        else it.proceed(requestOld)
-//        }
-//        if (BuildConfig.DEBUG) {
-//            addInterceptor(ChuckInterceptor(context))
-//            addNetworkInterceptor(HttpLoggingInterceptor().apply {
-//                level = HttpLoggingInterceptor.Level.BODY
-//            })
-//        }
+        else it.proceed(requestOld)
+        }
+        if (BuildConfig.DEBUG) {
+            addInterceptor(ChuckInterceptor(context))
+            addNetworkInterceptor(HttpLoggingInterceptor().apply {
+                level = HttpLoggingInterceptor.Level.BODY
+            })
+        }
         build()
     }
 

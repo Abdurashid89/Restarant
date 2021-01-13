@@ -10,18 +10,18 @@ import javax.inject.Inject
 import javax.inject.Provider
 
 class ApiClient @Inject constructor(
-    private val okHttpClient: OkHttpClient,
-    @ServerPath private val serverPath: String
+        private val okHttpClient: OkHttpClient,
+        @ServerPath private val serverPath: String
 ) : Provider<ResApi> {
 
     override fun get() = ApiWithChangesRegistration(getOriginalApi())
 
     private fun getOriginalApi() =
-        Retrofit.Builder()
-            .addConverterFactory(GsonConverterFactory.create())
-            .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
-            .client(okHttpClient)
-            .baseUrl(serverPath)
-            .build()
-            .create(ResApi::class.java)
+            Retrofit.Builder()
+                    .addConverterFactory(GsonConverterFactory.create())
+                    .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
+                    .client(okHttpClient)
+                    .baseUrl(serverPath)
+                    .build()
+                    .create(ResApi::class.java)
 }
