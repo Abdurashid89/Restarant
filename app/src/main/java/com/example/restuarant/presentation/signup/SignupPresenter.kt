@@ -1,5 +1,7 @@
 package com.example.restuarant.presentation.signup
 
+import android.annotation.SuppressLint
+import com.example.restuarant.Screens
 import com.example.restuarant.extentions.errorResponse
 import com.example.restuarant.model.entities.RegisterData
 import com.example.restuarant.model.interactor.SignupInteractor
@@ -20,6 +22,7 @@ class SignupPresenter @Inject constructor(
         router.exit()
     }
 
+    @SuppressLint("CheckResult")
     fun register(data:RegisterData){
         viewState.makeLoadingVisible(true)
         interactor.register(data)
@@ -31,10 +34,10 @@ class SignupPresenter @Inject constructor(
             }
             .subscribe({
                 prefs.accessToken = it.body.accessToken
+                router.newChain(Screens.Login)
                 viewState.showMessage("Success")
             },{
                 viewState.openErrorDialog(errorResponse(it),false)
-                viewState.showMessage("Error! Try again!")
             })
     }
 }
