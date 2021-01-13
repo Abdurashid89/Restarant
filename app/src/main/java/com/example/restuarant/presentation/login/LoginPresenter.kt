@@ -3,7 +3,7 @@ package com.example.restuarant.presentation.login
 import com.example.restuarant.extentions.errorResponse
 import com.example.restuarant.model.entities.LoginData
 import com.example.restuarant.model.interactor.LoginInteractor
-import com.example.restuarant.model.starage.Prefs
+import com.example.restuarant.model.storage.Prefs
 import com.example.restuarant.model.system.pull.FlowRouter
 import com.example.restuarant.presentation.global.BasePresenter
 import moxy.InjectViewState
