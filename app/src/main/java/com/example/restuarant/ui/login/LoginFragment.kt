@@ -2,9 +2,12 @@ package com.example.restuarant.ui.login
 
 import android.os.Bundle
 import android.view.View
+import android.view.animation.AnimationUtils
 import com.example.restuarant.R
 import com.example.restuarant.databinding.FragmentLoginBinding
+import com.example.restuarant.extentions.customDialog
 import com.example.restuarant.extentions.showSnackMessage
+import com.example.restuarant.extentions.vibrate
 import com.example.restuarant.model.entities.LoginData
 import com.example.restuarant.presentation.login.LoginPresenter
 import com.example.restuarant.presentation.login.LoginView
@@ -22,7 +25,7 @@ class LoginFragment : BaseFragment(), LoginView {
 
     @ProvidePresenter
     fun providePresenter(): LoginPresenter =
-            scope.getInstance(LoginPresenter::class.java)
+        scope.getInstance(LoginPresenter::class.java)
 
 
     private val currentTabFragment: BaseFragment?
@@ -34,26 +37,33 @@ class LoginFragment : BaseFragment(), LoginView {
         binding = FragmentLoginBinding.bind(view)
         //nochanged
 
-        val data = LoginData("+998949125150", "ware")
-        presenter.login(data)
-
-//        binding.btnLogin.setOnClickListener {
-//            val phoneNumber = binding.inputLogin.text.toString().trim()
-//            val password = binding.inputPassword.text.toString().trim()
-//            if(phoneNumber != "123"){
-//                if (phoneNumber.length != 13) {
-//                    binding.inputLogin.startAnimation(AnimationUtils.loadAnimation(context, R.anim.shake))
-//                    vibrate(requireContext())
-//                    return@setOnClickListener
-//                }
-//            }
-//            if (password.isEmpty()) {
-//                binding.inputPassword.startAnimation(AnimationUtils.loadAnimation(context, R.anim.shake))
-//                vibrate(requireContext())
-//                return@setOnClickListener
-//            }
-//            presenter.login(LoginData(phoneNumber, password))
-//        }
+        binding.loginBtn.setOnClickListener {
+            val phoneNumber = binding.inputPhoneNumber.text.toString().trim()
+            val password = binding.inputPassword.text.toString().trim()
+            if (phoneNumber != "123") {
+                if (phoneNumber.length != 13) {
+                    binding.inputPhoneNumber.startAnimation(
+                        AnimationUtils.loadAnimation(
+                            context,
+                            R.anim.shake
+                        )
+                    )
+                    vibrate(requireContext())
+                    return@setOnClickListener
+                }
+            }
+            if (password.isEmpty()) {
+                binding.inputPassword.startAnimation(
+                    AnimationUtils.loadAnimation(
+                        context,
+                        R.anim.shake
+                    )
+                )
+                vibrate(requireContext())
+                return@setOnClickListener
+            }
+            presenter.login(LoginData(phoneNumber, password))
+        }
     }
 
     override fun onBackPressed() {
@@ -65,11 +75,16 @@ class LoginFragment : BaseFragment(), LoginView {
     }
 
     override fun makeLoadingVisible(status: Boolean) {
-//        binding.loadingLayoutLogin.isClickable = !status
-//        binding.progressBarLogin.loading.visible(status)
+        if (status) {
+            binding.loadingLayoutLogin.isClickable = false
+            binding.progressBarLogin.loading.visibility = View.VISIBLE
+        } else {
+            binding.loadingLayoutLogin.isClickable = true
+            binding.progressBarLogin.loading.visibility = View.GONE
+        }
     }
 
     override fun openErrorDialog(message: String, status: Boolean) {
-//        customDialog(message, status)
+        customDialog(message, status)
     }
 }
