@@ -1,4 +1,4 @@
-package com.example.restuarant.api
+package com.example.restuarant.app
 
 import android.app.Application
 import com.example.restuarant.di.DI

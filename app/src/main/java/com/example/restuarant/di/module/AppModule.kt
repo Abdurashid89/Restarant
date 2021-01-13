@@ -2,7 +2,7 @@ package com.example.restuarant.di.module
 
 import android.content.Context
 import com.example.restuarant.di.provider.MoshiProvider
-import com.example.restuarant.model.starage.Prefs
+import com.example.restuarant.model.storage.Prefs
 import com.squareup.moshi.Moshi
 import ru.terrakok.cicerone.Cicerone
 import ru.terrakok.cicerone.NavigatorHolder
