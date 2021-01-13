@@ -1,4 +1,4 @@
-package com.example.restuarant.model.starage
+package com.example.restuarant.model.storage
 
 import android.content.Context
 import javax.inject.Inject

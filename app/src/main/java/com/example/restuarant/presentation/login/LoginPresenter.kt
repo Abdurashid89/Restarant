@@ -2,7 +2,7 @@ package com.example.restuarant.presentation.login
 
 import com.example.restuarant.model.interactor.LoginInteractor
 import com.example.restuarant.presentation.global.BasePresenter
-import com.example.restuarant.model.starage.Prefs
+import com.example.restuarant.model.storage.Prefs
 import com.example.restuarant.model.system.pull.FlowRouter
 import moxy.InjectViewState
 import javax.inject.Inject
@@ -20,6 +20,9 @@ class LoginPresenter @Inject constructor(
     fun onBackPressed() {
         router.exit()
     }
+//    fun open(){
+//        router.newChain(Screens.Login)
+//    }
 
 //    fun login(data: LoginData) {
 //        viewState.makeLoadingVisible(true)

@@ -1,11 +1,9 @@
 package com.example.restuarant.di.provider
 
 import android.content.Context
-import com.example.restuarant.model.starage.Prefs
-import com.readystatesoftware.chuck.ChuckInterceptor
+import com.example.restuarant.model.storage.Prefs
 import okhttp3.Cache
 import okhttp3.OkHttpClient
-import okhttp3.logging.HttpLoggingInterceptor
 import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 import javax.inject.Provider
