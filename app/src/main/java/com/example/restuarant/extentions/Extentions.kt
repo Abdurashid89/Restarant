@@ -154,6 +154,9 @@ fun customLog(message: String) {
     Log.d("AAA", message)
 }
 
+fun putAnimate(context: Context){
+
+}
 
 fun convertTimeWithTimeZome(time: Long): String? {
     val cal = Calendar.getInstance()

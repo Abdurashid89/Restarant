@@ -12,7 +12,7 @@ import moxy.InjectViewState
 import javax.inject.Inject
 
 @InjectViewState
-class SignupPresenter @Inject constructor(
+class SignUpPresenter @Inject constructor(
     private val router:FlowRouter,
     private val interactor:SignupInteractor,
     private val prefs: Prefs

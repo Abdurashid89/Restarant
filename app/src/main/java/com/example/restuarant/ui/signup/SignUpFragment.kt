@@ -4,13 +4,15 @@ import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.View
+import android.view.animation.AnimationUtils
 import com.example.restuarant.R
 import com.example.restuarant.databinding.FragmentSignupBinding
 import com.example.restuarant.extentions.showSnackMessage
+import com.example.restuarant.extentions.vibrate
 import com.example.restuarant.extentions.visible
 import com.example.restuarant.model.entities.RegisterData
 import com.example.restuarant.presentation.signup.SignUpView
-import com.example.restuarant.presentation.signup.SignupPresenter
+import com.example.restuarant.presentation.signup.SignUpPresenter
 import com.example.restuarant.ui.global.BaseFragment
 import moxy.presenter.InjectPresenter
 import moxy.presenter.ProvidePresenter
@@ -21,32 +23,15 @@ class SignUpFragment : BaseFragment(),SignUpView {
     private lateinit var binding : FragmentSignupBinding
 
     @InjectPresenter
-    lateinit var presenter:SignupPresenter
+    lateinit var presenter:SignUpPresenter
 
     @ProvidePresenter
-    fun providePresenter():SignupPresenter = scope.getInstance(SignupPresenter::class.java)
+    fun providePresenter():SignUpPresenter = scope.getInstance(SignUpPresenter::class.java)
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
         binding = FragmentSignupBinding.bind(view)
-
-        binding.firstNameEdit.addTextChangedListener(object :TextWatcher{
-            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
-
-            }
-
-            override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
-
-            }
-
-            override fun afterTextChanged(p0: Editable?) {
-                if(p0.toString().isNotEmpty()){
-                    binding.firstNameInput.isErrorEnabled = false
-                }
-            }
-
-        })
 
 
         binding.signButton.setOnClickListener {
@@ -57,16 +42,28 @@ class SignUpFragment : BaseFragment(),SignUpView {
 
             when {
                 firstName.isEmpty() -> {
-                    binding.firstNameInput.error = "Error"
+                    binding.firstNameInput.startAnimation(
+                        AnimationUtils.loadAnimation(context,R.anim.shake)
+                    )
+                    vibrate(requireContext())
                 }
                 lastName.isEmpty() -> {
-                    binding.lastNameInput.error = "Error"
+                    binding.lastNameInput.startAnimation(
+                        AnimationUtils.loadAnimation(context,R.anim.shake)
+                    )
+                    vibrate(requireContext())
                 }
                 phoneNumber.isEmpty() -> {
-                    binding.phoneNumberInput.error = "Error"
+                    binding.phoneNumberInput.startAnimation(
+                        AnimationUtils.loadAnimation(context,R.anim.shake)
+                    )
+                    vibrate(requireContext())
                 }
                 password.isEmpty() -> {
-                    binding.passwordInput.error = "Error"
+                    binding.passwordInput.startAnimation(
+                        AnimationUtils.loadAnimation(context,R.anim.shake)
+                    )
+                    vibrate(requireContext())
                 }
                 else -> {
                     presenter.register(RegisterData(phoneNumber,password,firstName,lastName))
@@ -74,9 +71,6 @@ class SignUpFragment : BaseFragment(),SignUpView {
             }
             return@setOnClickListener
         }
-
-//        val data = RegisterData("123","123","aa","bb")
-//        presenter.register(data)
     }
 
     override fun showMessage(message: String) {
@@ -94,4 +88,6 @@ class SignUpFragment : BaseFragment(),SignUpView {
     override fun onBackPressed() {
         presenter.onBackPressed()
     }
+
+
 }
