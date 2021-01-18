@@ -1,11 +1,11 @@
 package com.example.restuarant.model.server
 
-import com.example.restuarant.model.entities.LoginData
-import com.example.restuarant.model.entities.LoginResData
-import com.example.restuarant.model.entities.RegisterData
+import com.example.restuarant.model.entities.*
 import io.reactivex.Single
 import retrofit2.http.Body
+import retrofit2.http.GET
 import retrofit2.http.POST
+import retrofit2.http.Query
 
 /**
  * Created by shohboz on 11,Январь,2021
@@ -16,7 +16,28 @@ interface ResApi {
 
 
     @POST("/api/auth/register")
-    fun register(@Body data:RegisterData):Single<LoginResData>
+    fun register(@Body data: RegisterData): Single<LoginResData>
 
+    @POST("/api/product")
+    fun addProduct(@Body data: ProductData): Single<MessageData>
 
+    @GET("/api/product/productName")
+    fun productExistOrNot(@Query("name") name: String): Single<MessageDataWithoutMessageType>
+
+    @GET("/api/category")
+    fun getAllCategory(
+        @Query("page") page: Int,
+        @Query("size") size: Int,
+        @Query("search") search: String
+    ): Single<GetResponseData<List<CategoryInData>>>
+
+    @GET("/api/category/getAll")
+    fun getCategorySearch(
+        @Query("name") name: String
+    ): Single<List<CategoryInData>>
+
+    @GET("/api/brand/getAll")
+    fun getBrandSearch(
+        @Query("name") name: String
+    ): Single<List<BrandInData>>
 }
