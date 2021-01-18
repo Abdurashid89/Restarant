@@ -2,6 +2,7 @@ package com.example.restuarant.ui.waiter
 
 import android.app.AlertDialog
 import android.os.Bundle
+import android.view.LayoutInflater
 import android.view.View
 import com.example.restuarant.R
 import com.example.restuarant.databinding.FragmentWaiterBinding
@@ -69,7 +70,10 @@ class WaiterFragment : BaseFragment(),WaiterView {
 
     override fun openClientCountDialog() {
         val dialog = AlertDialog.Builder(requireContext()).create()
-
+        val view =
+            LayoutInflater.from(requireContext()).inflate(R.layout.guest_count, null, false)
+        dialog.setView(view)
+        dialog.show()
     }
 
 

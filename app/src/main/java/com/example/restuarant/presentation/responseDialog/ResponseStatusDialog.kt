@@ -7,7 +7,8 @@ import android.view.LayoutInflater
 import com.example.restuarant.R
 import com.example.restuarant.databinding.LayoutDialogBinding
 
-class ResponseStatusDialog(context: Context, message: String, status: Boolean) :
+class
+ResponseStatusDialog(context: Context, message: String, status: Boolean) :
     AlertDialog(context) {
     private lateinit var binding: LayoutDialogBinding
 
