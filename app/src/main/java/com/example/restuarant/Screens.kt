@@ -1,10 +1,9 @@
 package com.example.restuarant
 
-import androidx.fragment.app.Fragment
-import androidx.fragment.app.ListFragment
 import com.example.restuarant.ui.login.LoginFragment
 import com.example.restuarant.ui.main.MainFlowFragment
 import com.example.restuarant.ui.signup.SignUpFragment
+import com.example.restuarant.ui.waiter.WaiterFragment
 import ru.terrakok.cicerone.android.support.SupportAppScreen
 
 /**
@@ -15,11 +14,15 @@ object Screens {
         override fun getFragment() = MainFlowFragment()
     }
 
-    object Login: SupportAppScreen(){
+    object Login : SupportAppScreen() {
         override fun getFragment() = LoginFragment()
     }
 
-    object Signup : SupportAppScreen(){
+    object Signup : SupportAppScreen() {
         override fun getFragment() = SignUpFragment()
+    }
+
+    object Waiter : SupportAppScreen() {
+        override fun getFragment() = WaiterFragment()
     }
 }
