@@ -2,4 +2,10 @@
     <string name="app_name">Restuarant</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="add_product">Mahsulot qo\'shish</string>
+    <string name="name">Ism</string>
+    <string name="please">Iltimos lotin yozuvida kiriting</string>
+    <string name="category_name">Kategoriya nomi</string>
+    <string name="iltimos_lotin_yozuvida_kiriting">Iltimos lotin yozuvida kiriting</string>
+    <string name="brand_name">Brand nomi</string>
 </resources>
