@@ -11,14 +11,14 @@ class SignUpFragment : BaseFragment(),SignUpView {
     private lateinit var binding : FragmentSignupBinding
 
     override fun showMessage(message: String) {
-        TODO("Not yet implemented")
+
     }
 
     override fun makeLoadingVisible(status: Boolean) {
-        TODO("Not yet implemented")
+
     }
 
     override fun openErrorDialog(message: String, status: Boolean) {
-        TODO("Not yet implemented")
+
     }
 }

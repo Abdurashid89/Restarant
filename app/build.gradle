@@ -120,4 +120,7 @@ dependencies {
 
     // progressbar
     implementation 'com.github.ybq:Android-SpinKit:1.4.0'
+
+
+    implementation 'com.andrognito.pinlockview:pinlockview:2.1.0'
 }
