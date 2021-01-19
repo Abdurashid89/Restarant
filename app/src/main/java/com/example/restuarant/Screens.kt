@@ -2,6 +2,8 @@ package com.example.restuarant
 
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.ListFragment
+import com.example.restuarant.ui.cashier.CashierFragment
+import com.example.restuarant.ui.cooker.CookerFragment
 import com.example.restuarant.ui.login.LoginFragment
 import com.example.restuarant.ui.main.MainFlowFragment
 import com.example.restuarant.ui.signup.SignUpFragment
@@ -21,5 +23,13 @@ object Screens {
 
     object Signup : SupportAppScreen(){
         override fun getFragment() = SignUpFragment()
+    }
+
+    object CookerPage: SupportAppScreen(){
+        override fun getFragment() = CookerFragment()
+    }
+
+    object CashierPage : SupportAppScreen(){
+        override fun getFragment() = CashierFragment()
     }
 }
