@@ -2,6 +2,8 @@ package com.example.restuarant.ui.wareHouse.addProduct
 
 import android.Manifest
 import android.annotation.SuppressLint
+import android.app.Activity
+import android.app.AlertDialog
 import android.content.ContentValues
 import android.content.Intent
 import android.content.pm.PackageManager
@@ -11,15 +13,13 @@ import android.os.Bundle
 import android.provider.MediaStore
 import android.text.Editable
 import android.text.TextWatcher
+import android.util.Log
 import android.view.View
 import android.view.animation.AnimationUtils
 import androidx.core.content.PermissionChecker
 import com.example.restuarant.R
 import com.example.restuarant.databinding.FragmentAddProductBinding
-import com.example.restuarant.extentions.customDialog
-import com.example.restuarant.extentions.showSnackMessage
-import com.example.restuarant.extentions.vibrate
-import com.example.restuarant.extentions.visible
+import com.example.restuarant.extentions.*
 import com.example.restuarant.model.entities.BrandInData
 import com.example.restuarant.model.entities.CategoryInData
 import com.example.restuarant.presentation.were_house.add_product.AddProductPresenter
@@ -92,6 +92,32 @@ class AddProductFragment : BaseFragment(), AddProductView {
 //
 //        })
 
+        binding.selectImage.setOnClickListener {
+            val selectText = resources.getStringArray(R.array.entry_values_choose_image)
+            val alertDialogBuilder = AlertDialog.Builder(requireContext())
+                .setTitle(resources.getString(R.string.message_select_or_take))
+                .setSingleChoiceItems(
+                    selectText, -1
+                ) { p0, p1 ->
+                    when (p1) {
+                        0 -> {
+                            checkPermission(Manifest.permission.READ_EXTERNAL_STORAGE) {
+                                openGalleryForImage()
+                                p0.dismiss()
+                            }
+                        }
+                        1 -> {
+                            openWithCamera()
+                            p0.dismiss()
+                        }
+
+                    }
+                }
+            val alertDialog = alertDialogBuilder.create()
+            alertDialog.show()
+
+        }
+
         binding.btnAddProduct.setOnClickListener {
             val category = binding.inputEditTextCategory.text.toString().trim()
 //            val brand = binding.inputBrandEditText.text.toString().trim()
@@ -123,6 +149,7 @@ class AddProductFragment : BaseFragment(), AddProductView {
                     vibrate(requireContext())
                     return@setOnClickListener
                 }
+
 //                brand.isEmpty() || brandId == -1 -> {
 //                    binding.inputBrandEditText.startAnimation(
 //                        AnimationUtils.loadAnimation(
@@ -168,6 +195,43 @@ class AddProductFragment : BaseFragment(), AddProductView {
         }
     }
 
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<out String>,
+        grantResults: IntArray
+    ) {
+        when (requestCode) {
+            PERMISSION_CODE -> {
+                if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    openCamera()
+                } else {
+                    showMessage("Permission denied")
+                }
+            }
+        }
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (resultCode == Activity.RESULT_OK && requestCode == REQUEST_CODE) {
+            val uri = data?.data ?: return
+            val path = PathUtil.getPath(context, uri)
+            if (getImageSizeFromUriInMegaByte(requireContext(), uri) > 2.0) {
+                customDialog(resources.getString(R.string.errorImageMessage), false)
+            } else {
+                Log.d("TTT", "image uri:$uri\n ")
+            }
+        }
+        if (resultCode == Activity.RESULT_OK && requestCode == IMAGE_CAPTURE_CODE) {
+            val path = PathUtil.getPath(context, image_uri)
+            if (getImageSizeFromUriInMegaByte(requireContext(), image_uri!!) > 10.0) {
+                customDialog(resources.getString(R.string.errorImageMessageCamera), false)
+            } else {
+
+            }
+        }
+    }
+
     private fun openCamera() {
         val values = ContentValues()
         values.put(MediaStore.Images.Media.TITLE, "New Picture")
@@ -193,6 +257,10 @@ class AddProductFragment : BaseFragment(), AddProductView {
     override fun makeLoadingVisible(status: Boolean) {
         binding.loadingLayoutAddProduct.isClickable = !status
         binding.progressBarAddProduct.loading.visible(status)
+    }
+
+    override fun setImage(uri: Uri) {
+
     }
 
     override fun openDialog(message: String, status: Boolean) {

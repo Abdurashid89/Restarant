@@ -1,6 +1,7 @@
 package com.example.restuarant.presentation.were_house.add_product
 
 import android.annotation.SuppressLint
+import android.net.Uri
 import com.example.restuarant.extentions.errorResponse
 import com.example.restuarant.model.entities.CategoryInData
 import com.example.restuarant.model.entities.ProductData
@@ -9,6 +10,10 @@ import com.example.restuarant.model.interactor.DialogsIntegrator
 import com.example.restuarant.model.system.pull.FlowRouter
 import com.example.restuarant.presentation.global.BasePresenter
 import moxy.InjectViewState
+import okhttp3.MediaType.Companion.toMediaTypeOrNull
+import okhttp3.MultipartBody
+import okhttp3.RequestBody.Companion.asRequestBody
+import java.io.File
 import javax.inject.Inject
 
 @InjectViewState
@@ -81,5 +86,14 @@ class AddProductPresenter @Inject constructor(
         router.exit()
     }
 
+    fun sendImageUri(path: String, uri: Uri) {
+        viewState.makeLoadingVisible(true)
+        val file = File(path)
+        val requestFile = file.asRequestBody("image/*".toMediaTypeOrNull())
+        val image = MultipartBody.Part.createFormData("image", file.name, requestFile)
+
+        intercepter
+
+    }
 
 }

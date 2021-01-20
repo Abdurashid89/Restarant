@@ -31,7 +31,7 @@ interface ResApi {
         @Query("search") search: String
     ): Single<GetResponseData<List<CategoryInData>>>
 
-    @GET("/api/category/getAll")
+    @GET("/api/categoryProduct/getAll")
     fun getCategorySearch(
         @Query("name") name: String
     ): Single<List<CategoryInData>>
@@ -40,4 +40,11 @@ interface ResApi {
     fun getBrandSearch(
         @Query("name") name: String
     ): Single<List<BrandInData>>
+
+    @GET("/api/product")
+    fun getAllProduct(
+        @Query("page") page: Int,
+        @Query("size") size: Int,
+        @Query("search") search: String
+    ):Single<GetResponseData<List<ProductInData>>>
 }

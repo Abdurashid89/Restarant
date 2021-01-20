@@ -8,4 +8,15 @@
     <string name="category_name">Kategoriya nomi</string>
     <string name="iltimos_lotin_yozuvida_kiriting">Iltimos lotin yozuvida kiriting</string>
     <string name="brand_name">Brand nomi</string>
+    <string name="product">Mahsulot</string>
+    <string name="errorImageMessage">Rasm 2mb dan kam bo\'lsin!</string>
+    <string name="errorImageMessageCamera">Rasm 10 mb dan kichik bo\'lsin!</string>
+    <string name="todo" translatable="false">TODO</string>
+    <string-array name="entry_values_choose_image">
+        <item>@string/selectGallery</item>
+        <item>@string/takePicture</item>
+    </string-array>
+    <string name="selectGallery">Galeriydan tanlash</string>
+    <string name="takePicture">Rasmga olish</string>
+    <string name="message_select_or_take">Galeriyadan tanlash yoki kameradan tushirish</string>
 </resources>
