@@ -4,6 +4,7 @@ import android.app.AlertDialog
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
+import androidx.recyclerview.widget.SnapHelper
 import com.example.restuarant.R
 import com.example.restuarant.databinding.FragmentWaiterBinding
 import com.example.restuarant.presentation.waiter.WaiterPresenter
@@ -17,8 +18,8 @@ class WaiterFragment : BaseFragment(),WaiterView {
     override val layoutRes: Int = R.layout.fragment_waiter
 
     private lateinit var binding : FragmentWaiterBinding
-    private lateinit var deskAdapter: DeskAdapter
-    private lateinit var deskList: ArrayList<Int>
+    private  var goodsCategoryAdapter = GoodsCategoryAdapter()
+//    private lateinit var deskList: ArrayList<Int>
 
     @InjectPresenter
     lateinit var presenter:WaiterPresenter
@@ -29,30 +30,40 @@ class WaiterFragment : BaseFragment(),WaiterView {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding = FragmentWaiterBinding.bind(view)
+        val ls = goodsCategoryAdapter.currentList.toMutableList()
+        goodsCategoryAdapter.setOnDeleteClickListener {
+            goodsCategoryAdapter.deleteItem(it)
+            val ls = goodsCategoryAdapter.currentList.toMutableList()
+            ls.remove(it)
+            goodsCategoryAdapter.submitList(ls)
+        }
+        goodsCategoryAdapter.submitList(ls)
+        goodsCategoryAdapter.setOnClickListener {
+            it.price
+        }
+//        deskList.add(11)
+//        deskList.add(12)
+//        deskList.add(13)
+//        deskList.add(14)
+//        deskList.add(15)
+//        deskList.add(16)
+//        deskList.add(17)
+//        deskList.add(18)
+//        deskList.add(19)
+//        deskList.add(20)
 
-        deskList.add(11)
-        deskList.add(12)
-        deskList.add(13)
-        deskList.add(14)
-        deskList.add(15)
-        deskList.add(16)
-        deskList.add(17)
-        deskList.add(18)
-        deskList.add(19)
-        deskList.add(20)
-
-        deskAdapter = DeskAdapter(deskList,object :DeskAdapter.OnDeskItemClickListener{
-            override fun onClick() {
-               presenter.openClientDialog()
-
-            }
-
-            override fun onLongClick() {
-
-            }
-
-        })
-        binding.rv.adapter = deskAdapter
+//        deskAdapter = DeskAdapter(deskList,object :DeskAdapter.OnDeskItemClickListener{
+//            override fun onClick() {
+//               presenter.openClientDialog()
+//
+//            }
+//
+//            override fun onLongClick() {
+//
+//            }
+//
+//        })
+//        binding.tablesRv.adapter = deskAdapter
 
     }
 
