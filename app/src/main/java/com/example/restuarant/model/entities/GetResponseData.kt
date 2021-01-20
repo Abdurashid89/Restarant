@@ -62,3 +62,57 @@ data class BrandInData(
         }
     }
 }
+
+data class ProductInData(
+    var id: Int = 0,
+    var createdAt: String,
+    var updatedAt: String,
+    var createdBy: String,
+    var updatedBy: String,
+    var name: String,
+    var category: CategoryInProductData,
+    var active: Boolean = false,
+    var hibernateLazyInitializer: Any? = ""
+
+) {
+    companion object {
+        val ITEM_CALLBACK = object : DiffUtil.ItemCallback<ProductInData>() {
+            override fun areItemsTheSame(oldItem: ProductInData, newItem: ProductInData): Boolean =
+                oldItem.id == newItem.id
+
+            override fun areContentsTheSame(
+                oldItem: ProductInData,
+                newItem: ProductInData
+            ): Boolean =
+                oldItem.name == newItem.name && oldItem.active == newItem.active && oldItem.category == newItem.category
+
+        }
+    }
+}
+
+data class CategoryInProductData(
+    var id: Int,
+    var createdAt: String,
+    var updatedAt: String,
+    var createdBy: String,
+    var updatedBy: String,
+    var name: String,
+    var parent: String,
+    var childCategories: Any,
+    var active: Boolean = false,
+    var hibernateLazyInitializer: Any
+)
+
+data class ResponseFileData<T>(
+    var success: Boolean,
+    var message: String,
+    var objectData: List<T>
+)
+
+data class ResponseFileObjectData(
+    var fileId: String,
+    var fileName: String,
+    var fileDownloadUri: String,
+    var fileType: String,
+    var size: Int = 0
+)
