@@ -29,6 +29,7 @@ class LoginPresenter @Inject constructor(
             "1111" ->router.newChain(Screens.Waiter)
             "2222" ->router.newChain(Screens.CookerPage)
             "3333" ->router.newChain(Screens.CashierPage)
+            "4444" ->router.newChain(Screens.WarePage)
         }
     }
     fun signUpPage() {
