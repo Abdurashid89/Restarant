@@ -106,11 +106,11 @@
             style="@style/ButtonStyle"
             app:layout_constraintTop_toBottomOf="@id/btn7"
             app:layout_constraintLeft_toRightOf="@id/btn4" />
-        <Button
+        <ImageButton
             android:id="@+id/btn_delete"
             style="@style/ButtonStyle"
-            android:text="c"
             android:alpha="0"
+            android:src="@drawable/ic_delete"
             app:layout_constraintTop_toBottomOf="@id/btn7"
             app:layout_constraintLeft_toRightOf="@id/btn5" />
     </androidx.constraintlayout.widget.ConstraintLayout>
