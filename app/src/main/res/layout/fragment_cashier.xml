@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -13,7 +14,8 @@
 
         <FrameLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="0dp"
+            android:layout_weight="0.8"
             android:background="@color/purple_500"
             android:padding="12dp">
 
@@ -23,7 +25,7 @@
                 android:layout_height="80dp"
                 android:layout_gravity="start|center"
                 android:layout_marginStart="24dp"
-                android:background="@color/green" />
+                android:src="@drawable/apple" />
 
             <TextView
                 android:id="@+id/user_name"
@@ -39,37 +41,156 @@
 
         <androidx.cardview.widget.CardView
             android:layout_width="match_parent"
-            android:elevation="8dp"
-            android:layout_height="wrap_content">
+            android:layout_height="0dp"
+            android:layout_weight="2"
+            android:elevation="8dp">
+
             <LinearLayout
                 android:layout_width="match_parent"
-                android:orientation="vertical"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/table_list"
-                    android:layout_margin="6dp"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_margin="6dp"
                     tools:itemCount="2"
                     tools:listitem="@layout/desk_item" />
+
                 <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:src="@drawable/ic_baseline_keyboard_arrow_down_24"/>
+                    android:src="@drawable/ic_baseline_keyboard_arrow_down_24" />
             </LinearLayout>
         </androidx.cardview.widget.CardView>
 
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/keypat_group"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_marginTop="32dp"
+            android:layout_weight="4">
 
+            <Button
+                android:id="@+id/btn1"
+                style="@style/ButtonStyleCashier"
+                android:text="1"
+                app:layout_constraintBottom_toTopOf="@id/btn5"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toLeftOf="@id/btn2"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <Button
+                android:id="@+id/btn2"
+                style="@style/ButtonStyleCashier"
+                android:text="2"
+                app:layout_constraintBottom_toTopOf="@id/btn5"
+                app:layout_constraintLeft_toRightOf="@id/btn1"
+                app:layout_constraintRight_toLeftOf="@id/btn3"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <Button
+                android:id="@+id/btn3"
+                style="@style/ButtonStyleCashier"
+                android:text="3"
+                app:layout_constraintBottom_toTopOf="@id/btn5"
+                app:layout_constraintLeft_toRightOf="@id/btn2"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <Button
+                android:id="@+id/btn4"
+                style="@style/ButtonStyleCashier"
+                android:text="4"
+                app:layout_constraintBottom_toTopOf="@id/btn7"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toLeftOf="@id/btn5"
+                app:layout_constraintTop_toBottomOf="@id/btn1" />
+
+            <Button
+                android:id="@+id/btn5"
+                style="@style/ButtonStyleCashier"
+                android:text="5"
+                app:layout_constraintBottom_toTopOf="@id/btn7"
+                app:layout_constraintLeft_toRightOf="@id/btn4"
+                app:layout_constraintRight_toLeftOf="@id/btn6"
+                app:layout_constraintTop_toBottomOf="@id/btn1" />
+
+            <Button
+                android:id="@+id/btn6"
+                style="@style/ButtonStyleCashier"
+                android:text="6"
+                app:layout_constraintBottom_toTopOf="@id/btn7"
+                app:layout_constraintLeft_toRightOf="@id/btn5"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/btn1" />
+
+            <Button
+                android:id="@+id/btn7"
+                style="@style/ButtonStyleCashier"
+                android:text="7"
+                app:layout_constraintBottom_toTopOf="@id/btn0"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toLeftOf="@id/btn8"
+                app:layout_constraintTop_toBottomOf="@id/btn4" />
+
+            <Button
+                android:id="@+id/btn8"
+                style="@style/ButtonStyleCashier"
+                android:text="8"
+                app:layout_constraintBottom_toTopOf="@id/btn0"
+                app:layout_constraintLeft_toRightOf="@id/btn1"
+                app:layout_constraintRight_toLeftOf="@id/btn9"
+                app:layout_constraintTop_toBottomOf="@id/btn4" />
+
+            <Button
+                android:id="@+id/btn9"
+                style="@style/ButtonStyleCashier"
+                android:text="9"
+                app:layout_constraintBottom_toTopOf="@id/btn0"
+                app:layout_constraintLeft_toRightOf="@id/btn2"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/btn4" />
+
+            <Button
+                android:id="@+id/btn0"
+                style="@style/ButtonStyleCashier"
+                android:text="0"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintLeft_toRightOf="@id/btn4"
+                app:layout_constraintRight_toLeftOf="@id/btn_delete"
+                app:layout_constraintTop_toBottomOf="@id/btn7" />
+
+            <ImageButton
+                android:id="@+id/btn_delete"
+                style="@style/ButtonStyleCashier"
+                android:src="@drawable/ic_delete"
+                android:background="@color/white_light"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintLeft_toRightOf="@id/btn5"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/btn7" />
+
+            <Button
+                android:id="@+id/btn_dot"
+                style="@style/ButtonStyleCashier"
+                android:text="."
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toLeftOf="@id/btn0"
+                app:layout_constraintTop_toBottomOf="@id/btn7" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
 
     </LinearLayout>
 
     <LinearLayout
         android:layout_width="0dp"
-        android:orientation="vertical"
         android:layout_height="match_parent"
-        android:layout_weight="1.5">
+        android:layout_weight="1.5"
+        android:orientation="vertical">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -77,71 +198,68 @@
             android:orientation="horizontal">
 
             <Button
-                android:textAllCaps="false"
                 android:id="@+id/table_menu"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:background="@color/black"
                 android:gravity="center"
-                android:orientation="horizontal"
                 android:paddingTop="32dp"
                 android:paddingBottom="32dp"
                 android:text="Tables"
+                android:textAllCaps="false"
                 android:textColor="@color/white"
                 android:textSize="24sp"
                 android:textStyle="italic" />
 
             <Button
-                android:textAllCaps="false"
                 android:id="@+id/history_menu"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
+                android:layout_marginEnd="4dp"
                 android:layout_weight="1"
                 android:background="@color/black"
-                android:gravity="center"
-                android:orientation="horizontal"
                 android:paddingTop="32dp"
                 android:paddingBottom="32dp"
                 android:text="History"
+                android:textAllCaps="false"
                 android:textColor="@color/white"
                 android:textSize="24sp"
                 android:textStyle="italic" />
 
             <Button
-                android:textAllCaps="false"
                 android:id="@+id/own_menu"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
+                android:layout_marginEnd="4dp"
                 android:layout_weight="1"
                 android:background="@color/black"
-                android:gravity="center"
-                android:orientation="horizontal"
                 android:paddingTop="32dp"
                 android:paddingBottom="32dp"
                 android:text="Own"
+                android:textAllCaps="false"
                 android:textColor="@color/white"
                 android:textSize="24sp"
                 android:textStyle="italic" />
 
             <Button
-                android:textAllCaps="false"
                 android:id="@+id/logout_menu"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:background="@color/black"
-                android:gravity="center"
-                android:orientation="horizontal"
                 android:paddingTop="32dp"
                 android:paddingBottom="32dp"
                 android:text="LogOut"
+                android:textAllCaps="false"
                 android:textColor="@color/white"
                 android:textSize="24sp"
                 android:textStyle="italic" />
         </LinearLayout>
-        <include layout="@layout/cashier_tables_layout"
-            android:id="@+id/tables_layout"/>
+
+        <include
+            android:id="@+id/tables_layout"
+            layout="@layout/cashier_tables_layout" />
 
     </LinearLayout>
 </LinearLayout>
