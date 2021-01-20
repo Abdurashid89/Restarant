@@ -54,6 +54,7 @@ class SignUpFragment : BaseFragment(),SignUpView {
                     vibrate(requireContext())
                 }
                 phoneNumber.isEmpty() -> {
+
                     binding.phoneNumberInput.startAnimation(
                         AnimationUtils.loadAnimation(context,R.anim.shake)
                     )

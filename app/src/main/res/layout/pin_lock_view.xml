@@ -1,51 +1,118 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#03A9F4"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:gravity="center"
+    android:background="@drawable/wood_image"
     android:orientation="vertical"
-    tools:context=".MainActivity"
-    tools:ignore="ExtraText">
+    tools:context=".MainActivity">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Welcome"
-        android:textColor="@color/white"
-        android:textSize="32sp"
-        android:textStyle="italic"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <com.andrognito.pinlockview.IndicatorDots
-        android:id="@+id/indicator_dots"
-        android:layout_marginTop="32dp"
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:layout_width="280dp"
+        android:orientation="horizontal"
         android:gravity="center"
-        android:layout_height="wrap_content"
-        app:dotDiameter="20dp"
-        app:dotSpacing="16dp"
-        tools:ignore="MissingClass" />
+        android:id="@+id/dot_group"
+        android:layout_height="wrap_content">
+        <ImageButton
+            style="@style/ButtonDotStyle"
+            android:id="@+id/dot1"
+            android:background="@drawable/ic_baseline_fiber_manual_white"
+            />
+        <ImageButton
+            style="@style/ButtonDotStyle"
+            android:id="@+id/dot2"
+            android:background="@drawable/ic_baseline_fiber_manual_white"
+            />
 
-    <com.andrognito.pinlockview.PinLockView
-        android:id="@+id/pin_lock_view"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="32dp"
-        android:layout_marginTop="33dp"
-        android:layout_gravity="center"
-        android:layout_marginRight="24dp"
-        app:keypadButtonSize="64dp"
-        app:keypadDeleteButtonSize="26dp"
-        app:keypadHorizontalSpacing="36dp"
-        app:keypadTextColor="#FFFAFA"
-        app:keypadTextSize="26dp"
-        app:keypadVerticalSpacing="24dp"
-        app:pinLength="4"
-        tools:ignore="MissingClass" />
+        <ImageButton
+            style="@style/ButtonDotStyle"
+            android:background="@drawable/ic_baseline_fiber_manual_white"
+            android:id="@+id/dot3" />
+        <ImageButton
+            style="@style/ButtonDotStyle"
+            android:background="@drawable/ic_baseline_fiber_manual_white"
+            android:id="@+id/dot4" />
+
+    </LinearLayout>
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="wrap_content"
+        android:id="@+id/keypat_group"
+        android:layout_marginTop="32dp"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_height="wrap_content">
+        <Button
+            android:id="@+id/btn1"
+            android:text="1"
+            style="@style/ButtonStyle"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent" />
+        <Button
+            android:text="2"
+            android:id="@+id/btn2"
+            style="@style/ButtonStyle"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintLeft_toRightOf="@id/btn1" />
+
+        <Button
+            android:id="@+id/btn3"
+            android:text="3"
+            style="@style/ButtonStyle"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintLeft_toRightOf="@id/btn2" />
+
+        <Button
+            android:text="4"
+            android:id="@+id/btn4"
+            style="@style/ButtonStyle"
+            app:layout_constraintTop_toBottomOf="@id/btn1"
+            app:layout_constraintLeft_toLeftOf="parent" />
+        <Button
+            android:text="5"
+            android:id="@+id/btn5"
+            style="@style/ButtonStyle"
+            app:layout_constraintTop_toBottomOf="@id/btn1"
+            app:layout_constraintLeft_toRightOf="@id/btn4" />
+        <Button
+            android:id="@+id/btn6"
+            style="@style/ButtonStyle"
+            android:text="6"
+            app:layout_constraintTop_toBottomOf="@id/btn1"
+            app:layout_constraintLeft_toRightOf="@id/btn5" />
+        <Button
+            android:text="7"
+            android:id="@+id/btn7"
+            style="@style/ButtonStyle"
+            app:layout_constraintTop_toBottomOf="@id/btn4"
+            app:layout_constraintLeft_toLeftOf="parent" />
+        <Button
+            android:id="@+id/btn8"
+            android:text="8"
+            style="@style/ButtonStyle"
+            app:layout_constraintTop_toBottomOf="@id/btn4"
+            app:layout_constraintLeft_toRightOf="@id/btn1" />
+
+        <Button
+            android:text="9"
+            android:id="@+id/btn9"
+            style="@style/ButtonStyle"
+            app:layout_constraintTop_toBottomOf="@id/btn4"
+            app:layout_constraintLeft_toRightOf="@id/btn2" />
+
+        <Button
+            android:id="@+id/btn0"
+            android:text="0"
+            style="@style/ButtonStyle"
+            app:layout_constraintTop_toBottomOf="@id/btn7"
+            app:layout_constraintLeft_toRightOf="@id/btn4" />
+        <Button
+            android:id="@+id/btn_delete"
+            style="@style/ButtonStyle"
+            android:text="c"
+            android:alpha="0"
+            app:layout_constraintTop_toBottomOf="@id/btn7"
+            app:layout_constraintLeft_toRightOf="@id/btn5" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 </LinearLayout>
