@@ -26,7 +26,7 @@ class LoginPresenter @Inject constructor(
 
     fun openScreen(string: String){
         when(string){
-            "1111" ->router.newChain(Screens.CashierPage)
+            "1111" ->router.newChain(Screens.Waiter)
             "2222" ->router.newChain(Screens.CookerPage)
             "3333" ->router.newChain(Screens.CashierPage)
         }
