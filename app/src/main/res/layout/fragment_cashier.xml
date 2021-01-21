@@ -15,14 +15,15 @@
         <FrameLayout
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="0.8"
-            android:background="@color/purple_500"
-            android:padding="12dp">
+            android:layout_weight="0.9"
+            android:background="@color/purple_200"
+            android:padding="12dp"
+            tools:ignore="NestedWeights">
 
             <de.hdodenhof.circleimageview.CircleImageView
                 android:id="@+id/logo_rest"
-                android:layout_width="80dp"
-                android:layout_height="80dp"
+                android:layout_width="75dp"
+                android:layout_height="75dp"
                 android:layout_gravity="start|center"
                 android:layout_marginStart="24dp"
                 android:src="@drawable/apple" />
@@ -53,10 +54,11 @@
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/table_list"
                     android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="1"
+                    android:layout_margin="6dp"
                     app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
                     app:spanCount="5"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="6dp"
                     tools:itemCount="2"
                     tools:listitem="@layout/desk_item" />
 
@@ -72,9 +74,9 @@
             android:id="@+id/cash_keypat_group"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:padding="12dp"
             android:layout_marginTop="32dp"
-            android:layout_weight="4">
+            android:layout_weight="4"
+            android:padding="12dp">
 
             <Button
                 android:id="@+id/btn1"
@@ -169,8 +171,8 @@
             <ImageButton
                 android:id="@+id/btn_delete"
                 style="@style/ButtonStyleCashier"
-                android:src="@drawable/ic_delete"
                 android:background="@color/white_light"
+                android:src="@drawable/ic_delete"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintLeft_toRightOf="@id/btn5"
                 app:layout_constraintRight_toRightOf="parent"
@@ -204,6 +206,7 @@
                 android:id="@+id/table_menu"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
+                android:layout_marginEnd="4dp"
                 android:layout_weight="1"
                 android:background="@color/black"
                 android:gravity="center"
@@ -212,7 +215,6 @@
                 android:text="Tables"
                 android:textAllCaps="false"
                 android:textColor="@color/white"
-                android:layout_marginEnd="4dp"
                 android:textSize="24sp"
                 android:textStyle="italic" />
 
