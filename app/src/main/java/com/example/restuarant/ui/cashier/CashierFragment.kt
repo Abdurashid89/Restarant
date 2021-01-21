@@ -1,5 +1,6 @@
 package com.example.restuarant.ui.cashier
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import android.view.View
 import android.view.animation.AnimationUtils
@@ -9,6 +10,8 @@ import com.example.restuarant.databinding.FragmentSignupBinding
 import com.example.restuarant.extentions.showSnackMessage
 import com.example.restuarant.extentions.vibrate
 import com.example.restuarant.extentions.visible
+import com.example.restuarant.model.entities.CashierOrderData
+import com.example.restuarant.model.entities.CashierTableData
 import com.example.restuarant.model.entities.RegisterData
 import com.example.restuarant.presentation.cashier.CashierPresenter
 import com.example.restuarant.presentation.cashier.CashierView
@@ -25,6 +28,9 @@ class CashierFragment : BaseFragment(), CashierView {
     override val layoutRes: Int = R.layout.fragment_cashier
 
     private lateinit var binding : FragmentCashierBinding
+    var menu_table_visible = true
+    private val tableAdapter = CashierTableAdapter()
+    private val orderAdapter = CashierOrderAdapter()
 
     @InjectPresenter
     lateinit var presenter: CashierPresenter
@@ -32,49 +38,51 @@ class CashierFragment : BaseFragment(), CashierView {
     @ProvidePresenter
     fun providePresenter(): CashierPresenter = scope.getInstance(CashierPresenter::class.java)
 
+    @SuppressLint("ResourceAsColor")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
         binding = FragmentCashierBinding.bind(view)
 
+        binding.tableMenu.setBackgroundColor(R.color.green)
+        binding.tablesLayout.viewGroupTables.visibility = View.VISIBLE
 
-//        binding.signButton.setOnClickListener {
-//            val firstName = binding.firstNameEdit.text.toString().trim()
-//            val lastName = binding.lastNameEdit.text.toString().trim()
-//            val phoneNumber = binding.phoneNumberEdit.text.toString().trim()
-//            val password = binding.passwordEdit.text.toString().trim()
-//
-//            when {
-//                firstName.isEmpty() -> {
-//                    binding.firstNameInput.startAnimation(
-//                        AnimationUtils.loadAnimation(context, R.anim.shake)
-//                    )
-//                    vibrate(requireContext())
-//                }
-//                lastName.isEmpty() -> {
-//                    binding.lastNameInput.startAnimation(
-//                        AnimationUtils.loadAnimation(context, R.anim.shake)
-//                    )
-//                    vibrate(requireContext())
-//                }
-//                phoneNumber.isEmpty() -> {
-//                    binding.phoneNumberInput.startAnimation(
-//                        AnimationUtils.loadAnimation(context, R.anim.shake)
-//                    )
-//                    vibrate(requireContext())
-//                }
-//                password.isEmpty() -> {
-//                    binding.passwordInput.startAnimation(
-//                        AnimationUtils.loadAnimation(context, R.anim.shake)
-//                    )
-//                    vibrate(requireContext())
-//                }
-//                else -> {
-//                    presenter.register(RegisterData(phoneNumber,password,firstName,lastName))
-//                }
-//            }
-//            return@setOnClickListener
-//        }
+        loadTables()
+
+        binding.logoutMenu.setOnClickListener {
+            presenter.onBackPressed()
+        }
+        binding.tableMenu.setOnClickListener {
+            if(!menu_table_visible){
+                view.setBackgroundColor(R.color.green)
+                binding.tablesLayout.viewGroupTables.visibility = View.VISIBLE
+            }
+        }
+
+    }
+
+    private fun loadTables() {
+        val tableList = ArrayList<CashierTableData>()
+        val orderList = ArrayList<CashierOrderData>()
+        for(i in 1..10){
+            orderList.add(CashierOrderData(i,"Meal $i",i*1.0,i*10.0,"${i*10}"))
+        }
+        for(i in 1..20){
+            tableList.add(CashierTableData(i,orderList))
+        }
+        binding.tableList.adapter = tableAdapter
+        tableAdapter.submitList(tableList)
+        tableAdapter.setOnClickListener {
+            binding.tablesLayout.tableNumber.text = it.id.toString()
+            binding.tablesLayout.cashierOrderList.adapter = orderAdapter
+            var total = 0.0
+            it.currentOrder.forEach {
+                total += it.total.toDouble()
+            }
+            binding.tablesLayout.totalPrice.text = total.toString()
+            orderAdapter.submitList(null)
+            orderAdapter.submitList(it.currentOrder)
+        }
     }
 
     override fun showMessage(message: String) {
