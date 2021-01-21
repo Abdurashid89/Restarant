@@ -1,7 +1,6 @@
 package com.example.restuarant.ui.waiter
 
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
@@ -22,7 +21,7 @@ class GoodsCategoryAdapter :
         delete = block
     }
 
-    fun deleteItem(data: CategoryData){
+    fun deleteItem(data: CategoryData) {
         val ls = currentList.toMutableList()
         ls.remove(data)
         submitList(ls)
@@ -45,7 +44,6 @@ class GoodsCategoryAdapter :
             itemView.setOnClickListener {
                 listener?.invoke(currentList[adapterPosition])
             }
-
 
 
         }
