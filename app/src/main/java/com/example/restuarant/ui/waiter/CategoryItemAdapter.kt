@@ -8,24 +8,15 @@ import com.example.restuarant.databinding.CategoryItemBinding
 import com.example.restuarant.extentions.SingleBlock
 import com.example.restuarant.model.entities.CategoryData
 
-class GoodsCategoryAdapter :
-    ListAdapter<CategoryData, GoodsCategoryAdapter.Vh>(CategoryData.ITEM_CALLBACK) {
+class CategoryItemAdapter :
+    ListAdapter<CategoryData, CategoryItemAdapter.Vh>(CategoryData.ITEM_CALLBACK) {
 
     private var listener: SingleBlock<CategoryData>? = null
-    fun setOnClickListener(block: (CategoryData) -> Unit) {
-        listener = block
+
+    fun setOnClickListener(data: (CategoryData) -> Unit) {
+        listener = data
     }
 
-    private var delete: SingleBlock<CategoryData>? = null
-    fun setOnDeleteClickListener(block: (CategoryData) -> Unit) {
-        delete = block
-    }
-
-    fun deleteItem(data: CategoryData) {
-        val ls = currentList.toMutableList()
-        ls.remove(data)
-        submitList(ls)
-    }
 
     inner class Vh(val view: CategoryItemBinding) : RecyclerView.ViewHolder(view.root) {
 
@@ -38,14 +29,9 @@ class GoodsCategoryAdapter :
         }
 
         init {
-            view.productPhoto.setOnClickListener {
-                delete?.invoke(currentList[adapterPosition])
-            }
             itemView.setOnClickListener {
                 listener?.invoke(currentList[adapterPosition])
             }
-
-
         }
 
     }

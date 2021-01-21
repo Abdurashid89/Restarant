@@ -4,7 +4,7 @@ import androidx.recyclerview.widget.DiffUtil
 
 data class CategoryData(
     var name: String,
-    var photoId:String,
+    var photoId:Int,
     var price:Int,
     var descprition: String
 ) {
