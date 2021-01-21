@@ -19,4 +19,12 @@ interface WaiterView : MvpView {
 
     @StateStrategyType(OneExecutionStateStrategy::class)
     fun openClientCountDialog()
+
+    @StateStrategyType(OneExecutionStateStrategy::class)
+    fun showTables()
+
+    @StateStrategyType(OneExecutionStateStrategy::class)
+    fun showMenu()
+
+
 }

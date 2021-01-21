@@ -43,4 +43,12 @@ class WaiterPresenter @Inject constructor(
         interactor.sendOrder()
     }
 
+    fun showTables(){
+        viewState.showTables()
+    }
+
+    fun showMenu() {
+        viewState.showMenu()
+    }
+
 }

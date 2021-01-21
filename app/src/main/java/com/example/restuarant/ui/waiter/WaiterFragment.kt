@@ -5,9 +5,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.widget.Toast
-import androidx.recyclerview.widget.GridLayoutManager
-import androidx.recyclerview.widget.LinearSnapHelper
-import androidx.recyclerview.widget.SnapHelper
 import com.example.restuarant.R
 import com.example.restuarant.databinding.FragmentWaiterBinding
 import com.example.restuarant.model.entities.CategoryData
@@ -26,8 +23,7 @@ class WaiterFragment : BaseFragment(), WaiterView {
     private lateinit var itemList: ArrayList<CategoryData>
     private lateinit var tableList: ArrayList<Int>
     private var goodsCategoryAdapter: CategoryItemAdapter? = null
-    private var deskAdapter:DeskAdapter? = null
-
+    private var deskAdapter: DeskAdapter? = null
 
 
     @InjectPresenter
@@ -48,6 +44,14 @@ class WaiterFragment : BaseFragment(), WaiterView {
             presenter.onBackPressed()
         }
 
+        binding.tablesBtn.setOnClickListener {
+            presenter.showTables()
+        }
+
+        binding.orderBtn.setOnClickListener {
+            presenter.showMenu()
+        }
+
         goodsCategoryAdapter = CategoryItemAdapter()
         goodsCategoryAdapter!!.submitList(items)
 
@@ -61,14 +65,14 @@ class WaiterFragment : BaseFragment(), WaiterView {
             }
 
         })
-        val snapHelper = LinearSnapHelper()
-        snapHelper.attachToRecyclerView(binding.menuRv)
+//        val snapHelper1 = LinearSnapHelper()
+//        snapHelper1.attachToRecyclerView(binding.menuRv)
         binding.menuRv.adapter = goodsCategoryAdapter
+
+
         binding.tablesRv.adapter = deskAdapter
 
     }
-
-
 
 
     override fun showMessage(message: String) {
@@ -91,23 +95,36 @@ class WaiterFragment : BaseFragment(), WaiterView {
         dialog.show()
     }
 
-    private fun loadMenuItems():ArrayList<CategoryData>{
+    override fun showTables() {
+        
+        binding.categoryConstraint.visibility = View.GONE
+        binding.menuRv.visibility = View.GONE
+        binding.tablePageRv.visibility = View.VISIBLE
+    }
+
+    override fun showMenu() {
+        binding.categoryConstraint.visibility = View.VISIBLE
+        binding.menuRv.visibility = View.VISIBLE
+        binding.tablePageRv.visibility = View.GONE
+    }
+
+    private fun loadMenuItems(): ArrayList<CategoryData> {
         itemList = ArrayList()
-        itemList.add(CategoryData("Palov",R.drawable.ic_launcher_background,25000,"Milliy"))
-        itemList.add(CategoryData("Palov",R.drawable.ic_launcher_background,15000,"Milliy"))
-        itemList.add(CategoryData("Palov",R.drawable.ic_launcher_background,35000,"Milliy"))
-        itemList.add(CategoryData("Palov",R.drawable.ic_launcher_background,45000,"Milliy"))
-        itemList.add(CategoryData("Palov",R.drawable.ic_launcher_background,55000,"Milliy"))
-        itemList.add(CategoryData("Palov",R.drawable.ic_launcher_background,65000,"Milliy"))
-        itemList.add(CategoryData("Palov",R.drawable.ic_launcher_background,75000,"Milliy"))
-        itemList.add(CategoryData("Palov",R.drawable.ic_launcher_background,85000,"Milliy"))
-        itemList.add(CategoryData("Palov",R.drawable.ic_launcher_background,95000,"Milliy"))
-        itemList.add(CategoryData("Palov",R.drawable.ic_launcher_background,25500,"Milliy"))
+        itemList.add(CategoryData("Palov", R.drawable.ic_launcher_background, 25000, "Milliy"))
+        itemList.add(CategoryData("Palov", R.drawable.ic_launcher_background, 15000, "Milliy"))
+        itemList.add(CategoryData("Palov", R.drawable.ic_launcher_background, 35000, "Milliy"))
+        itemList.add(CategoryData("Palov", R.drawable.ic_launcher_background, 45000, "Milliy"))
+        itemList.add(CategoryData("Palov", R.drawable.ic_launcher_background, 55000, "Milliy"))
+        itemList.add(CategoryData("Palov", R.drawable.ic_launcher_background, 65000, "Milliy"))
+        itemList.add(CategoryData("Palov", R.drawable.ic_launcher_background, 75000, "Milliy"))
+        itemList.add(CategoryData("Palov", R.drawable.ic_launcher_background, 85000, "Milliy"))
+        itemList.add(CategoryData("Palov", R.drawable.ic_launcher_background, 95000, "Milliy"))
+        itemList.add(CategoryData("Palov", R.drawable.ic_launcher_background, 25500, "Milliy"))
 
         return itemList
     }
 
-    private fun loadTables():ArrayList<Int> {
+    private fun loadTables(): ArrayList<Int> {
         tableList = ArrayList()
         tableList.add(11)
         tableList.add(12)
