@@ -103,7 +103,7 @@
             android:layout_height="0dp"
             android:layout_weight="1.8"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-            tools:itemCount="5"
+            tools:itemCount="10"
             tools:listitem="@layout/item_order_cashier" />
 
         <LinearLayout
