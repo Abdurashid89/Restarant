@@ -43,7 +43,7 @@
         <androidx.cardview.widget.CardView
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="2"
+            android:layout_weight="3"
             android:elevation="8dp">
 
             <LinearLayout
@@ -59,7 +59,7 @@
                     android:layout_weight="1"
                     app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
                     app:spanCount="5"
-                    tools:itemCount="2"
+                    tools:itemCount="4"
                     tools:listitem="@layout/desk_item" />
 
                 <ImageView
@@ -75,7 +75,9 @@
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_marginTop="12dp"
-            android:layout_weight="4"
+            android:layout_marginStart="12dp"
+            android:layout_marginEnd="12dp"
+            android:layout_weight="3"
             android:padding="12dp">
 
             <Button
