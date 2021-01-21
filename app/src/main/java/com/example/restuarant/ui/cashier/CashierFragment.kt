@@ -67,6 +67,7 @@ class CashierFragment : BaseFragment(), CashierView {
         for(i in 1..9){
             numberList.add("$i")
         }
+        numberList.add(".")
         numberList.add("0")
         var currentText = ""
         for(i in 0 until binding.cashKeypatGroup.childCount - 1){
@@ -80,9 +81,13 @@ class CashierFragment : BaseFragment(), CashierView {
             binding.tablesLayout.priceOnCash.setText(currentText)
         }
         binding.tablesLayout.btnPrint.setOnClickListener {
-            binding.tablesLayout.priceOnCash.setText("0")
-            orderAdapter.submitList(null)
-            currentText = ""
+            if(binding.tablesLayout.totalPrice.text.toString() != "0" && orderAdapter.itemCount != 0){
+                binding.tablesLayout.priceOnCash.setText("0")
+                orderAdapter.submitList(null)
+                currentText = ""
+                binding.tablesLayout.totalPrice.text = "0"
+            }
+
         }
     }
 
