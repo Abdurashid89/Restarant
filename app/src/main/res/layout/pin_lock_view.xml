@@ -5,6 +5,7 @@
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:gravity="center"
+    android:id="@+id/loading_layout_pin_lock"
     android:background="@drawable/wood_image"
     android:orientation="vertical"
     tools:context=".MainActivity">
@@ -115,4 +116,6 @@
             app:layout_constraintLeft_toRightOf="@id/btn5" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
+    <include layout="@layout/progress_bar"
+        android:id="@+id/progresss"/>
 </LinearLayout>
