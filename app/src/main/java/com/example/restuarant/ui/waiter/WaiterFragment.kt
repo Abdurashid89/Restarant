@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.widget.Toast
+import androidx.recyclerview.widget.LinearSnapHelper
 import com.example.restuarant.R
 import com.example.restuarant.databinding.FragmentWaiterBinding
 import com.example.restuarant.model.entities.CategoryData
@@ -24,6 +25,9 @@ class WaiterFragment : BaseFragment(), WaiterView {
     private lateinit var tableList: ArrayList<Int>
     private var goodsCategoryAdapter: CategoryItemAdapter? = null
     private var deskAdapter: DeskAdapter? = null
+    private var categoryAdapter:CategoryAdapter? = null
+    private var tableadapter:TableAdapter? = null
+
 
 
     @InjectPresenter
@@ -40,6 +44,7 @@ class WaiterFragment : BaseFragment(), WaiterView {
         val tables = loadTables()
 
 
+
         binding.exitBtn.setOnClickListener {
             presenter.onBackPressed()
         }
@@ -54,7 +59,10 @@ class WaiterFragment : BaseFragment(), WaiterView {
 
         goodsCategoryAdapter = CategoryItemAdapter()
         goodsCategoryAdapter!!.submitList(items)
-
+        categoryAdapter = CategoryAdapter()
+        categoryAdapter!!.submitList(itemList)
+        tableadapter = TableAdapter()
+        tableadapter!!.submitList(tables)
         deskAdapter = DeskAdapter(tables, object : DeskAdapter.OnDeskItemClickListener {
             override fun onClick() {
                 Toast.makeText(requireContext(), "${tables.size}", Toast.LENGTH_SHORT).show()
@@ -65,12 +73,23 @@ class WaiterFragment : BaseFragment(), WaiterView {
             }
 
         })
-//        val snapHelper1 = LinearSnapHelper()
-//        snapHelper1.attachToRecyclerView(binding.menuRv)
+
+        categoryAdapter!!.setOnClickListener {
+
+        }
+
+
+
+        val snapHelper1 = LinearSnapHelper()
+        snapHelper1.attachToRecyclerView(binding.categoryRv)
+
         binding.menuRv.adapter = goodsCategoryAdapter
 
-
         binding.tablesRv.adapter = deskAdapter
+
+        binding.categoryRv.adapter = categoryAdapter
+
+        binding.tablePageRv.adapter = tableadapter
 
     }
 
@@ -100,11 +119,13 @@ class WaiterFragment : BaseFragment(), WaiterView {
         binding.categoryConstraint.visibility = View.GONE
         binding.menuRv.visibility = View.GONE
         binding.tablePageRv.visibility = View.VISIBLE
+        binding.tablesConstraint.visibility = View.GONE
     }
 
     override fun showMenu() {
         binding.categoryConstraint.visibility = View.VISIBLE
         binding.menuRv.visibility = View.VISIBLE
+        binding.tablesConstraint.visibility = View.VISIBLE
         binding.tablePageRv.visibility = View.GONE
     }
 
@@ -120,12 +141,32 @@ class WaiterFragment : BaseFragment(), WaiterView {
         itemList.add(CategoryData("Palov", R.drawable.ic_launcher_background, 85000, "Milliy"))
         itemList.add(CategoryData("Palov", R.drawable.ic_launcher_background, 95000, "Milliy"))
         itemList.add(CategoryData("Palov", R.drawable.ic_launcher_background, 25500, "Milliy"))
+        itemList.add(CategoryData("Palov", R.drawable.ic_launcher_background, 25500, "Milliy"))
+        itemList.add(CategoryData("Palov", R.drawable.ic_launcher_background, 25500, "Milliy"))
+        itemList.add(CategoryData("Palov", R.drawable.ic_launcher_background, 25500, "Milliy"))
+        itemList.add(CategoryData("Palov", R.drawable.ic_launcher_background, 25500, "Milliy"))
+        itemList.add(CategoryData("Palov", R.drawable.ic_launcher_background, 25500, "Milliy"))
+        itemList.add(CategoryData("Palov", R.drawable.ic_launcher_background, 25500, "Milliy"))
+        itemList.add(CategoryData("Palov", R.drawable.ic_launcher_background, 25500, "Milliy"))
+        itemList.add(CategoryData("Palov", R.drawable.ic_launcher_background, 25500, "Milliy"))
+        itemList.add(CategoryData("Palov", R.drawable.ic_launcher_background, 25500, "Milliy"))
+        itemList.add(CategoryData("Palov", R.drawable.ic_launcher_background, 25500, "Milliy"))
 
         return itemList
     }
 
     private fun loadTables(): ArrayList<Int> {
         tableList = ArrayList()
+        tableList.add(1)
+        tableList.add(2)
+        tableList.add(3)
+        tableList.add(4)
+        tableList.add(5)
+        tableList.add(6)
+        tableList.add(7)
+        tableList.add(8)
+        tableList.add(9)
+        tableList.add(10)
         tableList.add(11)
         tableList.add(12)
         tableList.add(13)
@@ -138,6 +179,14 @@ class WaiterFragment : BaseFragment(), WaiterView {
         tableList.add(20)
         tableList.add(21)
         tableList.add(22)
+        tableList.add(23)
+        tableList.add(24)
+        tableList.add(25)
+        tableList.add(26)
+        tableList.add(27)
+        tableList.add(28)
+        tableList.add(29)
+        tableList.add(30)
         return tableList
 
     }

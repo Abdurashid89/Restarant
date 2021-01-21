@@ -12,8 +12,9 @@ class CategoryItemAdapter :
     ListAdapter<CategoryData, CategoryItemAdapter.Vh>(CategoryData.ITEM_CALLBACK) {
 
     private var listener: SingleBlock<CategoryData>? = null
-    fun setOnClickListener(block: (CategoryData) -> Unit) {
-        listener = block
+
+    fun setOnClickListener(data: (CategoryData) -> Unit) {
+        listener = data
     }
 
 
