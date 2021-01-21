@@ -48,6 +48,7 @@ class CashierFragment : BaseFragment(), CashierView {
         binding.tablesLayout.viewGroupTables.visibility = View.VISIBLE
 
         loadTables()
+        loadButtons()
 
         binding.logoutMenu.setOnClickListener {
             presenter.onBackPressed()
@@ -59,6 +60,30 @@ class CashierFragment : BaseFragment(), CashierView {
             }
         }
 
+    }
+
+    private fun loadButtons() {
+        val numberList = ArrayList<String>()
+        for(i in 1..9){
+            numberList.add("$i")
+        }
+        numberList.add("0")
+        var currentText = ""
+        for(i in 0 until binding.cashKeypatGroup.childCount - 1){
+            binding.cashKeypatGroup.getChildAt(i).setOnClickListener {
+                currentText += numberList[i]
+                binding.tablesLayout.priceOnCash.setText(currentText)
+            }
+        }
+        binding.btnDelete.setOnClickListener {
+            currentText = currentText.substring(0,currentText.length - 1)
+            binding.tablesLayout.priceOnCash.setText(currentText)
+        }
+        binding.tablesLayout.btnPrint.setOnClickListener {
+            binding.tablesLayout.priceOnCash.setText("0")
+            orderAdapter.submitList(null)
+            currentText = ""
+        }
     }
 
     private fun loadTables() {
