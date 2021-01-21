@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:gravity="center"
+    android:padding="10dp"
+    android:layout_height="wrap_content">
+
+   <androidx.cardview.widget.CardView
+       app:cardCornerRadius="60dp"
+       android:layout_width="120dp"
+       app:cardElevation="@dimen/cardview_default_elevation"
+       android:layout_height="120dp">
+
+       <LinearLayout
+           android:id="@+id/tablePage_linear"
+           android:gravity="center"
+           android:background="@color/green"
+           android:layout_width="match_parent"
+           android:layout_height="match_parent">
+
+           <TextView
+               android:id="@+id/tablePage_numberTv"
+               android:textSize="50sp"
+               android:text="1"
+               android:textColor="@color/white"
+               android:layout_width="wrap_content"
+               android:layout_height="wrap_content"/>
+
+       </LinearLayout>
+
+   </androidx.cardview.widget.CardView>
+
+
+
+
+
+</LinearLayout>

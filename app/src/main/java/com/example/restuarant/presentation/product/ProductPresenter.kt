@@ -70,7 +70,7 @@ class ProductPresenter @Inject constructor(
     }
 
     fun openAddProduct() {
-        router.newChain(Screens.AddProductPage)
+        router.newChain(Screens.WarePage)
     }
 
     fun openItemDialog(item: ProductInData) {

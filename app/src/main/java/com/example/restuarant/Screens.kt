@@ -1,7 +1,5 @@
 package com.example.restuarant
 
-import androidx.fragment.app.Fragment
-import androidx.fragment.app.ListFragment
 import com.example.restuarant.ui.cashier.CashierFragment
 import com.example.restuarant.ui.cooker.CookerFragment
 import com.example.restuarant.ui.login.LoginFragment
@@ -31,11 +29,11 @@ object Screens {
         override fun getFragment() = WaiterFragment()
     }
 
-    object CookerPage: SupportAppScreen(){
+    object CookerPage : SupportAppScreen() {
         override fun getFragment() = CookerFragment()
     }
 
-    object CashierPage : SupportAppScreen(){
+    object CashierPage : SupportAppScreen() {
         override fun getFragment() = CashierFragment()
     }
     object WarePage : SupportAppScreen(){
