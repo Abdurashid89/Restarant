@@ -2,6 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
+    android:id="@+id/view_group_tables"
     android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="horizontal">
@@ -15,7 +16,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="26dp"
+            android:layout_marginTop="48dp"
             android:gravity="center"
             android:orientation="horizontal">
 
@@ -91,6 +92,7 @@
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/cashier_order_list"
             android:layout_width="match_parent"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             android:layout_height="wrap_content"
             tools:itemCount="5"
             tools:listitem="@layout/item_order_cashier" />
@@ -123,7 +125,7 @@
         <Button
             android:id="@+id/btn_print"
             android:layout_width="match_parent"
-            android:layout_height="?actionBarSize"
+            android:layout_height="wrap_content"
             android:layout_gravity="bottom"
             android:layout_margin="48dp"
             android:background="@color/green"
@@ -132,103 +134,125 @@
             android:textColor="@color/white" />
     </LinearLayout>
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <LinearLayout
         android:layout_width="0dp"
         android:paddingStart="24dp"
         android:paddingTop="48dp"
+        android:orientation="vertical"
         android:paddingEnd="24dp"
         android:layout_height="match_parent"
         android:layout_weight="1" >
-
-        <com.google.android.material.textfield.TextInputLayout
+        <LinearLayout
             android:layout_width="match_parent"
-            android:id="@+id/price_on_cash_layout"
-            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
-            app:layout_constraintTop_toTopOf="parent"
-            android:layout_height="wrap_content">
-            <com.google.android.material.textfield.TextInputEditText
+            android:orientation="vertical"
+            android:layout_weight="1"
+            android:gravity="bottom"
+            android:layout_height="0dp"
+            tools:ignore="NestedWeights">
+
+            <com.google.android.material.textfield.TextInputLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="00.00"
-                android:textSize="24sp"
-                android:focusable="false"
-                android:textAlignment="textEnd"
-                android:id="@+id/price_on_cash"
-                android:textColor="@color/black" />
-        </com.google.android.material.textfield.TextInputLayout>
+                android:id="@+id/price_on_cash_layout"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
+                android:layout_height="wrap_content">
+                <com.google.android.material.textfield.TextInputEditText
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="00.00"
+                    android:textSize="24sp"
+                    android:clickable="false"
+                    android:textAlignment="textEnd"
+                    android:id="@+id/price_on_cash"
+                    android:textColor="@color/black" />
+            </com.google.android.material.textfield.TextInputLayout>
 
-        <Button
-            android:layout_width="match_parent"
-            android:text="Cash"
-            android:id="@+id/btn_with_card"
-            android:textAllCaps="false"
-            android:layout_marginTop="24dp"
-            android:textColor="@color/white"
-            android:background="@color/green"
-            android:layout_marginStart="32dp"
-            app:layout_constraintTop_toBottomOf="@id/price_on_cash_layout"
-            android:layout_height="?actionBarSize"/>
-
-        <com.google.android.material.textfield.TextInputLayout
-            android:layout_width="match_parent"
-            android:layout_marginTop="32dp"
-            android:id="@+id/price_on_card_layout"
-            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
-            app:layout_constraintTop_toBottomOf="@id/btn_with_card"
-            android:layout_height="wrap_content">
-            <com.google.android.material.textfield.TextInputEditText
+            <Button
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="00.00"
-                android:textSize="24sp"
-                android:focusable="false"
-                android:textAlignment="textEnd"
-                android:id="@+id/price_on_card"
-                android:textColor="@color/black" />
-        </com.google.android.material.textfield.TextInputLayout>
+                android:text="Cash"
+                android:id="@+id/btn_with_card"
+                android:textAllCaps="false"
+                android:layout_marginTop="24dp"
+                android:textColor="@color/white"
+                android:background="@color/green"
+                android:layout_marginStart="32dp"
+                app:layout_constraintTop_toBottomOf="@id/price_on_cash_layout"
+                android:layout_height="wrap_content"/>
+        </LinearLayout>
 
-        <Button
+        <LinearLayout
             android:layout_width="match_parent"
-            android:text="Cash"
-            android:textAllCaps="false"
-            android:layout_marginTop="24dp"
-            android:textColor="@color/white"
-            android:id="@+id/btn_onCard"
-            android:background="@color/green"
-            android:layout_marginStart="32dp"
-            app:layout_constraintTop_toBottomOf="@id/price_on_card_layout"
-            android:layout_height="?actionBarSize"/>
+            android:orientation="vertical"
+            android:layout_weight="1"
+            android:gravity="bottom"
+            android:layout_height="0dp"
+            tools:ignore="NestedWeights">
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Cashback"
-            app:layout_constraintStart_toStartOf="parent"
-            android:layout_marginStart="24dp"
-            android:gravity="center"
-            app:layout_constraintBottom_toTopOf="@id/price_cash_back_layout"
-            android:textSize="24sp"
-            android:layout_marginBottom="16dp"
-            android:textColor="@color/black" />
-
-        <com.google.android.material.textfield.TextInputLayout
-            android:layout_width="match_parent"
-            android:id="@+id/price_cash_back_layout"
-            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
-            app:layout_constraintBottom_toBottomOf="parent"
-            android:layout_height="wrap_content">
-            <com.google.android.material.textfield.TextInputEditText
+            <com.google.android.material.textfield.TextInputLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="00.00"
-                android:textSize="24sp"
-                android:layout_marginBottom="48dp"
-                android:focusable="false"
-                android:textAlignment="textEnd"
-                android:id="@+id/price_cash_back"
-                android:textColor="@color/black" />
-        </com.google.android.material.textfield.TextInputLayout>
+                android:layout_marginTop="32dp"
+                android:id="@+id/price_on_card_layout"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
+                android:layout_height="wrap_content">
+                <com.google.android.material.textfield.TextInputEditText
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="00.00"
+                    android:textSize="24sp"
+                    android:clickable="false"
+                    android:textAlignment="textEnd"
+                    android:id="@+id/price_on_card"
+                    android:textColor="@color/black" />
+            </com.google.android.material.textfield.TextInputLayout>
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+            <Button
+                android:layout_width="match_parent"
+                android:text="Cash"
+                android:textAllCaps="false"
+                android:textColor="@color/white"
+                android:id="@+id/btn_onCard"
+                android:background="@color/green"
+                android:layout_marginStart="32dp"
+                android:layout_height="wrap_content"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:orientation="vertical"
+            android:layout_weight="1"
+            android:gravity="bottom"
+            android:layout_height="0dp"
+            tools:ignore="NestedWeights">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Cashback"
+                app:layout_constraintStart_toStartOf="parent"
+                android:layout_marginStart="24dp"
+                android:gravity="center"
+                app:layout_constraintBottom_toTopOf="@id/price_cash_back_layout"
+                android:textSize="24sp"
+                android:layout_marginBottom="16dp"
+                android:textColor="@color/black" />
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:layout_width="match_parent"
+                android:id="@+id/price_cash_back_layout"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
+                android:layout_height="wrap_content">
+                <com.google.android.material.textfield.TextInputEditText
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="00.00"
+                    android:textSize="24sp"
+                    android:layout_marginBottom="48dp"
+                    android:focusable="false"
+                    android:clickable="false"
+                    android:textAlignment="textEnd"
+                    android:id="@+id/price_cash_back"
+                    android:textColor="@color/black" />
+            </com.google.android.material.textfield.TextInputLayout>
+        </LinearLayout>
+    </LinearLayout>
 
 </LinearLayout>
