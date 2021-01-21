@@ -74,11 +74,18 @@ class CashierFragment : BaseFragment(), CashierView {
             binding.cashKeypatGroup.getChildAt(i).setOnClickListener {
                 currentText += numberList[i]
                 binding.tablesLayout.priceOnCash.setText(currentText)
+                val cur = currentText.toDouble()
+                        val back = binding.tablesLayout.totalPrice.text.toString().toDouble()
+                if(cur > back)
+                binding.tablesLayout.priceCashBack.setText((cur - back).toString())
             }
         }
         binding.btnDelete.setOnClickListener {
-            currentText = currentText.substring(0,currentText.length - 1)
-            binding.tablesLayout.priceOnCash.setText(currentText)
+            if(currentText.isNotEmpty()){
+                currentText = currentText.substring(0,currentText.length - 1)
+                binding.tablesLayout.priceOnCash.setText(currentText)
+            }
+
         }
         binding.tablesLayout.btnPrint.setOnClickListener {
             if(binding.tablesLayout.totalPrice.text.toString() != "0" && orderAdapter.itemCount != 0){
