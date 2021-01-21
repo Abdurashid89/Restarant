@@ -65,7 +65,7 @@ class LoginFragment : BaseFragment(), LoginView {
                 }
                 if(text_pin.length == 4){
                     makeLoadingVisible(true)
-                    Thread.sleep(1000)
+                    Thread.sleep(2000)
                     makeLoadingVisible(false)
                     presenter.openScreen(text_pin)
 //                    Toast.makeText(requireContext(), text_pin, Toast.LENGTH_SHORT).show()

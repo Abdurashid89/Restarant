@@ -62,7 +62,7 @@ class WaiterFragment : BaseFragment(), WaiterView {
         categoryAdapter = CategoryAdapter()
         categoryAdapter!!.submitList(itemList)
         tableadapter = TableAdapter()
-        tableadapter!!.submitList(tables)
+//        tableadapter!!.submitList(tables)
         deskAdapter = DeskAdapter(tables, object : DeskAdapter.OnDeskItemClickListener {
             override fun onClick() {
                 Toast.makeText(requireContext(), "${tables.size}", Toast.LENGTH_SHORT).show()
