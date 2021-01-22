@@ -11,10 +11,7 @@ data class CashierTableData(
 ) {
     companion object {
         val ITEMCALLBACK = object : DiffUtil.ItemCallback<CashierTableData>() {
-            override fun areItemsTheSame(
-                oldItem: CashierTableData,
-                newItem: CashierTableData
-            ) = oldItem.id == newItem.id
+            override fun areItemsTheSame(oldItem: CashierTableData, newItem: CashierTableData) = oldItem.id == newItem.id
 
             override fun areContentsTheSame(
                 oldItem: CashierTableData,

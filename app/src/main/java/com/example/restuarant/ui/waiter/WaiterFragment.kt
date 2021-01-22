@@ -1,5 +1,6 @@
 package com.example.restuarant.ui.waiter
 
+import android.annotation.SuppressLint
 import android.app.AlertDialog
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -9,6 +10,7 @@ import androidx.recyclerview.widget.LinearSnapHelper
 import com.example.restuarant.R
 import com.example.restuarant.databinding.FragmentWaiterBinding
 import com.example.restuarant.model.entities.CategoryData
+import com.example.restuarant.model.entities.TableData
 import com.example.restuarant.presentation.waiter.WaiterPresenter
 import com.example.restuarant.presentation.waiter.WaiterView
 import com.example.restuarant.ui.global.BaseFragment
@@ -23,11 +25,12 @@ class WaiterFragment : BaseFragment(), WaiterView {
     private lateinit var menuList: ArrayList<CategoryData>
     private lateinit var itemList: ArrayList<CategoryData>
     private lateinit var tableList: ArrayList<Int>
+    private lateinit var tablePageList: ArrayList<TableData>
     private var goodsCategoryAdapter: CategoryItemAdapter? = null
     private var deskAdapter: DeskAdapter? = null
-    private var categoryAdapter:CategoryAdapter? = null
-    private var tableadapter:TableAdapter? = null
-
+    private var categoryAdapter: CategoryAdapter? = null
+    private var tableadapter: TableAdapter? = null
+    private var changeColor: Int = 0
 
 
     @InjectPresenter
@@ -36,20 +39,23 @@ class WaiterFragment : BaseFragment(), WaiterView {
     @ProvidePresenter
     fun providePresenter(): WaiterPresenter = scope.getInstance(WaiterPresenter::class.java)
 
+    @SuppressLint("ResourceAsColor")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding = FragmentWaiterBinding.bind(view)
 
         val items = loadMenuItems()
         val tables = loadTables()
-
+        val tableList = loadTableList()
 
 
         binding.exitBtn.setOnClickListener {
+            changeColor = 1
             presenter.onBackPressed()
         }
 
         binding.tablesBtn.setOnClickListener {
+            binding.tablesBtn.setBackgroundColor(R.color.green)
             presenter.showTables()
         }
 
@@ -57,12 +63,16 @@ class WaiterFragment : BaseFragment(), WaiterView {
             presenter.showMenu()
         }
 
+        binding.dashboardBtn.setOnClickListener {
+
+        }
+
         goodsCategoryAdapter = CategoryItemAdapter()
         goodsCategoryAdapter!!.submitList(items)
         categoryAdapter = CategoryAdapter()
         categoryAdapter!!.submitList(itemList)
         tableadapter = TableAdapter()
-        tableadapter!!.submitList(tables)
+        tableadapter!!.submitList(tableList)
         deskAdapter = DeskAdapter(tables, object : DeskAdapter.OnDeskItemClickListener {
             override fun onClick() {
                 Toast.makeText(requireContext(), "${tables.size}", Toast.LENGTH_SHORT).show()
@@ -77,7 +87,6 @@ class WaiterFragment : BaseFragment(), WaiterView {
         categoryAdapter!!.setOnClickListener {
 
         }
-
 
 
         val snapHelper1 = LinearSnapHelper()
@@ -115,7 +124,7 @@ class WaiterFragment : BaseFragment(), WaiterView {
     }
 
     override fun showTables() {
-        
+
         binding.categoryConstraint.visibility = View.GONE
         binding.menuRv.visibility = View.GONE
         binding.tablePageRv.visibility = View.VISIBLE
@@ -127,6 +136,41 @@ class WaiterFragment : BaseFragment(), WaiterView {
         binding.menuRv.visibility = View.VISIBLE
         binding.tablesConstraint.visibility = View.VISIBLE
         binding.tablePageRv.visibility = View.GONE
+    }
+
+    private fun loadTableList(): ArrayList<TableData> {
+        tablePageList = ArrayList()
+        tablePageList.add(TableData(1, true, 4))
+        tablePageList.add(TableData(2, true, 4))
+        tablePageList.add(TableData(3, true, 4))
+        tablePageList.add(TableData(4, true, 4))
+        tablePageList.add(TableData(5, true, 4))
+        tablePageList.add(TableData(6, true, 4))
+        tablePageList.add(TableData(7, true, 4))
+        tablePageList.add(TableData(8, true, 4))
+        tablePageList.add(TableData(9, false, 4))
+        tablePageList.add(TableData(10, false, 4))
+        tablePageList.add(TableData(11, true, 4))
+        tablePageList.add(TableData(12, true, 4))
+        tablePageList.add(TableData(13, true, 4))
+        tablePageList.add(TableData(14, true, 4))
+        tablePageList.add(TableData(15, false, 4))
+        tablePageList.add(TableData(16, true, 4))
+        tablePageList.add(TableData(17, true, 4))
+        tablePageList.add(TableData(18, true, 4))
+        tablePageList.add(TableData(19, true, 4))
+        tablePageList.add(TableData(20, true, 4))
+        tablePageList.add(TableData(21, true, 4))
+        tablePageList.add(TableData(22, false, 4))
+        tablePageList.add(TableData(23, true, 4))
+        tablePageList.add(TableData(24, true, 4))
+        tablePageList.add(TableData(25, true, 4))
+        tablePageList.add(TableData(26, true, 4))
+        tablePageList.add(TableData(27, true, 4))
+        tablePageList.add(TableData(28, true, 4))
+        tablePageList.add(TableData(29, true, 4))
+        tablePageList.add(TableData(30, true, 4))
+        return tablePageList
     }
 
     private fun loadMenuItems(): ArrayList<CategoryData> {
@@ -191,5 +235,7 @@ class WaiterFragment : BaseFragment(), WaiterView {
 
     }
 
+    private fun changeBtnColor() {
 
+    }
 }
