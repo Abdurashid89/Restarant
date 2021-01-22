@@ -25,6 +25,8 @@ class CashierFragment : BaseFragment(), CashierView {
     var menu_table_visible = true
     private val tableAdapter = CashierTableAdapter()
     private val orderAdapter = CashierOrderAdapter()
+    private var currentText = ""
+    var currentMenu = 0
 
     @InjectPresenter
     lateinit var presenter: CashierPresenter
@@ -38,7 +40,8 @@ class CashierFragment : BaseFragment(), CashierView {
 
         binding = FragmentCashierBinding.bind(view)
 
-        context?.resources?.getColor(R.color.red)?.let { binding.tableMenu.setBackgroundColor(it) }
+        binding.tableMenu.setBackgroundColor(R.color.red)
+        currentMenu = 1
         binding.tablesLayout.viewGroupTables.visibility = View.VISIBLE
 
         loadTables()
@@ -47,13 +50,54 @@ class CashierFragment : BaseFragment(), CashierView {
         binding.logoutMenu.setOnClickListener {
             presenter.onBackPressed()
         }
-        binding.tableMenu.setOnClickListener {
-            if (!menu_table_visible) {
-                it.setBackgroundColor(R.color.red)
-                binding.tablesLayout.viewGroupTables.visibility = View.VISIBLE
-            }
+        binding.historyMenu.setOnClickListener {
+            setColorMenu()
+            currentMenu = 2
+            it.setBackgroundColor(R.color.red)
+
+            binding.historyLayout.cashierHistoryLayout.visibility = View.VISIBLE
+            binding.tablesLayout.viewGroupTables.visibility = View.GONE
+            binding.ownLayout.cashierOwnLayout.visibility = View.GONE
+
+        }
+        binding.ownMenu.setOnClickListener {
+            setColorMenu()
+            currentMenu = 3
+            it.setBackgroundColor(R.color.red)
+            binding.historyLayout.cashierHistoryLayout.visibility = View.GONE
+            binding.tablesLayout.viewGroupTables.visibility = View.GONE
+            binding.ownLayout.cashierOwnLayout.visibility = View.VISIBLE
+
         }
 
+        binding.tableMenu.setOnClickListener {
+            setColorMenu()
+            binding.historyLayout.cashierHistoryLayout.visibility = View.GONE
+            binding.ownLayout.cashierOwnLayout.visibility = View.GONE
+            binding.tablesLayout.viewGroupTables.visibility = View.VISIBLE
+
+            currentMenu = 1
+            it.setBackgroundColor(R.color.red)
+
+        }
+
+    }
+
+    private fun setColorMenu() {
+        when (currentMenu) {
+            1 -> {
+                context?.resources?.getColor(R.color.purple_200)
+                    ?.let { binding.tableMenu.setBackgroundColor(it) }
+            }
+            2 -> {
+                context?.resources?.getColor(R.color.purple_200)
+                    ?.let { binding.historyMenu.setBackgroundColor(it) }
+            }
+            3 -> {
+                context?.resources?.getColor(R.color.purple_200)
+                    ?.let { binding.ownMenu.setBackgroundColor(it) }
+            }
+        }
     }
 
     private fun loadButtons() {
@@ -61,26 +105,26 @@ class CashierFragment : BaseFragment(), CashierView {
         for (i in 1..9) {
             numberList.add("$i")
         }
-        numberList.add(".")
+        numberList.add("00")
         numberList.add("0")
-        var currentText = ""
+
         for (i in 0 until binding.cashKeypatGroup.childCount - 1) {
             binding.cashKeypatGroup.getChildAt(i).setOnClickListener {
-                    if(binding.tablesLayout.totalPrice.text != "0" && orderAdapter.itemCount != 0) {
-                        currentText += numberList[i]
-                        binding.tablesLayout.priceOnCash.setText(stringFormat(currentText.toInt()))
-                        val cur = currentText.toInt()
-                        val back = binding.tablesLayout.totalPrice.text.toString().toInt()
-                        if (cur > back)
-                            binding.tablesLayout.priceCashBack.setText(stringFormat((cur - back)))
-                        else binding.tablesLayout.priceCashBack.setText("0")
-                    }
+                if (binding.tablesLayout.totalPrice.text != "0" && orderAdapter.itemCount != 0) {
+                    currentText += numberList[i]
+                    binding.tablesLayout.priceOnCash.setText(stringFormat(currentText.toInt()))
+                    val cur = currentText.toInt()
+                    val back = binding.tablesLayout.totalPrice.text.toString().toInt()
+                    if (cur > back)
+                        binding.tablesLayout.priceCashBack.setText(stringFormat((cur - back)))
+                    else binding.tablesLayout.priceCashBack.setText("0")
+                }
 
             }
         }
         binding.btnDelete.setOnClickListener {
             if (currentText.length >= 2) {
-                currentText = currentText.substring(0, currentText.length-1)
+                currentText = currentText.substring(0, currentText.length - 1)
                 binding.tablesLayout.priceOnCash.setText(stringFormat(currentText.toInt()))
 
                 val cur = currentText.toInt()
@@ -88,7 +132,7 @@ class CashierFragment : BaseFragment(), CashierView {
                 if (cur > back)
                     binding.tablesLayout.priceCashBack.setText(stringFormat((cur - back)))
                 else binding.tablesLayout.priceCashBack.setText("0")
-            }else{
+            } else {
                 currentText = ""
                 binding.tablesLayout.priceOnCash.setText("0")
                 binding.tablesLayout.priceCashBack.setText("0")
@@ -116,14 +160,17 @@ class CashierFragment : BaseFragment(), CashierView {
             orderList.add(CashierOrderData(i, "Food $i", i + 1, i + 1, "${(i + 1) * (i + 1)}"))
         }
         for (i in 1..20) {
-            tableList.add(CashierTableData(i, orderList))
+            tableList.add(CashierTableData(i,"#F42B4A", orderList))
         }
         binding.tableList.adapter = tableAdapter
         tableAdapter.submitList(tableList)
         tableAdapter.setOnClickListener {
             binding.tablesLayout.tableNumber.text = it.id.toString()
             binding.tablesLayout.cashierOrderList.adapter = orderAdapter
-            var total = 0.0
+            binding.tablesLayout.priceCashBack.setText("0")
+            binding.tablesLayout.priceOnCash.setText("0")
+            currentText = ""
+            var total = 0
             it.currentOrder.forEach {
                 total += it.total.toInt()
             }

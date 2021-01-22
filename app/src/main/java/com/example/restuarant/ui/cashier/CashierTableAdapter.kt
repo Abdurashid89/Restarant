@@ -1,5 +1,6 @@
 package com.example.restuarant.ui.cashier
 
+import android.annotation.SuppressLint
 import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -31,16 +32,18 @@ class CashierTableAdapter:ListAdapter<CashierTableData,CashierTableAdapter.VHold
 
         init {
             itemView.setOnClickListener {
-                itemView.animate().setDuration(550).alpha(0.5f).start()
-//                itemView.animate().setDuration(550).alpha(1f).start()
-                binding.groupDesc.setCardBackgroundColor(Color.parseColor("#F42B4A"))
+                currentList[tableIndex].color = "#F42B4A"
+                notifyItemChanged(tableIndex)
+                itemView.animate().setDuration(50).alpha(0.5f).start()
                 tableIndex = adapterPosition
                 listener?.invoke(currentList[adapterPosition])
                 tableIndex = adapterPosition
             }
         }
+        @SuppressLint("Range")
         fun bind() = bindItem{
             binding.tableText.text = currentList[adapterPosition].id.toString()
+            binding.groupDesc.setCardBackgroundColor(Color.parseColor(currentList[adapterPosition].color))
         }
     }
 }
