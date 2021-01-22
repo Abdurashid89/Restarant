@@ -1,5 +1,6 @@
 package com.example.restuarant.ui.cashier
 
+import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.ListAdapter
@@ -16,6 +17,7 @@ import com.example.restuarant.model.entities.CashierTableData
 class CashierTableAdapter:ListAdapter<CashierTableData,CashierTableAdapter.VHolder>(CashierTableData.ITEMCALLBACK){
 
     var listener:SingleBlock<CashierTableData>? = null
+    var tableIndex = 0
 
     fun setOnClickListener(block: SingleBlock<CashierTableData>){
         listener = block
@@ -29,7 +31,12 @@ class CashierTableAdapter:ListAdapter<CashierTableData,CashierTableAdapter.VHold
 
         init {
             itemView.setOnClickListener {
+                itemView.animate().setDuration(550).alpha(0.5f).start()
+//                itemView.animate().setDuration(550).alpha(1f).start()
+                binding.groupDesc.setCardBackgroundColor(Color.parseColor("#F42B4A"))
+                tableIndex = adapterPosition
                 listener?.invoke(currentList[adapterPosition])
+                tableIndex = adapterPosition
             }
         }
         fun bind() = bindItem{

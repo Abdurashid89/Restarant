@@ -8,6 +8,7 @@ import com.example.restuarant.R
 import com.example.restuarant.databinding.PinLockViewBinding
 import com.example.restuarant.extentions.customDialog
 import com.example.restuarant.extentions.showSnackMessage
+import com.example.restuarant.extentions.visible
 import com.example.restuarant.presentation.login.LoginPresenter
 import com.example.restuarant.presentation.login.LoginView
 import com.example.restuarant.ui.global.BaseFragment
@@ -64,7 +65,6 @@ class LoginFragment : BaseFragment(), LoginView {
                 }
                 if(text_pin.length == 4){
                     presenter.openScreen(text_pin)
-//                    Toast.makeText(requireContext(), text_pin, Toast.LENGTH_SHORT).show()
                 }
             }
         }
@@ -111,13 +111,9 @@ class LoginFragment : BaseFragment(), LoginView {
     }
 
     override fun makeLoadingVisible(status: Boolean) {
-//        if (status) {
-//            binding.loadingLayoutLogin.isClickable = false
-//            binding.progressBarLogin.loading.visibility = View.VISIBLE
-//        } else {
-//            binding.loadingLayoutLogin.isClickable = true
-//            binding.progressBarLogin.loading.visibility = View.GONE
-//        }
+            binding.loadingLayoutPinLock.isClickable = !status
+            binding.progresss.loading.visible(status)
+
     }
 
     override fun openErrorDialog(message: String, status: Boolean) {
