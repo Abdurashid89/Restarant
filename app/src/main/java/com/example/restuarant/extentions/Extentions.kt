@@ -63,7 +63,9 @@ typealias SingleBlock <T> = (T) -> Unit
 fun View.visible(visible: Boolean) {
     this.visibility = if (visible) View.VISIBLE else View.GONE
 }
-
+fun stringFormat(string: Int):String{
+    return String.format("%,d", string).replace(',', ' ')
+}
 fun Fragment.showSnackMessage(message: String) {
     view?.showSnackMessage(message)
 }

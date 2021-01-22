@@ -8,8 +8,8 @@ import androidx.recyclerview.widget.DiffUtil
 data class CashierOrderData(
     var id:Int,
     var mealName:String = "",
-    var count:Double = 0.0,
-    var price:Double = 0.0,
+    var count:Int = 0,
+    var price:Int = 0,
     var total:String = ""
 ) {
     companion object {
