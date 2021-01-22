@@ -3,20 +3,14 @@ package com.example.restuarant.ui.cashier
 import android.annotation.SuppressLint
 import android.os.Bundle
 import android.view.View
-import android.view.animation.AnimationUtils
 import com.example.restuarant.R
 import com.example.restuarant.databinding.FragmentCashierBinding
-import com.example.restuarant.databinding.FragmentSignupBinding
 import com.example.restuarant.extentions.showSnackMessage
-import com.example.restuarant.extentions.vibrate
-import com.example.restuarant.extentions.visible
+import com.example.restuarant.extentions.stringFormat
 import com.example.restuarant.model.entities.CashierOrderData
 import com.example.restuarant.model.entities.CashierTableData
-import com.example.restuarant.model.entities.RegisterData
 import com.example.restuarant.presentation.cashier.CashierPresenter
 import com.example.restuarant.presentation.cashier.CashierView
-import com.example.restuarant.presentation.signup.SignUpPresenter
-import com.example.restuarant.presentation.signup.SignUpView
 import com.example.restuarant.ui.global.BaseFragment
 import moxy.presenter.InjectPresenter
 import moxy.presenter.ProvidePresenter
@@ -27,7 +21,7 @@ import moxy.presenter.ProvidePresenter
 class CashierFragment : BaseFragment(), CashierView {
     override val layoutRes: Int = R.layout.fragment_cashier
 
-    private lateinit var binding : FragmentCashierBinding
+    private lateinit var binding: FragmentCashierBinding
     var menu_table_visible = true
     private val tableAdapter = CashierTableAdapter()
     private val orderAdapter = CashierOrderAdapter()
@@ -44,7 +38,7 @@ class CashierFragment : BaseFragment(), CashierView {
 
         binding = FragmentCashierBinding.bind(view)
 
-        binding.tableMenu.setBackgroundColor(R.color.green)
+        context?.resources?.getColor(R.color.red)?.let { binding.tableMenu.setBackgroundColor(it) }
         binding.tablesLayout.viewGroupTables.visibility = View.VISIBLE
 
         loadTables()
@@ -54,8 +48,8 @@ class CashierFragment : BaseFragment(), CashierView {
             presenter.onBackPressed()
         }
         binding.tableMenu.setOnClickListener {
-            if(!menu_table_visible){
-                view.setBackgroundColor(R.color.green)
+            if (!menu_table_visible) {
+                it.setBackgroundColor(R.color.red)
                 binding.tablesLayout.viewGroupTables.visibility = View.VISIBLE
             }
         }
@@ -64,35 +58,51 @@ class CashierFragment : BaseFragment(), CashierView {
 
     private fun loadButtons() {
         val numberList = ArrayList<String>()
-        for(i in 1..9){
+        for (i in 1..9) {
             numberList.add("$i")
         }
         numberList.add(".")
         numberList.add("0")
         var currentText = ""
-        for(i in 0 until binding.cashKeypatGroup.childCount - 1){
+        for (i in 0 until binding.cashKeypatGroup.childCount - 1) {
             binding.cashKeypatGroup.getChildAt(i).setOnClickListener {
-                currentText += numberList[i]
-                binding.tablesLayout.priceOnCash.setText(currentText)
-                val cur = currentText.toDouble()
-                        val back = binding.tablesLayout.totalPrice.text.toString().toDouble()
-                if(cur > back)
-                binding.tablesLayout.priceCashBack.setText((cur - back).toString())
+                    if(binding.tablesLayout.totalPrice.text != "0" && orderAdapter.itemCount != 0) {
+                        currentText += numberList[i]
+                        binding.tablesLayout.priceOnCash.setText(stringFormat(currentText.toInt()))
+                        val cur = currentText.toInt()
+                        val back = binding.tablesLayout.totalPrice.text.toString().toInt()
+                        if (cur > back)
+                            binding.tablesLayout.priceCashBack.setText(stringFormat((cur - back)))
+                        else binding.tablesLayout.priceCashBack.setText("0")
+                    }
+
             }
         }
         binding.btnDelete.setOnClickListener {
-            if(currentText.isNotEmpty()){
-                currentText = currentText.substring(0,currentText.length - 1)
-                binding.tablesLayout.priceOnCash.setText(currentText)
+            if (currentText.length >= 2) {
+                currentText = currentText.substring(0, currentText.length-1)
+                binding.tablesLayout.priceOnCash.setText(stringFormat(currentText.toInt()))
+
+                val cur = currentText.toInt()
+                val back = binding.tablesLayout.totalPrice.text.toString().toInt()
+                if (cur > back)
+                    binding.tablesLayout.priceCashBack.setText(stringFormat((cur - back)))
+                else binding.tablesLayout.priceCashBack.setText("0")
+            }else{
+                currentText = ""
+                binding.tablesLayout.priceOnCash.setText("0")
+                binding.tablesLayout.priceCashBack.setText("0")
             }
 
         }
         binding.tablesLayout.btnPrint.setOnClickListener {
-            if(binding.tablesLayout.totalPrice.text.toString() != "0" && orderAdapter.itemCount != 0){
+            if (binding.tablesLayout.totalPrice.text.toString() != "0" && orderAdapter.itemCount != 0) {
                 binding.tablesLayout.priceOnCash.setText("0")
                 orderAdapter.submitList(null)
                 currentText = ""
                 binding.tablesLayout.totalPrice.text = "0"
+                binding.tablesLayout.tableNumber.text = "0"
+                binding.tablesLayout.priceCashBack.setText("0")
             }
 
         }
@@ -101,11 +111,12 @@ class CashierFragment : BaseFragment(), CashierView {
     private fun loadTables() {
         val tableList = ArrayList<CashierTableData>()
         val orderList = ArrayList<CashierOrderData>()
-        for(i in 1..10){
-            orderList.add(CashierOrderData(i,"Meal $i",i*1.0,i*10.0,"${i*10}"))
+        for (i in 1..10) {
+            orderList.add(CashierOrderData(i, "Meal $i", i, i, "${i * i}"))
+            orderList.add(CashierOrderData(i, "Food $i", i + 1, i + 1, "${(i + 1) * (i + 1)}"))
         }
-        for(i in 1..20){
-            tableList.add(CashierTableData(i,orderList))
+        for (i in 1..20) {
+            tableList.add(CashierTableData(i, orderList))
         }
         binding.tableList.adapter = tableAdapter
         tableAdapter.submitList(tableList)
@@ -114,7 +125,7 @@ class CashierFragment : BaseFragment(), CashierView {
             binding.tablesLayout.cashierOrderList.adapter = orderAdapter
             var total = 0.0
             it.currentOrder.forEach {
-                total += it.total.toDouble()
+                total += it.total.toInt()
             }
             binding.tablesLayout.totalPrice.text = total.toString()
             orderAdapter.submitList(null)
