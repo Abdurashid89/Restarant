@@ -19,4 +19,9 @@
     <string name="selectGallery">Galeriydan tanlash</string>
     <string name="takePicture">Rasmga olish</string>
     <string name="message_select_or_take">Galeriyadan tanlash yoki kameradan tushirish</string>
+    <string name="tables">Tables</string>
+    <string name="history">History</string>
+    <string name="to_go">To Go</string>
+    <string name="logout">LogOut</string>
+    <string name="pay">Pay</string>
 </resources>

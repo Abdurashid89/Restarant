@@ -1,12 +1,16 @@
 package com.example.restuarant.ui.cashier
 
+import android.animation.Animator
 import android.annotation.SuppressLint
+import android.os.Build
 import android.os.Bundle
 import android.view.View
+import androidx.annotation.RequiresApi
 import com.example.restuarant.R
 import com.example.restuarant.databinding.FragmentCashierBinding
 import com.example.restuarant.extentions.showSnackMessage
 import com.example.restuarant.extentions.stringFormat
+import com.example.restuarant.extentions.visible
 import com.example.restuarant.model.entities.CashierOrderData
 import com.example.restuarant.model.entities.CashierTableData
 import com.example.restuarant.presentation.cashier.CashierPresenter
@@ -22,7 +26,6 @@ class CashierFragment : BaseFragment(), CashierView {
     override val layoutRes: Int = R.layout.fragment_cashier
 
     private lateinit var binding: FragmentCashierBinding
-    var menu_table_visible = true
     private val tableAdapter = CashierTableAdapter()
     private val orderAdapter = CashierOrderAdapter()
     private var currentText = ""
@@ -34,6 +37,7 @@ class CashierFragment : BaseFragment(), CashierView {
     @ProvidePresenter
     fun providePresenter(): CashierPresenter = scope.getInstance(CashierPresenter::class.java)
 
+    @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
     @SuppressLint("ResourceAsColor")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -50,30 +54,37 @@ class CashierFragment : BaseFragment(), CashierView {
         binding.logoutMenu.setOnClickListener {
             presenter.onBackPressed()
         }
+        binding.unfold.setOnClickListener {
+            binding.groupButtons.translationZ = 0f
+
+        }
+        binding.btnPay.setOnClickListener {
+            if (binding.tablesLayout.totalPrice.text != "0" && orderAdapter.itemCount != 0)
+            binding.groupButtons.translationZ = 40f
+        }
         binding.historyMenu.setOnClickListener {
             setColorMenu()
             currentMenu = 2
             it.setBackgroundColor(R.color.red)
-
             binding.historyLayout.cashierHistoryLayout.visibility = View.VISIBLE
             binding.tablesLayout.viewGroupTables.visibility = View.GONE
-            binding.ownLayout.cashierOwnLayout.visibility = View.GONE
+            binding.togoLayout.cashierOwnLayout.visibility = View.GONE
 
         }
-        binding.ownMenu.setOnClickListener {
+        binding.togoMenu.setOnClickListener {
             setColorMenu()
             currentMenu = 3
             it.setBackgroundColor(R.color.red)
             binding.historyLayout.cashierHistoryLayout.visibility = View.GONE
             binding.tablesLayout.viewGroupTables.visibility = View.GONE
-            binding.ownLayout.cashierOwnLayout.visibility = View.VISIBLE
+            binding.togoLayout.cashierOwnLayout.visibility = View.VISIBLE
 
         }
 
         binding.tableMenu.setOnClickListener {
             setColorMenu()
             binding.historyLayout.cashierHistoryLayout.visibility = View.GONE
-            binding.ownLayout.cashierOwnLayout.visibility = View.GONE
+            binding.togoLayout.cashierOwnLayout.visibility = View.GONE
             binding.tablesLayout.viewGroupTables.visibility = View.VISIBLE
 
             currentMenu = 1
@@ -95,26 +106,29 @@ class CashierFragment : BaseFragment(), CashierView {
             }
             3 -> {
                 context?.resources?.getColor(R.color.purple_200)
-                    ?.let { binding.ownMenu.setBackgroundColor(it) }
+                    ?.let { binding.togoMenu.setBackgroundColor(it) }
             }
         }
     }
 
     private fun loadButtons() {
         val numberList = ArrayList<String>()
+        numberList.add("50")
+        numberList.add("100")
         for (i in 1..9) {
             numberList.add("$i")
         }
         numberList.add("00")
         numberList.add("0")
 
-        for (i in 0 until binding.cashKeypatGroup.childCount - 1) {
-            binding.cashKeypatGroup.getChildAt(i).setOnClickListener {
+        for (i in 0 until binding.groupButtons.childCount - 1) {
+            binding.groupButtons.getChildAt(i+1).setOnClickListener {
                 if (binding.tablesLayout.totalPrice.text != "0" && orderAdapter.itemCount != 0) {
+                    if((currentText + numberList[i]).length < 18)
                     currentText += numberList[i]
-                    binding.tablesLayout.priceOnCash.setText(stringFormat(currentText.toInt()))
-                    val cur = currentText.toInt()
-                    val back = binding.tablesLayout.totalPrice.text.toString().toInt()
+                    binding.tablesLayout.priceOnCash.setText(stringFormat(currentText.toLong()))
+                    val cur = currentText.toLong()
+                    val back = binding.tablesLayout.totalPrice.text.toString().toLong()
                     if (cur > back)
                         binding.tablesLayout.priceCashBack.setText(stringFormat((cur - back)))
                     else binding.tablesLayout.priceCashBack.setText("0")
@@ -125,10 +139,10 @@ class CashierFragment : BaseFragment(), CashierView {
         binding.btnDelete.setOnClickListener {
             if (currentText.length >= 2) {
                 currentText = currentText.substring(0, currentText.length - 1)
-                binding.tablesLayout.priceOnCash.setText(stringFormat(currentText.toInt()))
+                binding.tablesLayout.priceOnCash.setText(stringFormat(currentText.toLong()))
 
-                val cur = currentText.toInt()
-                val back = binding.tablesLayout.totalPrice.text.toString().toInt()
+                val cur = currentText.toLong()
+                val back = binding.tablesLayout.totalPrice.text.toString().toLong()
                 if (cur > back)
                     binding.tablesLayout.priceCashBack.setText(stringFormat((cur - back)))
                 else binding.tablesLayout.priceCashBack.setText("0")
@@ -155,12 +169,15 @@ class CashierFragment : BaseFragment(), CashierView {
     private fun loadTables() {
         val tableList = ArrayList<CashierTableData>()
         val orderList = ArrayList<CashierOrderData>()
-        for (i in 1..10) {
+        val orderList2 = ArrayList<CashierOrderData>()
+        for (i in 1..20) {
             orderList.add(CashierOrderData(i, "Meal $i", i, i, "${i * i}"))
-            orderList.add(CashierOrderData(i, "Food $i", i + 1, i + 1, "${(i + 1) * (i + 1)}"))
+            orderList.add(CashierOrderData(i, "Food $i", i, i, "${i * i}"))
+            orderList2.add(CashierOrderData(i, "Food $i", i + 1, i + 1, "${(i + 1) * (i + 1)}"))
+            orderList2.add(CashierOrderData(i, "Meal $i", i + 1, i + 1, "${(i + 1) * (i + 1)}"))
         }
         for (i in 1..20) {
-            tableList.add(CashierTableData(i,"#F42B4A", orderList))
+            tableList.add(CashierTableData(i, "#F42B4A", if (i % 2 == 1) orderList else orderList2))
         }
         binding.tableList.adapter = tableAdapter
         tableAdapter.submitList(tableList)
