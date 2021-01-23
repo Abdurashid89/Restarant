@@ -34,7 +34,7 @@ class CashierTableAdapter:ListAdapter<CashierTableData,CashierTableAdapter.VHold
             itemView.setOnClickListener {
                 currentList[tableIndex].color = "#F42B4A"
                 notifyItemChanged(tableIndex)
-                itemView.animate().setDuration(50).alpha(0.5f).start()
+                itemView.alpha = 0.5f
                 tableIndex = adapterPosition
                 listener?.invoke(currentList[adapterPosition])
                 tableIndex = adapterPosition

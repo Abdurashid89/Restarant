@@ -34,10 +34,11 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="end|center"
                 android:layout_marginEnd="16dp"
+                android:fontFamily="@font/roboto_medium"
                 android:text="Shohboz"
                 android:textColor="@color/green"
                 android:textSize="24sp"
-                android:textStyle="italic" />
+                android:textStyle="bold" />
         </FrameLayout>
 
         <LinearLayout
@@ -115,12 +116,12 @@
             tools:ignore="NestedWeights,Suspicious0dp">
 
             <LinearLayout
+                android:id="@+id/layout_rv"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:id="@+id/layout_rv"
-                android:translationZ="10dp"
                 android:background="@color/white"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                android:translationZ="10dp">
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/table_list"
@@ -128,8 +129,8 @@
                     android:layout_height="0dp"
                     android:layout_margin="6dp"
                     android:layout_weight="1"
-                    android:screenReaderFocusable="true"
                     android:clipToPadding="false"
+                    android:screenReaderFocusable="true"
                     app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
                     app:spanCount="4"
                     tools:itemCount="20"
@@ -152,10 +153,10 @@
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/group_buttons"
-                android:layout_marginTop="150dp"
-                android:background="@color/white"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:layout_marginTop="150dp"
+                android:background="@drawable/bgn_group_buttons"
                 android:orientation="vertical">
 
                 <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
@@ -169,49 +170,23 @@
                     app:layout_constraintTop_toTopOf="parent" />
 
                 <Button
-                    android:id="@+id/btn50"
-                    style="@style/ButtonStyleCashier"
-                    android:text="50"
-                    app:layout_constraintBottom_toTopOf="@id/btn1"
-                    app:layout_constraintLeft_toLeftOf="parent"
-                    app:layout_constraintRight_toLeftOf="@id/btn100"
-                    app:layout_constraintTop_toBottomOf="@id/unfold" />
-
-                <Button
-                    android:id="@+id/btn100"
-                    style="@style/ButtonStyleCashier"
-                    android:text="100"
-                    android:layout_marginBottom="12dp"
-                    app:layout_constraintBottom_toTopOf="@id/btn3"
-                    app:layout_constraintLeft_toRightOf="@id/btn50"
-                    app:layout_constraintRight_toRightOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/unfold" />
-
-                <Button
                     android:id="@+id/btn1"
                     style="@style/ButtonStyleCashier"
                     android:text="1"
                     app:layout_constraintBottom_toTopOf="@id/btn4"
                     app:layout_constraintLeft_toLeftOf="parent"
                     app:layout_constraintRight_toLeftOf="@id/btn2"
-                    app:layout_constraintTop_toBottomOf="@id/btn50" />
+                   app:layout_constraintTop_toBottomOf="@id/unfold" />
 
                 <Button
                     android:id="@+id/btn2"
                     android:text="2"
-                    android:layout_width="0dp"
-                    android:layout_height="0dp"
+                    style="@style/ButtonStyleCashier"
                     android:textSize="32sp"
-                    android:layout_marginTop="12dp"
-                    android:layout_marginBottom="6dp"
-                    android:layout_marginEnd="6dp"
-                    android:layout_marginStart="6dp"
-                    android:textColor="@color/white"
-                    android:background="@drawable/btn_bgn_cashier"
                     app:layout_constraintBottom_toTopOf="@id/btn5"
                     app:layout_constraintLeft_toRightOf="@id/btn1"
                     app:layout_constraintRight_toLeftOf="@id/btn3"
-                    app:layout_constraintTop_toBottomOf="@id/btn100" />
+                    app:layout_constraintTop_toBottomOf="@id/unfold" />
 
                 <Button
                     android:id="@+id/btn3"
@@ -220,7 +195,7 @@
                     app:layout_constraintBottom_toTopOf="@id/btn6"
                     app:layout_constraintLeft_toRightOf="@id/btn2"
                     app:layout_constraintRight_toRightOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/btn100" />
+                    app:layout_constraintTop_toBottomOf="@id/unfold" />
 
                 <Button
                     android:id="@+id/btn4"
@@ -271,7 +246,7 @@
                     android:id="@+id/btn9"
                     style="@style/ButtonStyleCashier"
                     android:text="9"
-                    app:layout_constraintBottom_toTopOf="@id/btn_delete"
+                    app:layout_constraintBottom_toTopOf="@id/btn50"
                     app:layout_constraintLeft_toRightOf="@id/btn8"
                     app:layout_constraintRight_toRightOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/btn6" />
@@ -281,8 +256,8 @@
                     android:id="@+id/btn_dot"
                     style="@style/ButtonStyleCashier"
                     android:clickable="false"
-                    android:text="00"
-                    app:layout_constraintBottom_toBottomOf="parent"
+                    android:text="."
+                    app:layout_constraintBottom_toTopOf="@id/btn100"
                     app:layout_constraintLeft_toLeftOf="parent"
                     app:layout_constraintRight_toLeftOf="@id/btn0"
                     app:layout_constraintTop_toBottomOf="@id/btn7" />
@@ -291,21 +266,48 @@
                     android:id="@+id/btn0"
                     style="@style/ButtonStyleCashier"
                     android:text="0"
-                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintBottom_toTopOf="@id/btn00"
                     app:layout_constraintLeft_toRightOf="@id/btn_dot"
-                    app:layout_constraintRight_toLeftOf="@id/btn_delete"
+                    app:layout_constraintRight_toLeftOf="@id/btn50"
                     app:layout_constraintTop_toBottomOf="@id/btn8" />
+
+                <Button
+                    android:id="@+id/btn50"
+                    style="@style/ButtonStyleCashier"
+                    android:text="00"
+                    app:layout_constraintBottom_toTopOf="@id/btn_delete"
+                    app:layout_constraintLeft_toRightOf="@id/btn0"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/btn9" />
+                <Button
+                    android:id="@+id/btn100"
+                    style="@style/ButtonStyleCashier"
+                    android:layout_marginBottom="12dp"
+                    android:text="50"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toLeftOf="@id/btn00"
+                    app:layout_constraintTop_toBottomOf="@id/btn_dot" />
+                <Button
+                    android:id="@+id/btn00"
+                    style="@style/ButtonStyleCashier"
+                    android:layout_marginBottom="12dp"
+                    android:text="100"
+                    app:layout_constraintRight_toLeftOf="@id/btn_delete"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintLeft_toRightOf="@id/btn100"
+                    app:layout_constraintTop_toBottomOf="@id/btn0" />
 
                 <ImageButton
                     android:id="@+id/btn_delete"
                     style="@style/ButtonStyleCashier"
-                    android:clickable="true"
-                    android:focusable="true"
                     android:src="@drawable/ic_delete"
                     app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintLeft_toRightOf="@id/btn0"
+                    app:layout_constraintLeft_toRightOf="@id/btn00"
                     app:layout_constraintRight_toRightOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/btn9" />
+                    app:layout_constraintTop_toBottomOf="@id/btn50" />
+
+
 
             </androidx.constraintlayout.widget.ConstraintLayout>
         </FrameLayout>

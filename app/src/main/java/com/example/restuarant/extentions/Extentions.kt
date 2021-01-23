@@ -60,15 +60,24 @@ fun Navigator.setLunchScreen(screen: SupportAppScreen) {
 
 typealias SingleBlock <T> = (T) -> Unit
 
+fun String.isDouble(): Boolean {
+    // if double return false       else return true
+   val size = this.length
+    val nnn = this.replace(".","")
+    return nnn.length == size
+}
+
 fun View.visible(visible: Boolean) {
     this.visibility = if (visible) View.VISIBLE else View.GONE
 }
-fun stringFormat(string: Long):String{
-    return String.format("%,d", string).replace(',', ' ')
+
+fun Long.stringFormat(): String {
+    return String.format("%,d", this).replace(',', ' ')
 }
-fun Fragment.showSnackMessage(message: String) {
-    view?.showSnackMessage(message)
-}
+
+    fun Fragment.showSnackMessage(message: String) {
+        view?.showSnackMessage(message)
+    }
 
 fun Fragment.showToastMessage(message: String) {
     Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show()
@@ -148,7 +157,7 @@ fun PopupMenu.setForceShowIcon() {
 
 fun Fragment.getDate(): String {
     return "${Calendar.getInstance().get(Calendar.MONTH)}/${
-        Calendar.getInstance().get(Calendar.YEAR)
+    Calendar.getInstance().get(Calendar.YEAR)
     }"
 }
 
@@ -156,7 +165,7 @@ fun customLog(message: String) {
     Log.d("AAA", message)
 }
 
-fun putAnimate(context: Context){
+fun putAnimate(context: Context) {
 
 }
 
@@ -181,22 +190,32 @@ fun Fragment.checkPermission(permission: String, granted: () -> Unit) {
     val mContext = context ?: return
     val options = Permissions.Options()
     options.setCreateNewTask(true)
-    Permissions.check(mContext, arrayOf(permission), null, options, object : PermissionHandler() {
-        override fun onGranted() {
-            granted()
-        }
-    })
+    Permissions.check(
+        mContext,
+        arrayOf(permission),
+        null,
+        options,
+        object : PermissionHandler() {
+            override fun onGranted() {
+                granted()
+            }
+        })
 }
 
 fun FragmentActivity.checkPermission(permission: String, granted: () -> Unit) {
     val mContext = this
     val options = Permissions.Options()
     options.setCreateNewTask(true)
-    Permissions.check(mContext, arrayOf(permission), null, options, object : PermissionHandler() {
-        override fun onGranted() {
-            granted()
-        }
-    })
+    Permissions.check(
+        mContext,
+        arrayOf(permission),
+        null,
+        options,
+        object : PermissionHandler() {
+            override fun onGranted() {
+                granted()
+            }
+        })
 }
 
 fun getPath(context: Context, uri: Uri): String {
