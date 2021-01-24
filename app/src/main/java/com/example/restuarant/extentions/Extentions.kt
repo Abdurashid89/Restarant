@@ -46,7 +46,9 @@ import java.io.InputStream
 import java.lang.reflect.Field
 import java.lang.reflect.Method
 import java.net.ConnectException
+import java.net.NoRouteToHostException
 import java.net.SocketException
+import java.net.SocketTimeoutException
 import java.text.SimpleDateFormat
 import java.util.*
 import java.util.concurrent.Executors
@@ -60,10 +62,10 @@ fun Navigator.setLunchScreen(screen: SupportAppScreen) {
 
 typealias SingleBlock <T> = (T) -> Unit
 
-fun String.isDouble(): Boolean {
+fun String.isNotDouble(): Boolean {
     // if double return false       else return true
-   val size = this.length
-    val nnn = this.replace(".","")
+    val size = this.length
+    val nnn = this.replace(".", "")
     return nnn.length == size
 }
 
@@ -75,9 +77,9 @@ fun Long.stringFormat(): String {
     return String.format("%,d", this).replace(',', ' ')
 }
 
-    fun Fragment.showSnackMessage(message: String) {
-        view?.showSnackMessage(message)
-    }
+fun Fragment.showSnackMessage(message: String) {
+    view?.showSnackMessage(message)
+}
 
 fun Fragment.showToastMessage(message: String) {
     Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show()
@@ -278,20 +280,35 @@ fun runOnWorkerThread(f: () -> Unit) {
     Executors.newSingleThreadExecutor().execute(f)
 }
 
-fun errorResponse(res: Throwable): String {
-    return when (res) {
+fun Throwable.errorResponse(): String {
+    return when (this) {
         is IllegalStateException -> "Notog'ri ma'lumot qaytdi"
         is JsonSyntaxException -> "Notog'ri ma'lumot qaytdi"
-        is AuthenticatorException -> "User ro'yhatdan o'tmagan"
-//        is HttpException -> "User ro'yhatdan o'tmagan"
-        is IllegalArgumentException -> "Malumot bo'sh qaytdi"
-        is ConnectException -> "Iltimos internetingiz ulashini tekshiring"
-        is SocketException -> "Iltimos internetingiz ulashini tekshiring"
-        is NetworkErrorException -> "Iltimos internetingiz ulashini tekshiring"
-//        is HttpException -> "Iltimos internetingiz ulashini tekshiring 4"
+        is SocketTimeoutException -> "Serverga ulanib bolmadi"
+        is NoRouteToHostException -> "Serverga ulanib bolmadi"
+        is retrofit2.adapter.rxjava2.HttpException -> {
+            when (this.code()) {
+                400 -> {
+                    "So'rov no'tog'ri yuborildi"
+                }
+                401 -> {
+                    "Foydalanuvchi ro'yhatdan o'tmagan"
+                }
+                in 500..600 -> {
+                    "Server error"
+                }
+                else -> {
+                    "Aniqlanmagan xatolik"
+                }
+//                71 90 91 94 93 95 33 88 97 98 99
+            }
+        }
+        is ConnectException -> "Internetga ulanib bolmadi"
+        is SocketException -> "Internetga ulanib bolmadi"
+        is NetworkErrorException -> "Internetga ulanib bolmadi"
         else -> "Aniqlanmagan xatolik. Iltimos qayta urinib ko'ring"
-    }
 
+    }
 }
 
 fun customSubString(string: String): String {

@@ -3,22 +3,23 @@ package com.example.restuarant.ui.cashier
 import android.annotation.SuppressLint
 import android.os.Build
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.annotation.RequiresApi
 import com.example.restuarant.R
 import com.example.restuarant.databinding.FragmentCashierBinding
-import com.example.restuarant.extentions.isDouble
+import com.example.restuarant.extentions.isNotDouble
 import com.example.restuarant.extentions.showSnackMessage
 import com.example.restuarant.extentions.stringFormat
 import com.example.restuarant.model.entities.CashierOrderData
 import com.example.restuarant.model.entities.CashierTableData
+import com.example.restuarant.model.entities.TableResData
 import com.example.restuarant.presentation.cashier.CashierPresenter
 import com.example.restuarant.presentation.cashier.CashierView
 import com.example.restuarant.ui.global.BaseFragment
 import moxy.presenter.InjectPresenter
 import moxy.presenter.ProvidePresenter
+import timber.log.Timber
 
 /**
  * Created by shohboz on 18,Январь,2021
@@ -62,6 +63,7 @@ class CashierFragment : BaseFragment(), CashierView {
         binding.btnPay.setOnClickListener {
             if (binding.tablesLayout.totalPrice.text != "0" && orderAdapter.itemCount != 0)
                 binding.groupButtons.translationZ = 40f
+            else showSnackMessage(getString(R.string.choose_table))
         }
         binding.historyMenu.setOnClickListener {
             setColorMenu()
@@ -101,11 +103,11 @@ class CashierFragment : BaseFragment(), CashierView {
 
             2 -> binding.historyMenu.setBackgroundResource(R.color.purple_200)
 
-            3 ->  binding.togoMenu.setBackgroundResource(R.color.purple_200)
+            3 -> binding.togoMenu.setBackgroundResource(R.color.purple_200)
         }
     }
 
-    @SuppressLint("SetTextI18n")
+    @SuppressLint("SetTextI18n", "TimberArgCount")
     @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
     private fun loadButtons() {
 
@@ -120,28 +122,35 @@ class CashierFragment : BaseFragment(), CashierView {
         numberList.add("100")
 
         for (i in 0 until binding.groupButtons.childCount - 1) {
+
             binding.groupButtons.getChildAt(i + 1).setOnClickListener {
+
                 if (binding.tablesLayout.totalPrice.text != "0" && orderAdapter.itemCount != 0) {
-                    if (it == binding.btn0) {
-                        if (currentText.isNotEmpty())
-                            if ((currentText + numberList[i]).length < 15) currentText += numberList[i]
-                    } else if (it == binding.btnDot) {
-                        if (currentText.isNotEmpty() && currentText.isDouble()) {
-                            if ((currentText + numberList[i]).length < 15) currentText += numberList[i]
-                        }
-                    } else if ((currentText + numberList[i]).length < 15) currentText += numberList[i]
-                    Log.d("AAA", "currentTex : $currentText")
+
+                    if (it == binding.btn0 || it == binding.btn50) {
+
+                        if (currentText.isNotEmpty() && (currentText + numberList[i]).length < 15) currentText += numberList[i]
+
+                    } else {
+                        if (it == binding.btnDot) {
+                            if (currentText.isNotEmpty() && currentText.isNotDouble() && (currentText + numberList[i]).length < 15) {
+                                currentText += numberList[i]
+                            }
+                        } else if ((currentText + numberList[i]).length < 15) currentText += numberList[i]
+                    }
+
+//                    Log.d("AAA", "currentTex : $currentText")
+                    Timber.d(currentText)
 
                     val total_price = binding.tablesLayout.totalPrice.text.toString().toLong()
 
                     if (currentText.isNotEmpty())
-                        if (currentText.isDouble()) {
+                        if (currentText.isNotDouble()) {
                             val tt = currentText.toLong()
                             binding.tablesLayout.priceOnCash.setText(tt.stringFormat())
 
-                            if (tt > total_price) {
-                                binding.tablesLayout.priceCashBack.setText((tt - total_price).stringFormat())
-                            }
+                            if (tt > total_price) binding.tablesLayout.priceCashBack.setText((tt - total_price).stringFormat())
+
                         } else {
                             val split = currentText.split(".")
                             val ss = split[0].toLong()
@@ -151,12 +160,15 @@ class CashierFragment : BaseFragment(), CashierView {
                                 val s = (ss - total_price).stringFormat() + "." + split[1]
                                 binding.tablesLayout.priceCashBack.setText(s)
                             } else binding.tablesLayout.priceCashBack.setText("0")
+
                         }
-                } else Toast.makeText(requireContext(), "Please choose table number", Toast.LENGTH_SHORT).show()
+                } else showSnackMessage(getString(R.string.choose_table))
+
 
             }
 
         }
+
 
         binding.btnDelete.setOnClickListener {
             if (currentText.length > 1) {
@@ -164,7 +176,7 @@ class CashierFragment : BaseFragment(), CashierView {
 
                 val total_price = binding.tablesLayout.totalPrice.text.toString().toLong()
 
-                if (currentText.isDouble()) {
+                if (currentText.isNotDouble()) {
                     val sum = currentText.toLong()
                     binding.tablesLayout.priceOnCash.setText(sum.stringFormat())
 
@@ -198,7 +210,7 @@ class CashierFragment : BaseFragment(), CashierView {
                 binding.tablesLayout.tableNumber.text = "0"
                 binding.tablesLayout.priceCashBack.setText("0")
                 binding.groupButtons.translationZ = 0f
-            } else Toast.makeText(requireContext(), "Please choose table number", Toast.LENGTH_SHORT).show()
+            } else showSnackMessage(getString(R.string.choose_table))
 
         }
     }
@@ -217,21 +229,22 @@ class CashierFragment : BaseFragment(), CashierView {
             tableList.add(CashierTableData(i, "#F42B4A", if (i % 2 == 1) orderList else orderList2))
         }
         binding.tableList.adapter = tableAdapter
-        tableAdapter.submitList(tableList)
         tableAdapter.setOnClickListener {
             binding.tablesLayout.tableNumber.text = it.id.toString()
             binding.tablesLayout.cashierOrderList.adapter = orderAdapter
             binding.tablesLayout.priceCashBack.setText("0")
             binding.tablesLayout.priceOnCash.setText("0")
             currentText = ""
-            var total = 0
-            it.currentOrder.forEach {
-                total += it.total.toInt()
-            }
+            var total = 654321
+//            it.currentOrder.forEach {
+//                total += it.total.toInt()
+//            }
             binding.tablesLayout.totalPrice.text = total.toString()
             orderAdapter.submitList(null)
-            orderAdapter.submitList(it.currentOrder)
+            orderAdapter.submitList(orderList)
         }
+        orderAdapter.submitList(orderList)
+
     }
 
     override fun showMessage(message: String) {
@@ -243,12 +256,16 @@ class CashierFragment : BaseFragment(), CashierView {
     }
 
     override fun openErrorDialog(message: String, status: Boolean) {
-
+        binding.tableProgress.visibility = View.GONE
+        showSnackMessage(message)
     }
 
     override fun onBackPressed() {
         presenter.onBackPressed()
     }
 
-
+    override fun submitTables(list: List<TableResData>) {
+        binding.tableProgress.visibility = View.GONE
+        tableAdapter.submitList(list)
+    }
 }

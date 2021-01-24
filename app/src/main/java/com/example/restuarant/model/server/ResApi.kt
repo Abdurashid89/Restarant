@@ -47,4 +47,7 @@ interface ResApi {
         @Query("size") size: Int,
         @Query("search") search: String
     ):Single<GetResponseData<List<ProductInData>>>
+
+    @GET("/api/table")
+    fun getAllTable(): Single<ResData<List<TableResData>>>
 }
