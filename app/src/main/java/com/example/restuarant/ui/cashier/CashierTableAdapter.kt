@@ -33,7 +33,7 @@ class CashierTableAdapter:ListAdapter<CashierTableData,CashierTableAdapter.VHold
             itemView.setOnClickListener {
                 itemView.animate().setDuration(550).alpha(0.5f).start()
 //                itemView.animate().setDuration(550).alpha(1f).start()
-                binding.groupDesc.setCardBackgroundColor(Color.parseColor("#F42B4A"))
+//                binding.groupDesc.setCardBackgroundColor(Color.parseColor("#F42B4A"))
                 tableIndex = adapterPosition
                 listener?.invoke(currentList[adapterPosition])
                 tableIndex = adapterPosition

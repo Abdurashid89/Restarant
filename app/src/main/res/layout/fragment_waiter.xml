@@ -6,8 +6,8 @@
     android:layout_height="match_parent"
     android:layout_gravity="center"
     android:gravity="center"
-    android:padding="10dp"
     android:orientation="horizontal"
+    android:padding="10dp"
     tools:context=".ui.waiter.WaiterFragment">
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -87,105 +87,180 @@
             android:id="@+id/order_constraint"
             android:layout_width="0dp"
             android:layout_height="0dp"
-            android:padding="5dp"
             android:layout_marginBottom="5dp"
             android:background="@drawable/black_line"
+            android:padding="5dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toBottomOf="@id/tables_constraint"
             app:layout_constraintWidth_percent="0.9">
 
-            <TextView
-                android:id="@+id/table_number_tv"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Table 8"
-                android:textSize="30sp"
-                app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintTop_toTopOf="parent"/>
-
-            <TextView
-                android:id="@+id/product_name_tv"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Product name"
-                android:textSize="20sp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintRight_toLeftOf="@id/product_price_tv"
-                app:layout_constraintTop_toBottomOf="@id/table_number_tv"
-                app:layout_constraintVertical_bias="0.05" />
-
-            <TextView
-                android:id="@+id/product_price_tv"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Price"
-                android:textSize="20sp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintLeft_toRightOf="@id/product_name_tv"
-                app:layout_constraintRight_toLeftOf="@id/product_howMany_tv"
-                app:layout_constraintTop_toBottomOf="@id/table_number_tv"
-                app:layout_constraintVertical_bias="0.05" />
-
-            <TextView
-                android:id="@+id/product_howMany_tv"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="How many"
-                android:textSize="20sp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintLeft_toRightOf="@id/product_price_tv"
-                app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/table_number_tv"
-                app:layout_constraintVertical_bias="0.05" />
-
             <LinearLayout
-                android:layout_marginTop="10dp"
-                android:background="@color/black"
-                android:layout_marginRight="10dp"
-                android:layout_marginLeft="10dp"
-                app:layout_constraintTop_toBottomOf="@id/product_price_tv"
+                android:id="@+id/order_linear"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:orientation="vertical"
+                app:layout_constraintBottom_toTopOf="@id/order_rv"
+                app:layout_constraintHeight_percent="0.2"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
-                android:layout_width="match_parent"
-                android:layout_height="2dp"/>
+                app:layout_constraintTop_toTopOf="parent">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="24dp"
+                    android:gravity="center"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Table No "
+                        android:textColor="@color/black"
+                        android:textSize="24sp" />
+
+                    <TextView
+                        android:id="@+id/table_number"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="12dp"
+                        android:text="0"
+                        android:textColor="@color/black"
+                        android:textSize="24sp"
+                        android:textStyle="bold" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:padding="12dp">
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="20dp"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:text="Meal Name"
+                        android:textColor="@color/black"
+                        android:textSize="16sp" />
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:text="Price"
+                        android:textColor="@color/black"
+                        android:textSize="16sp" />
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:text="How many"
+                        android:textColor="@color/black"
+                        android:textSize="16sp" />
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="10dp"
+                        android:layout_weight="1"
+                        android:gravity="end"
+                        android:text="Total"
+                        android:textColor="@color/black"
+                        android:textSize="16sp" />
+                </LinearLayout>
+
+            </LinearLayout>
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/order_rv"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
-                android:padding="10dp"
                 android:layout_marginTop="10dp"
+                android:padding="10dp"
                 app:layout_constraintHeight_percent="0.6"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/product_price_tv" />
+                app:layout_constraintTop_toBottomOf="@id/order_linear"
+                tools:listitem="@layout/order_item" />
 
-            <TextView
-                android:id="@+id/total_sum_tv"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="TOTAL: $50"
-                android:textSize="30sp"
-                app:layout_constraintVertical_bias="0.2"
-                app:layout_constraintHorizontal_bias="0.8"
-                app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/order_rv" />
-
-            <Button
-                app:layout_constraintTop_toBottomOf="@id/total_sum_tv"
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:gravity="center"
+                android:orientation="vertical"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintRight_toRightOf="parent"
-                android:textSize="25sp"
-                android:text="ORDER"
-                app:layout_constraintWidth_percent="0.6"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"/>
+                app:layout_constraintTop_toBottomOf="@id/order_rv">
+
+                <LinearLayout
+                    android:padding="10dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Total : "
+                        android:textColor="@color/black"
+                        android:textSize="24sp" />
+
+                    <TextView
+                        android:id="@+id/total_sum_tv"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="24dp"
+                        android:text="0"
+                        android:textColor="@color/black"
+                        android:textSize="24sp"
+                        android:textStyle="bold" />
+                </LinearLayout>
+                <Button
+                    android:layout_weight="1"
+                    android:id="@+id/btn_print"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/buttonHeight"
+                    android:layout_gravity="bottom"
+                    android:layout_marginLeft="60dp"
+                    android:layout_marginRight="60dp"
+                    android:layout_marginBottom="12dp"
+                    android:background="@color/green"
+                    android:text="Print"
+                    android:textColor="@color/white"
+                    android:textSize="16sp" />
+            </LinearLayout>
+
+            <!--            <TextView-->
+            <!--                android:id="@+id/total_sum_tv"-->
+            <!--                android:layout_width="wrap_content"-->
+            <!--                android:layout_height="wrap_content"-->
+            <!--                android:text="TOTAL: $50"-->
+            <!--                android:textSize="30sp"-->
+            <!--                app:layout_constraintHorizontal_bias="0.8"-->
+            <!--                app:layout_constraintLeft_toLeftOf="parent"-->
+            <!--                app:layout_constraintRight_toRightOf="parent"-->
+            <!--                app:layout_constraintTop_toBottomOf="@id/order_rv"-->
+            <!--                app:layout_constraintVertical_bias="0.2" />-->
+
+            <!--            <Button-->
+            <!--                android:layout_width="0dp"-->
+            <!--                android:layout_height="wrap_content"-->
+            <!--                android:text="ORDER"-->
+            <!--                android:textSize="25sp"-->
+            <!--                app:layout_constraintBottom_toBottomOf="parent"-->
+            <!--                app:layout_constraintLeft_toLeftOf="parent"-->
+            <!--                app:layout_constraintRight_toRightOf="parent"-->
+            <!--                app:layout_constraintTop_toBottomOf="@id/total_sum_tv"-->
+            <!--                app:layout_constraintWidth_percent="0.6" />-->
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -208,10 +283,10 @@
                 android:id="@+id/order_btn"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
+                android:background="@color/green"
                 android:maxLines="2"
                 android:text="Order"
                 android:textColor="@color/white"
-                android:background="@color/green"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toLeftOf="@id/tables_btn"
@@ -308,32 +383,30 @@
             android:layout_width="0dp"
             android:layout_height="0dp"
             app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
-            app:spanCount="5"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintHeight_percent="0.6"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toBottomOf="@id/category_constraint"
             app:layout_constraintWidth_percent="0.9"
+            app:spanCount="5"
             tools:listitem="@layout/category_item" />
 
         <androidx.recyclerview.widget.RecyclerView
-            android:visibility="gone"
-            android:padding="10dp"
             android:id="@+id/tablePage_rv"
-            tools:listitem="@layout/table_item"
-            app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
-            app:spanCount="4"
-            app:layout_constraintTop_toBottomOf="@id/dashboard_constraint"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
             android:layout_width="0dp"
-            android:layout_height="0dp"/>
+            android:layout_height="0dp"
+            android:padding="10dp"
+            android:visibility="gone"
+            app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/dashboard_constraint"
+            app:spanCount="4"
+            tools:listitem="@layout/table_item" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
-
-
 
 
 </LinearLayout>

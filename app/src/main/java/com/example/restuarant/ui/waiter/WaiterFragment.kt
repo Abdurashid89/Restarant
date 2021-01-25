@@ -22,7 +22,6 @@ class WaiterFragment : BaseFragment(), WaiterView {
     override val layoutRes: Int = R.layout.fragment_waiter
 
     private lateinit var binding: FragmentWaiterBinding
-    private lateinit var menuList: ArrayList<CategoryData>
     private lateinit var itemList: ArrayList<CategoryData>
     private lateinit var tableList: ArrayList<Int>
     private lateinit var tablePageList: ArrayList<TableData>
@@ -30,6 +29,7 @@ class WaiterFragment : BaseFragment(), WaiterView {
     private var deskAdapter: DeskAdapter? = null
     private var categoryAdapter: CategoryAdapter? = null
     private var tableadapter: TableAdapter? = null
+    private var orderAdapter:OrderAdapter? = null
     private var changeColor: Int = 0
 
 
@@ -73,10 +73,12 @@ class WaiterFragment : BaseFragment(), WaiterView {
         categoryAdapter!!.submitList(itemList)
         tableadapter = TableAdapter()
         tableadapter!!.submitList(tableList)
+        orderAdapter = OrderAdapter()
+
         deskAdapter = DeskAdapter(tables, object : DeskAdapter.OnDeskItemClickListener {
             override fun onClick() {
-                Toast.makeText(requireContext(), "${tables.size}", Toast.LENGTH_SHORT).show()
-            }
+
+             }
 
             override fun onLongClick() {
 
