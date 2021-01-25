@@ -38,7 +38,7 @@ class AddProductPresenter @Inject constructor(
             }.subscribe({
                 viewState.openDialog("Product Successfully added", true)
             }, {
-                viewState.openDialog(errorResponse(it), false)
+                viewState.openDialog(it.errorResponse(), false)
             }).connect()
     }
 
@@ -64,7 +64,7 @@ class AddProductPresenter @Inject constructor(
             .subscribe({
                 viewState.listCategory(it)
             }, {
-                viewState.errorOrNull(errorResponse(it))
+                viewState.errorOrNull(it.errorResponse())
             }).connect()
 
     }
@@ -78,7 +78,7 @@ class AddProductPresenter @Inject constructor(
             }.subscribe({
                 viewState.listBrand(it)
             }, {
-                viewState.errorOrNull(errorResponse(it))
+                viewState.errorOrNull(it.errorResponse())
             }).connect()
     }
 

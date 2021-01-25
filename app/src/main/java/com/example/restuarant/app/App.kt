@@ -1,9 +1,10 @@
 package com.example.restuarant.app
 
 import android.app.Application
+import com.example.restuarant.BuildConfig
 import com.example.restuarant.di.DI
 import com.example.restuarant.di.module.AppModule
-import com.github.moxy_community.moxy.androidx.BuildConfig
+import timber.log.Timber
 import toothpick.Toothpick
 import toothpick.configuration.Configuration
 
@@ -15,6 +16,7 @@ class App : Application(){
         super.onCreate()
         initToothpick()
         initAppScope()
+        initLogger()
         instance = this
     }
     private fun initAppScope() {
@@ -27,6 +29,12 @@ class App : Application(){
             Toothpick.setConfiguration(Configuration.forDevelopment().preventMultipleRootScopes())
         } else {
             Toothpick.setConfiguration(Configuration.forProduction())
+        }
+    }
+
+    private fun initLogger() {
+        if (BuildConfig.DEBUG) {
+            Timber.plant(Timber.DebugTree())
         }
     }
 

@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.DiffUtil
  */
 data class CashierTableData(
     var id: Int = 0,
+    var color:String = "",
     var currentOrder: List<CashierOrderData> = listOf()
 ) {
     companion object {
