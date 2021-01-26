@@ -45,7 +45,7 @@ class CashierTableAdapter:ListAdapter<TableResData,CashierTableAdapter.VHolder>(
         fun bind() = bindItem{
             val d = currentList[adapterPosition]
             binding.tableText.text = currentList[adapterPosition].id.toString()
-            binding.groupDesc.setCardBackgroundColor(if(!d.active) R.color.red else R.color.green)
+//            binding.groupDesc.setCardBackgroundColor(if(!d.active) R.color.red else R.color.green)
         }
     }
 }
