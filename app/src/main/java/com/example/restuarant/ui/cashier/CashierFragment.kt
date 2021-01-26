@@ -273,8 +273,11 @@ class CashierFragment : BaseFragment(), CashierView, SwipeRefreshLayout.OnRefres
     }
 
     override fun submitTables(list: List<TableResData>) {
+        if(list.isNotEmpty())
+            binding.btnPay.visibility = View.VISIBLE
+
         binding.tableProgress.visibility = View.GONE
-        binding.btnPay.visibility = View.VISIBLE
+
         binding.swiperefresh.isRefreshing = false
         tableAdapter.submitList(list)
     }

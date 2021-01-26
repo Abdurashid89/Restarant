@@ -47,7 +47,7 @@ class LoginFragment : BaseFragment(), LoginView {
         numbers.add("0")
 
 
-        val empty = R.drawable.ic_baseline_fiber_manual_white
+        val empty = R.drawable.ic_baseline_fiber
         val fill = R.drawable.ic_baseline_fiber_manual_black
 
         var text_pin = ""
