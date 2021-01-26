@@ -34,43 +34,21 @@ class SignUpFragment : BaseFragment(),SignUpView {
         binding = FragmentSignupBinding.bind(view)
 
 
-        binding.signButton.setOnClickListener {
-            val firstName = binding.firstNameEdit.text.toString().trim()
-            val lastName = binding.lastNameEdit.text.toString().trim()
-            val phoneNumber = binding.phoneNumberEdit.text.toString().trim()
-            val password = binding.passwordEdit.text.toString().trim()
+        binding.btnLogin.setOnClickListener {
+            presenter.openLoginScreen()
+//            val password = binding.inputPassword.text.toString().trim()
+//
+//            when {
+//                password.isEmpty() -> {
+//                    binding.inputPassword.startAnimation(AnimationUtils.loadAnimation(context,R.anim.shake))
+//                    vibrate(requireContext())
+//                    return@setOnClickListener
+//                }
+//                else -> {
+////                    presenter.register(RegisterData(phoneNumber,password,firstName,lastName))
+//                }
+//            }
 
-            when {
-                firstName.isEmpty() -> {
-                    binding.firstNameInput.startAnimation(
-                        AnimationUtils.loadAnimation(context,R.anim.shake)
-                    )
-                    vibrate(requireContext())
-                }
-                lastName.isEmpty() -> {
-                    binding.lastNameInput.startAnimation(
-                        AnimationUtils.loadAnimation(context,R.anim.shake)
-                    )
-                    vibrate(requireContext())
-                }
-                phoneNumber.isEmpty() -> {
-
-                    binding.phoneNumberInput.startAnimation(
-                        AnimationUtils.loadAnimation(context,R.anim.shake)
-                    )
-                    vibrate(requireContext())
-                }
-                password.isEmpty() -> {
-                    binding.passwordInput.startAnimation(
-                        AnimationUtils.loadAnimation(context,R.anim.shake)
-                    )
-                    vibrate(requireContext())
-                }
-                else -> {
-                    presenter.register(RegisterData(phoneNumber,password,firstName,lastName))
-                }
-            }
-            return@setOnClickListener
         }
     }
 

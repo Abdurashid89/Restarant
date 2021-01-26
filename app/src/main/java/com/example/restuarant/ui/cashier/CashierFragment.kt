@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.view.View
 import android.widget.Toast
 import androidx.annotation.RequiresApi
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.example.restuarant.R
 import com.example.restuarant.databinding.FragmentCashierBinding
 import com.example.restuarant.extentions.isNotDouble
@@ -24,7 +25,7 @@ import timber.log.Timber
 /**
  * Created by shohboz on 18,Январь,2021
  */
-class CashierFragment : BaseFragment(), CashierView {
+class CashierFragment : BaseFragment(), CashierView, SwipeRefreshLayout.OnRefreshListener {
     override val layoutRes: Int = R.layout.fragment_cashier
 
     private lateinit var binding: FragmentCashierBinding
@@ -46,6 +47,8 @@ class CashierFragment : BaseFragment(), CashierView {
 
         binding = FragmentCashierBinding.bind(view)
 
+        binding.swiperefresh.setOnRefreshListener(this)
+
         binding.tableMenu.setBackgroundResource(R.color.teal_1000)
         currentMenu = 1
         binding.tablesLayout.viewGroupTables.visibility = View.VISIBLE
@@ -66,6 +69,7 @@ class CashierFragment : BaseFragment(), CashierView {
             else showSnackMessage(getString(R.string.choose_table))
         }
         binding.historyMenu.setOnClickListener {
+            binding.groupButtons.translationZ = 0f
             setColorMenu()
             currentMenu = 2
             it.setBackgroundResource(R.color.teal_1000)
@@ -75,6 +79,7 @@ class CashierFragment : BaseFragment(), CashierView {
 
         }
         binding.togoMenu.setOnClickListener {
+            binding.groupButtons.translationZ = 0f
             setColorMenu()
             currentMenu = 3
             it.setBackgroundResource(R.color.teal_1000)
@@ -85,6 +90,7 @@ class CashierFragment : BaseFragment(), CashierView {
         }
 
         binding.tableMenu.setOnClickListener {
+            binding.groupButtons.translationZ = 0f
             setColorMenu()
             binding.historyLayout.cashierHistoryLayout.visibility = View.GONE
             binding.togoLayout.cashierOwnLayout.visibility = View.GONE
@@ -257,6 +263,8 @@ class CashierFragment : BaseFragment(), CashierView {
 
     override fun openErrorDialog(message: String, status: Boolean) {
         binding.tableProgress.visibility = View.GONE
+        binding.btnPay.visibility = View.GONE
+        binding.swiperefresh.isRefreshing = false
         showSnackMessage(message)
     }
 
@@ -266,6 +274,12 @@ class CashierFragment : BaseFragment(), CashierView {
 
     override fun submitTables(list: List<TableResData>) {
         binding.tableProgress.visibility = View.GONE
+        binding.btnPay.visibility = View.VISIBLE
+        binding.swiperefresh.isRefreshing = false
         tableAdapter.submitList(list)
+    }
+
+    override fun onRefresh() {
+        presenter.getTables()
     }
 }

@@ -115,51 +115,62 @@
             android:orientation="vertical"
             tools:ignore="NestedWeights,Suspicious0dp">
 
-            <LinearLayout
-                android:id="@+id/layout_rv"
+            <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+                android:id="@+id/swiperefresh"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
                 android:background="@color/white"
-                android:orientation="vertical"
+                android:layout_height="match_parent"
                 android:translationZ="10dp">
 
-                <ProgressBar
-                    android:layout_width="64dp"
-                    android:layout_height="64dp"
-                    android:id="@+id/table_progress"
-                    android:layout_gravity="center"/>
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/table_list"
+                <androidx.core.widget.NestedScrollView
                     android:layout_width="match_parent"
-                    android:layout_height="0dp"
-                    android:layout_margin="6dp"
-                    android:layout_weight="1"
-                    android:clipToPadding="false"
-                    app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
-                    app:spanCount="4"
-                    tools:itemCount="20"
-                    tools:listitem="@layout/desk_item" />
+                    android:layout_height="match_parent">
 
-                <Button
-                    android:id="@+id/btn_pay"
-                    android:layout_width="180dp"
-                    android:layout_height="@dimen/buttonHeight"
-                    android:layout_gravity="end"
-                    android:layout_marginStart="64dp"
-                    android:layout_marginTop="12dp"
-                    android:layout_marginEnd="24dp"
-                    android:layout_marginBottom="12dp"
-                    android:background="@drawable/cashier_btn_bgn"
-                    android:text="@string/pay"
-                    android:textAllCaps="false"
-                    android:textColor="@color/white" />
-            </LinearLayout>
+                    <LinearLayout
+                        android:id="@+id/layout_rv"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="vertical">
+
+                        <ProgressBar
+                            android:id="@+id/table_progress"
+                            android:layout_width="50dp"
+                            android:layout_height="50dp"
+                            android:layout_gravity="center" />
+
+                        <androidx.recyclerview.widget.RecyclerView
+                            android:id="@+id/table_list"
+                            android:layout_width="match_parent"
+                            android:layout_height="0dp"
+                            android:layout_margin="6dp"
+                            android:layout_weight="1"
+                            app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+                            app:spanCount="4"
+                            tools:itemCount="20"
+                            tools:listitem="@layout/desk_item" />
+
+                        <Button
+                            android:id="@+id/btn_pay"
+                            android:layout_width="180dp"
+                            android:layout_height="@dimen/buttonHeight"
+                            android:layout_gravity="end"
+                            android:layout_marginStart="64dp"
+                            android:layout_marginTop="12dp"
+                            android:layout_marginEnd="24dp"
+                            android:layout_marginBottom="12dp"
+                            android:background="@drawable/cashier_btn_bgn"
+                            android:text="@string/pay"
+                            android:textAllCaps="false"
+                            android:textColor="@color/white" />
+                    </LinearLayout>
+                </androidx.core.widget.NestedScrollView>
+            </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/group_buttons"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_marginTop="150dp"
+                android:layout_marginTop="180dp"
                 android:background="@drawable/bgn_group_buttons"
                 android:orientation="vertical">
 

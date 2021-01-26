@@ -30,7 +30,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Table No "
+                    android:text="@string/table_no"
                     android:textColor="@color/black"
                     android:textSize="24sp" />
 
@@ -57,7 +57,7 @@
                     android:layout_marginStart="16dp"
                     android:layout_weight="1"
                     android:gravity="start"
-                    android:text="Meal Name"
+                    android:text="@string/meal_name"
                     android:textColor="@color/black"
                     android:textSize="16sp" />
 
@@ -66,7 +66,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:gravity="center"
-                    android:text="Price"
+                    android:text="@string/price"
                     android:textColor="@color/black"
                     android:textSize="16sp" />
 
@@ -75,7 +75,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:gravity="center"
-                    android:text="How many"
+                    android:text="@string/how_many"
                     android:textColor="@color/black"
                     android:textSize="16sp" />
 
@@ -84,26 +84,22 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:gravity="end"
-                    android:text="Total"
+                    android:text="@string/total"
                     android:textColor="@color/black"
                     android:textSize="16sp" />
             </LinearLayout>
-
-            <ImageView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:src="@drawable/ic_substract" />
         </LinearLayout>
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/cashier_order_list"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_marginStart="6dp"
-            android:layout_weight="2"
-            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-            tools:itemCount="10"
-            tools:listitem="@layout/item_order_cashier" />
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/cashier_order_list"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="2.7"
+                android:background="@drawable/cashier_order_bgn"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                tools:itemCount="10"
+                android:padding="2dp"
+                tools:listitem="@layout/item_order_cashier" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -122,7 +118,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Total : "
+                    android:text="@string/total"
                     android:textColor="@color/black"
                     android:textSize="24sp" />
 
@@ -147,7 +143,7 @@
                 android:layout_marginRight="48dp"
                 android:layout_marginBottom="24dp"
                 android:background="@drawable/cashier_btn_bgn"
-                android:text="Print"
+                android:text="@string/print"
                 android:textColor="@color/white"
                 android:textSize="16sp" />
         </LinearLayout>
@@ -182,10 +178,10 @@
                     android:layout_height="wrap_content"
                     android:focusable="false"
                     android:text="0"
-                    android:textStyle="bold"
                     android:textAlignment="textEnd"
                     android:textColor="@color/black"
-                    android:textSize="24sp" />
+                    android:textSize="24sp"
+                    android:textStyle="bold" />
             </com.google.android.material.textfield.TextInputLayout>
 
             <Button
@@ -195,7 +191,7 @@
                 android:layout_marginStart="32dp"
                 android:layout_marginTop="24dp"
                 android:background="@drawable/cashier_btn_bgn"
-                android:text="Cash"
+                android:text="@string/cash"
                 android:textAllCaps="false"
                 android:textColor="@color/white"
                 app:layout_constraintTop_toBottomOf="@id/price_on_cash_layout" />
@@ -235,7 +231,7 @@
                 android:layout_marginTop="24dp"
                 android:alpha="0.6"
                 android:background="@drawable/cashier_btn_bgn"
-                android:text="Card"
+                android:text="@string/card"
                 android:textAllCaps="false"
                 android:textColor="@color/white" />
 
@@ -255,7 +251,7 @@
                 android:layout_marginStart="24dp"
                 android:layout_marginBottom="6dp"
                 android:gravity="center"
-                android:text="Cashback"
+                android:text="@string/cashback"
                 android:textColor="@color/black"
                 android:textSize="24sp"
                 app:layout_constraintBottom_toTopOf="@id/price_cash_back_layout"
@@ -275,10 +271,10 @@
                     android:clickable="false"
                     android:focusable="false"
                     android:text="0"
-                    android:textStyle="bold"
                     android:textAlignment="textEnd"
                     android:textColor="@color/black"
-                    android:textSize="24sp" />
+                    android:textSize="24sp"
+                    android:textStyle="bold" />
             </com.google.android.material.textfield.TextInputLayout>
         </LinearLayout>
     </LinearLayout>
