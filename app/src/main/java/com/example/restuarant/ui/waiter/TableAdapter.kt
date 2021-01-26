@@ -21,6 +21,7 @@ class TableAdapter : ListAdapter<TableData, TableAdapter.Vh>(TableData.ITEM_CALL
         init {
             itemView.setOnClickListener {
                 listener?.invoke(currentList[adapterPosition])
+
             }
         }
 

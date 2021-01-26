@@ -51,4 +51,8 @@ class WaiterPresenter @Inject constructor(
         viewState.showMenu()
     }
 
+    fun changeColor(){
+        viewState.changeColor()
+    }
+
 }

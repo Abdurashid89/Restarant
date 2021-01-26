@@ -49,39 +49,40 @@
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/tables_constraint"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:padding="5dp"
-            app:layout_constraintHeight_percent="0.25"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/logo_constrait">
+<!--        <androidx.constraintlayout.widget.ConstraintLayout-->
+<!--            android:id="@+id/tables_constraint"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="0dp"-->
+<!--            android:padding="5dp"-->
+<!--            android:visibility="gone"-->
+<!--            app:layout_constraintHeight_percent="0.25"-->
+<!--            app:layout_constraintLeft_toLeftOf="parent"-->
+<!--            app:layout_constraintTop_toBottomOf="@id/logo_constrait">-->
 
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/tables_rv"
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
-                app:layout_constraintBottom_toTopOf="@id/bottom_arrow"
-                app:layout_constraintHeight_percent="0.8"
-                app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:spanCount="5"
-                tools:listitem="@layout/desk_item" />
+<!--            <androidx.recyclerview.widget.RecyclerView-->
+<!--                android:id="@+id/tables_rv"-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="0dp"-->
+<!--                app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"-->
+<!--                app:layout_constraintBottom_toTopOf="@id/bottom_arrow"-->
+<!--                app:layout_constraintHeight_percent="0.8"-->
+<!--                app:layout_constraintLeft_toLeftOf="parent"-->
+<!--                app:layout_constraintRight_toRightOf="parent"-->
+<!--                app:layout_constraintTop_toTopOf="parent"-->
+<!--                app:spanCount="5"-->
+<!--                tools:listitem="@layout/desk_item" />-->
 
-            <ImageView
-                android:id="@+id/bottom_arrow"
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:src="@drawable/ic_baseline_keyboard_arrow_down_24"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintHeight_percent="0.15"
-                app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/tables_rv" />
+<!--            <ImageView-->
+<!--                android:id="@+id/bottom_arrow"-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="0dp"-->
+<!--                android:src="@drawable/ic_baseline_keyboard_arrow_down_24"-->
+<!--                app:layout_constraintBottom_toBottomOf="parent"-->
+<!--                app:layout_constraintHeight_percent="0.15"-->
+<!--                app:layout_constraintLeft_toLeftOf="parent"-->
+<!--                app:layout_constraintTop_toBottomOf="@+id/tables_rv" />-->
 
-        </androidx.constraintlayout.widget.ConstraintLayout>
+<!--        </androidx.constraintlayout.widget.ConstraintLayout>-->
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/order_constraint"
@@ -93,21 +94,23 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/tables_constraint"
+            app:layout_constraintTop_toBottomOf="@id/logo_constrait"
             app:layout_constraintWidth_percent="0.9">
 
             <LinearLayout
+                android:gravity="bottom"
                 android:id="@+id/order_linear"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:orientation="vertical"
                 app:layout_constraintBottom_toTopOf="@id/order_rv"
-                app:layout_constraintHeight_percent="0.2"
+                app:layout_constraintHeight_percent="0.15"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
                 app:layout_constraintTop_toTopOf="parent">
 
                 <LinearLayout
+                    android:layout_marginBottom="10dp"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="24dp"
@@ -225,15 +228,14 @@
                         android:textStyle="bold" />
                 </LinearLayout>
                 <Button
-                    android:layout_weight="1"
+                    android:layout_marginTop="10dp"
                     android:id="@+id/btn_print"
                     android:layout_width="match_parent"
-                    android:layout_height="@dimen/buttonHeight"
-                    android:layout_gravity="bottom"
+                    android:layout_height="wrap_content"
                     android:layout_marginLeft="60dp"
                     android:layout_marginRight="60dp"
                     android:layout_marginBottom="12dp"
-                    android:background="@color/green"
+                    android:background="@drawable/cashier_btn_bgn"
                     android:text="Print"
                     android:textColor="@color/white"
                     android:textSize="16sp" />
@@ -280,49 +282,55 @@
             app:layout_constraintTop_toTopOf="parent">
 
             <Button
-                android:id="@+id/order_btn"
+                android:id="@+id/tables_btn"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:background="@color/green"
                 android:maxLines="2"
-                android:text="Order"
+                android:text="Table"
                 android:textColor="@color/white"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintRight_toLeftOf="@id/tables_btn"
+                app:layout_constraintRight_toLeftOf="@id/order_btn"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintWidth_percent="0.2" />
 
             <Button
-                android:id="@+id/tables_btn"
+                android:textColor="@color/white"
+                android:id="@+id/order_btn"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:maxLines="2"
-                android:text="Tables"
+                android:text="Order"
+                android:background="@color/green"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintLeft_toRightOf="@id/order_btn"
+                app:layout_constraintLeft_toRightOf="@id/tables_btn"
                 app:layout_constraintRight_toLeftOf="@id/dashboard_btn"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintWidth_percent="0.2" />
 
             <Button
+                android:textColor="@color/white"
                 android:id="@+id/dashboard_btn"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:maxLines="2"
                 android:text="Dashboard"
+                android:background="@color/green"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintLeft_toRightOf="@id/tables_btn"
+                app:layout_constraintLeft_toRightOf="@id/order_btn"
                 app:layout_constraintRight_toLeftOf="@id/exit_btn"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintWidth_percent="0.2" />
 
             <Button
+                android:textColor="@color/white"
                 android:id="@+id/exit_btn"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:maxLines="2"
                 android:text="Exit"
+                android:background="@color/green"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintLeft_toRightOf="@id/dashboard_btn"
                 app:layout_constraintRight_toRightOf="parent"
@@ -337,6 +345,7 @@
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:padding="5dp"
+            android:visibility="gone"
             app:layout_constraintHeight_percent="0.2"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintTop_toBottomOf="@id/dashboard_constraint">
@@ -382,6 +391,7 @@
             android:id="@+id/menu_rv"
             android:layout_width="0dp"
             android:layout_height="0dp"
+            android:visibility="gone"
             app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintHeight_percent="0.6"
@@ -397,7 +407,6 @@
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:padding="10dp"
-            android:visibility="gone"
             app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"
