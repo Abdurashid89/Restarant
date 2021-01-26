@@ -40,7 +40,7 @@
     <style name="ButtonDotStyle">
         <item name="android:layout_height">50dp</item>
         <item name="android:layout_width">50dp</item>
-        <item name="android:background">@drawable/ic_baseline_fiber_manual_white</item>
+        <item name="android:background">@drawable/btn_bgn_cashier</item>
         <item name="android:layout_margin">4dp</item>
     </style>
 
