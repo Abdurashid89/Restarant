@@ -11,7 +11,6 @@ interface WaiterView : MvpView {
     @StateStrategyType(OneExecutionStateStrategy::class)
     fun showMessage(message:String)
 
-    @StateStrategyType(OneExecutionStateStrategy::class)
     fun makeLoadingVisible(status:Boolean)
 
     @StateStrategyType(OneExecutionStateStrategy::class)
@@ -20,11 +19,12 @@ interface WaiterView : MvpView {
     @StateStrategyType(OneExecutionStateStrategy::class)
     fun openClientCountDialog()
 
-    @StateStrategyType(OneExecutionStateStrategy::class)
+
     fun showTables()
 
-    @StateStrategyType(OneExecutionStateStrategy::class)
+
     fun showMenu()
 
 
+    fun changeColor()
 }

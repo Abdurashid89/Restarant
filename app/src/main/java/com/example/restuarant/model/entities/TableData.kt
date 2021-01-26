@@ -2,8 +2,8 @@ package com.example.restuarant.model.entities
 
 import androidx.recyclerview.widget.DiffUtil
 
-class TableData (
-    val number:String,
+data class TableData (
+    val number:Int,
     val active:Boolean,
     val people:Int
         ){
