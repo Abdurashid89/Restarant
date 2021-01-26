@@ -33,7 +33,7 @@ class WareHousePresenter @Inject constructor(
             .subscribe({
                 viewState.openErrorDialog("Product successfully added", true)
             }, {
-                viewState.openErrorDialog(errorResponse(it), false)
+                viewState.openErrorDialog(it.errorResponse(), false)
             }).connect()
     }
 
