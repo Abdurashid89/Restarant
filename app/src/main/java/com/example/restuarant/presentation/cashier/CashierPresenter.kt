@@ -24,14 +24,15 @@ class CashierPresenter @Inject constructor(
     private val prefs: Prefs
 ): BasePresenter<CashierView>(){
 
-    fun onBackPressed(){
-        router.exit()
+    override fun onFirstViewAttach() {
+        super.onFirstViewAttach()
+        getTables()
     }
 
     @SuppressLint("CheckResult")
-    fun register(data: RegisterData){
+    fun getTables(){
         viewState.makeLoadingVisible(true)
-        interactor.register(data)
+        interactor.getAllTables()
             .doOnSubscribe {
                 viewState.makeLoadingVisible(true)
             }
@@ -39,11 +40,14 @@ class CashierPresenter @Inject constructor(
                 viewState.makeLoadingVisible(false)
             }
             .subscribe({
-                prefs.accessToken = it.body.accessToken
-                router.newChain(Screens.Login)
-                viewState.showMessage("Success")
+               viewState.submitTables(it.objectData)
             },{
-                viewState.openErrorDialog(errorResponse(it),false)
+                viewState.openErrorDialog(it.errorResponse(),false)
             })
     }
+
+    fun onBackPressed(){
+        router.exit()
+    }
+
 }

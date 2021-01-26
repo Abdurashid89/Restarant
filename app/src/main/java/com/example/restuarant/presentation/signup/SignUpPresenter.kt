@@ -37,7 +37,7 @@ class SignUpPresenter @Inject constructor(
                 router.newChain(Screens.Login)
                 viewState.showMessage("Success")
             },{
-                viewState.openErrorDialog(errorResponse(it),false)
+                viewState.openErrorDialog(it.errorResponse(),false)
             })
     }
 }

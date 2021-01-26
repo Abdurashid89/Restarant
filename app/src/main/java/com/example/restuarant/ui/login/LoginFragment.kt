@@ -117,7 +117,8 @@ class LoginFragment : BaseFragment(), LoginView {
     }
 
     override fun openErrorDialog(message: String, status: Boolean) {
-        customDialog(message, status)
+//        customDialog(message, status)
+        showSnackMessage(message)
     }
 
 //    override fun onDestroy() {

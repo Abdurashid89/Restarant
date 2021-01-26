@@ -121,4 +121,9 @@ dependencies {
     // progressbar
     implementation 'com.github.ybq:Android-SpinKit:1.4.0'
 
+    implementation "com.jakewharton.timber:timber:4.7.1"
+
+    implementation 'com.facebook.shimmer:shimmer:0.1.0@aar'
+
+
 }

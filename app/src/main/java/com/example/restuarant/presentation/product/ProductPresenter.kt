@@ -50,7 +50,7 @@ class ProductPresenter @Inject constructor(
             .subscribe({
                 onSuccessGetAllProduct(it)
             }, {
-                viewState.openErrorDialog(errorResponse(it), false)
+                viewState.openErrorDialog(it.errorResponse(), false)
             }).connect()
     }
 

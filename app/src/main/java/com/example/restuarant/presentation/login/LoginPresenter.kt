@@ -20,6 +20,11 @@ class LoginPresenter @Inject constructor(
     private val prefs: Prefs
 ) : BasePresenter<LoginView>() {
 
+    override fun onFirstViewAttach() {
+        super.onFirstViewAttach()
+        login(LoginData("+998949125150","ware"))
+    }
+
     fun onBackPressed() {
         router.exit()
     }
@@ -39,15 +44,15 @@ class LoginPresenter @Inject constructor(
 
 
     fun login(data: LoginData) {
-        viewState.makeLoadingVisible(true)
+//        viewState.makeLoadingVisible(true)
         interactor.login(data)
             .subscribe({
                 prefs.accessToken = it.body.accessToken
-                viewState.showMessage("Success")
+//                viewState.showMessage("Success")
             }, {
-                viewState.openErrorDialog(errorResponse(it), false)
-                viewState.makeLoadingVisible(false)
-                viewState.showMessage("Error, Try again!")
+                viewState.openErrorDialog(it.errorResponse(), false)
+//                viewState.makeLoadingVisible(false)
+//                viewState.showMessage("Error, Try again!")
             }).connect()
 
 
