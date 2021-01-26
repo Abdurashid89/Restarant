@@ -4,15 +4,14 @@ import androidx.recyclerview.widget.DiffUtil
 
 data class CategoryData(
     var name: String,
-    var photoId:Int,
-    var price:Int,
+    var photoId: Int,
+    var price: Int,
     var descprition: String
 ) {
     companion object {
         val ITEM_CALLBACK = object : DiffUtil.ItemCallback<CategoryData>() {
-            override fun areItemsTheSame(oldItem: CategoryData, newItem: CategoryData): Boolean {
-                return oldItem.descprition == newItem.descprition
-            }
+            override fun areItemsTheSame(oldItem: CategoryData, newItem: CategoryData) =
+                oldItem.name == newItem.name
 
             override fun areContentsTheSame(oldItem: CategoryData, newItem: CategoryData): Boolean {
                 return oldItem == newItem
