@@ -12,6 +12,8 @@ class DeskAdapter(val deskList: List<Int>,val listener:OnDeskItemClickListener):
     inner class Vh(val view:DeskItemBinding):RecyclerView.ViewHolder(view.root){
         fun onBind(desk: Int) {
 
+            view.tableText.text = desk.toString()
+
             itemView.setOnClickListener{
                 listener.onClick()
             }
