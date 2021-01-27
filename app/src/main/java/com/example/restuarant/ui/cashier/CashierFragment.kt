@@ -12,6 +12,7 @@ import com.example.restuarant.databinding.FragmentCashierBinding
 import com.example.restuarant.extentions.isNotDouble
 import com.example.restuarant.extentions.showSnackMessage
 import com.example.restuarant.extentions.stringFormat
+import com.example.restuarant.extentions.visible
 import com.example.restuarant.model.entities.CashierOrderData
 import com.example.restuarant.model.entities.CashierTableData
 import com.example.restuarant.model.entities.TableResData
@@ -57,7 +58,8 @@ class CashierFragment : BaseFragment(), CashierView, SwipeRefreshLayout.OnRefres
         loadButtons()
 
         binding.logoutMenu.setOnClickListener {
-            presenter.onBackPressed()
+            makeLoadingVisible(true)
+            presenter.dialogOpen(false)
         }
         binding.unfold.setOnClickListener {
             binding.groupButtons.translationZ = 0f
@@ -259,6 +261,8 @@ class CashierFragment : BaseFragment(), CashierView, SwipeRefreshLayout.OnRefres
 
     override fun makeLoadingVisible(status: Boolean) {
 //        binding.progressBarRegister.loading.visible(status)
+            binding.progressBarGlobal.loading.visible(status)
+            binding.layoutGlobal.isClickable = !status
     }
 
     override fun openErrorDialog(message: String, status: Boolean) {
@@ -284,5 +288,29 @@ class CashierFragment : BaseFragment(), CashierView, SwipeRefreshLayout.OnRefres
 
     override fun onRefresh() {
         presenter.getTables()
+    }
+
+    override fun openDialog(status: Boolean) {
+        if(status){
+            // send start price to server
+            val dialog = CashOpenExitDialog(requireContext(),getString(R.string.open_cash))
+            dialog.setOnClickListener {
+                makeLoadingVisible(false)
+                dialog.dismiss()
+                dialog._bn = null
+            }
+            dialog.show()
+        }else{
+            // send start price to server and exit screen
+            val dialog = CashOpenExitDialog(requireContext(),getString(R.string.exit_cash))
+            dialog.setOnClickListener {
+                makeLoadingVisible(false)
+                dialog.dismiss()
+                dialog._bn = null
+                presenter.onBackPressed()
+            }
+            dialog.show()
+        }
+
     }
 }

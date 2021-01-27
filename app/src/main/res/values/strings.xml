@@ -37,4 +37,6 @@
     <string name="login">Login</string>
     <string name="please_enter_your_n_restaurant_password">Please enter your restaurant \n login and password</string>
     <string name="password">Password</string>
+    <string name="open_cash">Open Cash</string>
+    <string name="exit_cash">Exit Cash</string>
 </resources>

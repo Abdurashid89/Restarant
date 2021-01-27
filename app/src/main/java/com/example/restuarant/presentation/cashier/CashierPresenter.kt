@@ -27,6 +27,13 @@ class CashierPresenter @Inject constructor(
     override fun onFirstViewAttach() {
         super.onFirstViewAttach()
         getTables()
+
+        viewState.makeLoadingVisible(true)
+        dialogOpen(true)
+    }
+
+    fun dialogOpen(status:Boolean){
+        viewState.openDialog(status)
     }
 
     @SuppressLint("CheckResult")
@@ -34,10 +41,10 @@ class CashierPresenter @Inject constructor(
         viewState.makeLoadingVisible(true)
         interactor.getAllTables()
             .doOnSubscribe {
-                viewState.makeLoadingVisible(true)
+//                viewState.makeLoadingVisible(true)
             }
             .doAfterTerminate {
-                viewState.makeLoadingVisible(false)
+//                viewState.makeLoadingVisible(false)
             }
             .subscribe({
                viewState.submitTables(it.objectData)

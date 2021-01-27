@@ -20,5 +20,9 @@ interface CashierView : MvpView {
     fun submitTables(list: List<TableResData>)
 
     @StateStrategyType(OneExecutionStateStrategy::class)
+    fun openDialog(status: Boolean)
+
+
+    @StateStrategyType(OneExecutionStateStrategy::class)
     fun openErrorDialog(message: String, status: Boolean)
 }
