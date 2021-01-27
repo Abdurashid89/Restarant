@@ -56,12 +56,19 @@ class OrderAdapter :ListAdapter<WaiterOrderData,OrderAdapter.Vh>(WaiterOrderData
         data.productCount+1
         val i = data.productPrice * data.productCount
         data.productTotalPrice+=i
-
+        data.productTotalPrice*data.productCount
     }
     fun minus(data: WaiterOrderData){
         if (data.productCount!=0){
             data.productCount-1
         }
+        data.productTotalPrice*data.productCount
+    }
+    fun addProduct(data: CategoryData){
+        val list = currentList.toMutableList()
+//        val waiterOrderData = WaiterOrderData()
+//        list.add(waiterOrderData)
+
     }
 
 }

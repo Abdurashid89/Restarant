@@ -9,7 +9,9 @@ import androidx.recyclerview.widget.LinearSnapHelper
 import com.example.restuarant.R
 import com.example.restuarant.databinding.FragmentWaiterBinding
 import com.example.restuarant.model.entities.CategoryData
+import com.example.restuarant.model.entities.OrderSendData
 import com.example.restuarant.model.entities.TableData
+import com.example.restuarant.model.entities.WaiterOrderData
 import com.example.restuarant.presentation.waiter.WaiterPresenter
 import com.example.restuarant.presentation.waiter.WaiterView
 import com.example.restuarant.ui.global.BaseFragment
@@ -22,10 +24,8 @@ class WaiterFragment : BaseFragment(), WaiterView {
 
     private lateinit var binding: FragmentWaiterBinding
     private lateinit var itemList: ArrayList<CategoryData>
-    private lateinit var tableList: ArrayList<Int>
     private lateinit var tablePageList: ArrayList<TableData>
     private var goodsCategoryAdapter = CategoryItemAdapter()
-    private var deskAdapter : DeskAdapter? = null
     private var categoryAdapter = CategoryAdapter()
     private var tableAdapter = TableAdapter()
     private var orderAdapter = OrderAdapter()
@@ -45,7 +45,6 @@ class WaiterFragment : BaseFragment(), WaiterView {
 
         binding.tablesBtn.setBackgroundResource(R.color.red)
         val items = loadMenuItems()
-        val tables = loadTables()
         val tableList = loadTableList()
 
         binding.tablesBtn.setOnClickListener {
@@ -90,23 +89,21 @@ class WaiterFragment : BaseFragment(), WaiterView {
             presenter.changeColor()
             btnId = 2
             binding.orderBtn.setBackgroundResource(R.color.red)
-            binding.tableNumber.text = it.number.toString()
+            binding.tableNumber.text = it.id.toString()
         }
         orderAdapter = OrderAdapter()
 //        orderAdapter.submitList()
 
-        deskAdapter = DeskAdapter(tables, object : DeskAdapter.OnDeskItemClickListener {
-            override fun onClick() {
-
-            }
-
-            override fun onLongClick() {
-
-            }
-
-        })
+        binding.btnPrint.setOnClickListener {
+//            val waiterOrderData = WaiterOrderData()
+//            val orderSendData = OrderSendData("","","",)
+        }
 
         categoryAdapter.setOnClickListener {
+
+        }
+
+        goodsCategoryAdapter.setOnClickListener {
 
         }
 
@@ -115,8 +112,6 @@ class WaiterFragment : BaseFragment(), WaiterView {
         snapHelper1.attachToRecyclerView(binding.categoryRv)
 
         binding.menuRv.adapter = goodsCategoryAdapter
-
-//        binding.tablesRv.adapter = deskAdapter
 
         binding.categoryRv.adapter = categoryAdapter
 
@@ -151,13 +146,11 @@ class WaiterFragment : BaseFragment(), WaiterView {
         binding.categoryConstraint.visibility = View.GONE
         binding.menuRv.visibility = View.GONE
         binding.tablePageRv.visibility = View.VISIBLE
-//        binding.tablesConstraint.visibility = View.GONE
     }
 
     override fun showMenu() {
         binding.categoryConstraint.visibility = View.VISIBLE
         binding.menuRv.visibility = View.VISIBLE
-//        binding.tablesConstraint.visibility = View.VISIBLE
         binding.tablePageRv.visibility = View.GONE
     }
 
@@ -173,7 +166,7 @@ class WaiterFragment : BaseFragment(), WaiterView {
     private fun loadTableList(): ArrayList<TableData> {
         tablePageList = ArrayList()
         for (i in 0..30) {
-            tablePageList.add(TableData(i + 1, false, 4))
+            tablePageList.add(TableData(i + 1, "", "",false,i+1))
         }
 
         return tablePageList
@@ -182,26 +175,24 @@ class WaiterFragment : BaseFragment(), WaiterView {
     private fun loadMenuItems(): ArrayList<CategoryData> {
         itemList = ArrayList()
         for (i in 0..20) {
-            itemList.add(
-                CategoryData(
-                    "Palov",
-                    R.drawable.ic_launcher_background,
-                    i + 1000,
-                    "Milliy"
-                )
-            )
+//            itemList.add(
+//                CategoryData(1,"",
+//                    "Palov","Milliy",
+//
+//                )
+//            )
         }
         return itemList
     }
 
-    private fun loadTables(): ArrayList<Int> {
-        tableList = ArrayList()
-        for (i in 0..30) {
-            tableList.add(i)
-        }
-        return tableList
-
-    }
+//    private fun loadTables(): ArrayList<Int> {
+//        tableList = ArrayList()
+//        for (i in 0..30) {
+//            tableList.add(i)
+//        }
+//        return tableList
+//
+//    }
 
 
 }
