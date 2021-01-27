@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import com.example.restuarant.R
 import com.example.restuarant.databinding.DeskItemBinding
 import com.example.restuarant.extentions.SingleBlock
 import com.example.restuarant.extentions.bindItem
@@ -40,10 +41,11 @@ class CashierTableAdapter:ListAdapter<TableResData,CashierTableAdapter.VHolder>(
                 tableIndex = adapterPosition
             }
         }
-        @SuppressLint("Range")
+        @SuppressLint("Range", "ResourceAsColor")
         fun bind() = bindItem{
+            val d = currentList[adapterPosition]
             binding.tableText.text = currentList[adapterPosition].id.toString()
-//            binding.groupDesc.setCardBackgroundColor(Color.parseColor(currentList[adapterPosition].color))
+//            binding.groupDesc.setCardBackgroundColor(if(!d.active) R.color.red else R.color.green)
         }
     }
 }

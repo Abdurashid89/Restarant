@@ -1,124 +1,83 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:padding="25dp">
+    android:background="@drawable/front2"
+    android:layout_height="match_parent">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:orientation="vertical"
+        android:gravity="center"
+        android:background="#7E000000"
+        android:layout_height="match_parent">
 
     <TextView
         android:id="@+id/signUp_text"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:gravity="center"
-        android:text="Registration"
-        android:textSize="30sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.2" />
+        android:textColor="@color/white"
+        android:textStyle="italic"
+        android:text="@string/please_enter_your_n_restaurant_password"
+        android:textSize="32sp" />
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_width="360dp"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
+            android:layout_marginTop="32dp"
+            android:layout_height="wrap_content">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/input_login"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:hint="@string/login"
+                android:maxLength="16"
+                android:maxLines="1"
+                android:inputType="text"
+                android:textColorHint="@color/black"
+                android:textColor="@color/white"
+                android:imeOptions="actionNext" />
+        </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/firstName_input"
+        android:layout_width="360dp"
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
-        android:layout_width="match_parent"
-        android:layout_height="?actionBarSize"
-        app:layout_constraintBottom_toTopOf="@id/lastName_input"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/signUp_text">
-
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/firstName_edit"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="First name"
-            android:imeOptions="actionNext"
-            android:inputType="text" />
-    </com.google.android.material.textfield.TextInputLayout>
-
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/lastName_input"
-        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
-        android:layout_width="match_parent"
-        android:layout_height="?actionBarSize"
-        app:layout_constraintBottom_toTopOf="@id/phoneNumber_input"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/firstName_input">
-
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/lastName_edit"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="Last name"
-            android:imeOptions="actionNext"
-            android:inputType="text" />
-    </com.google.android.material.textfield.TextInputLayout>
-
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/phoneNumber_input"
-        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
-        android:layout_width="match_parent"
-        android:layout_height="?actionBarSize"
-        app:layout_constraintBottom_toTopOf="@id/password_input"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/lastName_input">
-
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/phoneNumber_edit"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="Phone number"
-            android:imeOptions="actionNext"
-            android:inputType="phone" />
-    </com.google.android.material.textfield.TextInputLayout>
-
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/password_input"
-        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
-        android:layout_width="match_parent"
-        android:layout_height="?actionBarSize"
-        app:layout_constraintBottom_toTopOf="@id/sign_button"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
+        android:layout_marginTop="32dp"
         app:passwordToggleEnabled="true"
-        app:passwordToggleTint="@color/button_color"
-        app:layout_constraintTop_toBottomOf="@id/phoneNumber_input">
+        android:layout_height="wrap_content">
 
         <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/password_edit"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="Password"
-            android:imeOptions="actionDone"
-            android:inputType="textPassword" />
-    </com.google.android.material.textfield.TextInputLayout>
-
-    <androidx.cardview.widget.CardView
-        android:id="@+id/sign_button"
-        app:cardCornerRadius="10dp"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        app:layout_constraintHeight_percent="0.07"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/password_input">
-
-        <TextView
+            android:id="@+id/input_password"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="@color/button_color"
+            android:hint="@string/password"
+            android:maxLength="16"
+            android:maxLines="1"
+            android:inputType="textPassword"
+            android:textColorHint="@color/black"
+            android:textColor="@color/white"
+            android:imeOptions="actionDone" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+
+
+
+        <Button
+            android:layout_width="360dp"
+            android:layout_marginTop="32dp"
+            android:layout_height="@dimen/buttonHeight"
+            android:background="@drawable/cashier_btn_bgn"
             android:gravity="center"
-            android:text="Sign up"
+            android:id="@+id/btn_login"
+            android:text="@string/login"
             android:textColor="@color/white" />
 
-    </androidx.cardview.widget.CardView>
+
 
     <include
         android:id="@+id/progress_bar_register"
         layout="@layout/progress_bar" />
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+    </LinearLayout>
+</LinearLayout>

@@ -18,8 +18,9 @@ class SignUpPresenter @Inject constructor(
     private val prefs: Prefs
 ):BasePresenter<SignUpView>(){
 
-    fun onBackPressed(){
-        router.exit()
+
+    fun openLoginScreen(){
+        router.newChain(Screens.Login)
     }
 
     @SuppressLint("CheckResult")
@@ -39,5 +40,9 @@ class SignUpPresenter @Inject constructor(
             },{
                 viewState.openErrorDialog(it.errorResponse(),false)
             })
+    }
+
+    fun onBackPressed(){
+        router.exit()
     }
 }

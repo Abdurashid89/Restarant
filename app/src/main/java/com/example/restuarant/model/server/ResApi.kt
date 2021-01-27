@@ -2,6 +2,7 @@ package com.example.restuarant.model.server
 
 import com.example.restuarant.model.entities.*
 import io.reactivex.Single
+import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.GET
 import retrofit2.http.POST
@@ -12,7 +13,7 @@ import retrofit2.http.Query
  */
 interface ResApi {
     @POST("/api/auth/login")
-    fun login(@Body data: LoginData): Single<LoginResData>
+    suspend fun login(@Body data: LoginData): Response<LoginResData>
 
 
     @POST("/api/auth/register")
