@@ -220,7 +220,7 @@ class CashierFragment : BaseFragment(), CashierView, SwipeRefreshLayout.OnRefres
         bn.tablesLayout.btnPrint.setOnClickListener {
             val data = Item2(orderList)
             val itemNameList = data.getItemNameList()
-            val price = data.getItemNameList()
+            val price = data.getPriceList()
             val check = Check2().setData(itemNameList,price)
             val dialog = CheckDialog(requireContext(),check,"text/html", "UTF-8")
             dialog.setOnClickListener {
