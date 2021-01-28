@@ -1,12 +1,9 @@
 package com.example.restuarant.ui.login
 
 import android.os.Bundle
-import android.util.Log
 import android.view.View
-import android.widget.Toast
 import com.example.restuarant.R
 import com.example.restuarant.databinding.PinLockViewBinding
-import com.example.restuarant.extentions.customDialog
 import com.example.restuarant.extentions.showSnackMessage
 import com.example.restuarant.extentions.visible
 import com.example.restuarant.presentation.login.LoginPresenter
@@ -14,11 +11,13 @@ import com.example.restuarant.presentation.login.LoginView
 import com.example.restuarant.ui.global.BaseFragment
 import moxy.presenter.InjectPresenter
 import moxy.presenter.ProvidePresenter
+import java.lang.NullPointerException
 
 class LoginFragment : BaseFragment(), LoginView {
     override val layoutRes: Int = R.layout.pin_lock_view
 
-    private lateinit var binding: PinLockViewBinding
+    private var _bn: PinLockViewBinding? = null
+    private val bn get() = _bn ?: throw NullPointerException("error")
 
     @InjectPresenter
     lateinit var presenter: LoginPresenter
@@ -32,7 +31,7 @@ class LoginFragment : BaseFragment(), LoginView {
         get() = childFragmentManager.fragments.firstOrNull { !it.isHidden } as? BaseFragment
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        binding = PinLockViewBinding.bind(view)
+        _bn = PinLockViewBinding.bind(view)
 
 
         val arrayDot = ArrayList<Boolean>()
@@ -47,17 +46,17 @@ class LoginFragment : BaseFragment(), LoginView {
         numbers.add("0")
 
 
-        val empty = R.drawable.ic_baseline_fiber_manual_white
+        val empty = R.drawable.ic_baseline_fiber
         val fill = R.drawable.ic_baseline_fiber_manual_black
 
         var text_pin = ""
-        for (i in 0 until binding.keypatGroup.childCount - 1) {
-            binding.keypatGroup.getChildAt(i).setOnClickListener {
-                binding.btnDelete.animate().setDuration(150).alpha(1f)
+        for (i in 0 until bn.keypatGroup.childCount - 1) {
+            bn.keypatGroup.getChildAt(i).setOnClickListener {
+                bn.btnDelete.animate().setDuration(150).alpha(1f)
                 for (k in 0..3) {
                     if (!arrayDot[k]) {
                         text_pin += numbers[i]
-                        binding.dotGroup.getChildAt(k).setBackgroundResource(fill)
+                        bn.dotGroup.getChildAt(k).setBackgroundResource(fill)
                         arrayDot[k] = true
                         break
 
@@ -68,32 +67,32 @@ class LoginFragment : BaseFragment(), LoginView {
                 }
             }
         }
-        binding.btnDelete.setOnClickListener {
+        bn.btnDelete.setOnClickListener {
 
             when {
                 arrayDot[3] -> {
-                    binding.dotGroup.getChildAt(3).setBackgroundResource(empty)
+                    bn.dotGroup.getChildAt(3).setBackgroundResource(empty)
                     arrayDot[3] = false
                     text_pin = text_pin.substring(0,3)
                     return@setOnClickListener
                 }
                 arrayDot[2] -> {
-                    binding.dotGroup.getChildAt(2).setBackgroundResource(empty)
+                    bn.dotGroup.getChildAt(2).setBackgroundResource(empty)
                     arrayDot[2] = false
                     text_pin = text_pin.substring(0,2)
                     return@setOnClickListener
                 }
                 arrayDot[1] -> {
-                    binding.dotGroup.getChildAt(1).setBackgroundResource(empty)
+                    bn.dotGroup.getChildAt(1).setBackgroundResource(empty)
                     arrayDot[1] = false
                     text_pin = text_pin.substring(0,1)
                     return@setOnClickListener
                 }
                 arrayDot[0] -> {
-                    binding.dotGroup.getChildAt(0).setBackgroundResource(empty)
+                    bn.dotGroup.getChildAt(0).setBackgroundResource(empty)
                     arrayDot[0] = false
                     text_pin = ""
-                    binding.btnDelete.animate().setDuration(100).alpha(0f)
+                    bn.btnDelete.animate().setDuration(100).alpha(0f)
                     return@setOnClickListener
                 }
             }
@@ -111,8 +110,8 @@ class LoginFragment : BaseFragment(), LoginView {
     }
 
     override fun makeLoadingVisible(status: Boolean) {
-            binding.loadingLayoutPinLock.isClickable = !status
-            binding.progresss.loading.visible(status)
+            bn.loadingLayoutPinLock.isClickable = !status
+            bn.progresss.loading.visible(status)
 
     }
 
@@ -121,8 +120,8 @@ class LoginFragment : BaseFragment(), LoginView {
         showSnackMessage(message)
     }
 
-//    override fun onDestroy() {
-//        binding.root = null
-//        super.onDestroy()
-//    }
+    override fun onDestroy() {
+        super.onDestroy()
+        _bn = null
+    }
 }

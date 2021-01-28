@@ -6,6 +6,7 @@ import com.example.restuarant.model.server.ResApi
 import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
+import retrofit2.Response
 import javax.inject.Inject
 
 /**
@@ -15,14 +16,15 @@ class LoginInteractor @Inject constructor(
         private val api: ResApi
 ) {
 
-    fun login(data: LoginData): Single<LoginResData> {
-        return api.login(data).map {
-            it
-        }.subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .doOnError {
-
-                }
+    suspend fun login(data: LoginData): Response<LoginResData> {
+        return api.login(data)
+//       .map {
+//            it
+//        }.subscribeOn(Schedulers.io())
+//                .observeOn(AndroidSchedulers.mainThread())
+//                .doOnError {
+//
+//                }
     }
 
 //    fun getUserMe(): Single<ResponseGetUserMe> {

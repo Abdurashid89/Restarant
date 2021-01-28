@@ -7,6 +7,10 @@ import com.example.restuarant.model.interactor.LoginInteractor
 import com.example.restuarant.model.storage.Prefs
 import com.example.restuarant.model.system.pull.FlowRouter
 import com.example.restuarant.presentation.global.BasePresenter
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import moxy.InjectViewState
 import javax.inject.Inject
 
@@ -44,16 +48,28 @@ class LoginPresenter @Inject constructor(
 
 
     fun login(data: LoginData) {
-//        viewState.makeLoadingVisible(true)
-        interactor.login(data)
-            .subscribe({
-                prefs.accessToken = it.body.accessToken
-//                viewState.showMessage("Success")
-            }, {
-                viewState.openErrorDialog(it.errorResponse(), false)
-//                viewState.makeLoadingVisible(false)
-//                viewState.showMessage("Error, Try again!")
-            }).connect()
+        GlobalScope.launch(Dispatchers.IO) {
+            val res = interactor.login(data)
+            if(res.isSuccessful){
+                if(res.body() != null){
+                    prefs.accessToken = res.body()!!.body.accessToken
+                }else{
+                    withContext(Dispatchers.Main){
+                        viewState.openErrorDialog("Error", false)
+                    }
+                }
+            }
+        }
+////        viewState.makeLoadingVisible(true)
+//        interactor.login(data)
+//            .subscribe({
+//                prefs.accessToken = it.body.accessToken
+////                viewState.showMessage("Success")
+//            }, {
+//                viewState.openErrorDialog(it.errorResponse(), false)
+////                viewState.makeLoadingVisible(false)
+////                viewState.showMessage("Error, Try again!")
+//            }).connect()
 
 
     }
