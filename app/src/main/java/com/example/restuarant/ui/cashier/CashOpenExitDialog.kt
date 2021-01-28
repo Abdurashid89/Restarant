@@ -13,7 +13,7 @@ import java.lang.NullPointerException
 /**
  * Created by shohboz on 27,Январь,2021
  */
-class CashOpenExitDialog(context: Context,string: String) : AlertDialog(context){
+class CashOpenExitDialog(context: Context,string: String,price:String) : AlertDialog(context){
     var _bn:CashOpenExitLayoutBinding? = null
     val bn get() = _bn ?: throw NullPointerException("error")
     var listener:SingleBlock<String>? = null
@@ -22,6 +22,7 @@ class CashOpenExitDialog(context: Context,string: String) : AlertDialog(context)
         _bn = CashOpenExitLayoutBinding.inflate(LayoutInflater.from(context),null, false)
         setView(_bn?.root)
         bn.openExitCash.text = string
+        bn.inputPrice.hint = price
 
         bn.btnSend.setOnClickListener {
             val price = bn.inputPrice.text.toString().trim()

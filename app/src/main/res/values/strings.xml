@@ -27,7 +27,6 @@
     <string name="choose_table">Please choose table number</string>
     <string name="table_no">Table No</string>
     <string name="meal_name">Meal Name</string>
-    <string name="price">Price</string>
     <string name="how_many">How many</string>
     <string name="total">Total</string>
     <string name="print">Print</string>
@@ -39,4 +38,6 @@
     <string name="password">Password</string>
     <string name="open_cash">Open Cash</string>
     <string name="exit_cash">Exit Cash</string>
+    <string name="price">Price</string>
+    <string name="send">Send</string>
 </resources>

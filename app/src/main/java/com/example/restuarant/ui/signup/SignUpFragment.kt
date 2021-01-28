@@ -1,6 +1,7 @@
 package com.example.restuarant.ui.signup
 
 import android.os.Bundle
+import android.text.Editable
 import android.view.View
 import com.example.restuarant.R
 import com.example.restuarant.databinding.FragmentSignupBinding
@@ -9,6 +10,7 @@ import com.example.restuarant.extentions.visible
 import com.example.restuarant.presentation.signup.SignUpView
 import com.example.restuarant.presentation.signup.SignUpPresenter
 import com.example.restuarant.ui.global.BaseFragment
+import com.example.restuarant.ui.global.BaseWatcher
 import moxy.presenter.InjectPresenter
 import moxy.presenter.ProvidePresenter
 import java.lang.NullPointerException
@@ -30,6 +32,16 @@ class SignUpFragment : BaseFragment(),SignUpView {
         _bn = FragmentSignupBinding.bind(view)
 
 
+        bn.inputPassword.addTextChangedListener(object : BaseWatcher{
+            override fun afterTextChanged(s: Editable?) {
+               s.toString().replace(" ","").reversed()
+                for (i in s!!.indices){
+
+                }
+
+                super.afterTextChanged(s)
+            }
+        })
         bn.btnLogin.setOnClickListener {
             presenter.openLoginScreen()
 //            val password = binding.inputPassword.text.toString().trim()
@@ -57,7 +69,7 @@ class SignUpFragment : BaseFragment(),SignUpView {
     }
 
     override fun openErrorDialog(message: String, status: Boolean) {
-
+        showSnackMessage(message)
     }
 
     override fun onBackPressed() {
