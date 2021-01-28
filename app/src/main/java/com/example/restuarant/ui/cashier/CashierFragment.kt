@@ -4,7 +4,6 @@ import android.annotation.SuppressLint
 import android.os.Build
 import android.os.Bundle
 import android.view.View
-import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.example.restuarant.R
@@ -18,7 +17,11 @@ import com.example.restuarant.model.entities.CashierTableData
 import com.example.restuarant.model.entities.TableResData
 import com.example.restuarant.presentation.cashier.CashierPresenter
 import com.example.restuarant.presentation.cashier.CashierView
+import com.example.restuarant.ui.cashier.check.Check2
+import com.example.restuarant.ui.cashier.check.CheckDialog
+import com.example.restuarant.ui.cashier.check.Item2
 import com.example.restuarant.ui.global.BaseFragment
+import com.example.restuarant.ui.global.BaseWatcher
 import moxy.presenter.InjectPresenter
 import moxy.presenter.ProvidePresenter
 import timber.log.Timber
@@ -34,6 +37,7 @@ class CashierFragment : BaseFragment(), CashierView, SwipeRefreshLayout.OnRefres
     private val bn get() = _bn ?: throw NullPointerException("error")
     private val tableAdapter = CashierTableAdapter()
     private val orderAdapter = CashierOrderAdapter()
+    val orderList = ArrayList<CashierOrderData>()
     private var currentText = ""
     var currentMenu = 0
 
@@ -50,6 +54,9 @@ class CashierFragment : BaseFragment(), CashierView, SwipeRefreshLayout.OnRefres
         _bn = FragmentCashierBinding.bind(view)
 
         bn.swiperefresh.setOnRefreshListener(this)
+        val v = object : BaseWatcher {
+
+        }
 
         bn.tableMenu.setBackgroundResource(R.color.teal_1000)
         currentMenu = 1
@@ -211,6 +218,17 @@ class CashierFragment : BaseFragment(), CashierView, SwipeRefreshLayout.OnRefres
             }
         }
         bn.tablesLayout.btnPrint.setOnClickListener {
+            val data = Item2(orderList)
+            val itemNameList = data.getItemNameList()
+            val price = data.getItemNameList()
+            val check = Check2().setData(itemNameList,price)
+            val dialog = CheckDialog(requireContext(),check,"text/html", "UTF-8")
+            dialog.setOnClickListener {
+                dialog.dismiss()
+                dialog._bn = null
+                showSnackMessage(it)
+            }
+
             if (bn.tablesLayout.totalPrice.text.toString() != "0" && orderAdapter.itemCount != 0) {
                 bn.tablesLayout.priceOnCash.setText("0")
                 orderAdapter.submitList(null)
@@ -226,7 +244,6 @@ class CashierFragment : BaseFragment(), CashierView, SwipeRefreshLayout.OnRefres
 
     private fun loadTables() {
         val tableList = ArrayList<CashierTableData>()
-        val orderList = ArrayList<CashierOrderData>()
         val orderList2 = ArrayList<CashierOrderData>()
         for (i in 1..20) {
             orderList.add(CashierOrderData(i, "Meal $i", i, i, "${i * i}"))
@@ -244,11 +261,11 @@ class CashierFragment : BaseFragment(), CashierView, SwipeRefreshLayout.OnRefres
             bn.tablesLayout.priceCashBack.setText("0")
             bn.tablesLayout.priceOnCash.setText("0")
             currentText = ""
-            var total = 654321
+            val total = "654 321"
 //            it.currentOrder.forEach {
 //                total += it.total.toInt()
 //            }
-            bn.tablesLayout.totalPrice.text = total.toString()
+            bn.tablesLayout.totalPrice.text = total
             orderAdapter.submitList(null)
             orderAdapter.submitList(orderList)
         }
@@ -293,7 +310,7 @@ class CashierFragment : BaseFragment(), CashierView, SwipeRefreshLayout.OnRefres
     override fun openDialog(status: Boolean) {
         if(status){
             // send start price to server
-            val dialog = CashOpenExitDialog(requireContext(),getString(R.string.open_cash))
+            val dialog = CashOpenExitDialog(requireContext(),getString(R.string.open_cash),"Start price")
             dialog.setOnClickListener {
                 makeLoadingVisible(false)
                 dialog.dismiss()
@@ -302,7 +319,7 @@ class CashierFragment : BaseFragment(), CashierView, SwipeRefreshLayout.OnRefres
             dialog.show()
         }else{
             // send start price to server and exit screen
-            val dialog = CashOpenExitDialog(requireContext(),getString(R.string.exit_cash))
+            val dialog = CashOpenExitDialog(requireContext(),getString(R.string.exit_cash),"End price")
             dialog.setOnClickListener {
                 makeLoadingVisible(false)
                 dialog.dismiss()

@@ -10,7 +10,7 @@
         android:layout_height="?actionBarSize"
         android:background="@color/green"
         android:gravity="center"
-        android:text="Open cash"
+        android:text="@string/open_cash"
         android:textColor="@color/white"
         android:textSize="16sp" />
 
@@ -24,7 +24,7 @@
             android:id="@+id/inputPrice"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:hint="Price"
+            android:hint="@string/price"
             android:maxLength="8"
             android:imeOptions="actionDone"
             android:inputType="numberDecimal" />
@@ -35,7 +35,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/green"
-        android:text="Send"
+        android:text="@string/send"
         android:textAllCaps="false"
         android:textColor="@color/white"
         android:textSize="16sp" />
