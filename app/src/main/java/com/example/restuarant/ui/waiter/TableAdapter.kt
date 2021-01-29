@@ -4,7 +4,6 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.example.restuarant.R
 import com.example.restuarant.databinding.TableItemBinding
 import com.example.restuarant.model.entities.TableData
 
@@ -29,7 +28,7 @@ class TableAdapter : ListAdapter<TableData, TableAdapter.Vh>(TableData.ITEM_CALL
             if (getItem(adapterPosition).active){
                 view.tablePageLinear.setBackgroundResource(android.R.color.holo_red_dark)
             }
-            view.tablePageNumberTv.text = getItem(adapterPosition).number.toString()
+            view.tablePageNumberTv.text = getItem(adapterPosition).id.toString()
         }
     }
 

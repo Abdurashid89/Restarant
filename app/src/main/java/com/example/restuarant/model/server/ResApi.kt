@@ -51,4 +51,6 @@ interface ResApi {
 
     @GET("/api/table")
     fun getAllTable(): Single<ResData<List<TableResData>>>
+
+
 }
