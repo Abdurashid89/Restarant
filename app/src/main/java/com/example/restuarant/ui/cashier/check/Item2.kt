@@ -10,7 +10,9 @@ class Item2(val list: List<CashierOrderData>) {
     fun getItemNameList():String{
         var itemList = ""
         list.forEach {
-            itemList += "<p class=\\\"products\\\">${it.mealName}  ${it.count}</p"
+            val word = "<p class=\\\"products\\\">${it.mealName}  ${it.count}</p"
+            itemList += word
+
         }
         return itemList
     }
