@@ -9,12 +9,15 @@ import androidx.recyclerview.widget.LinearSnapHelper
 import com.example.restuarant.R
 import com.example.restuarant.databinding.FragmentWaiterBinding
 import com.example.restuarant.model.entities.CategoryData
+import com.example.restuarant.model.entities.CategoryItemData
 import com.example.restuarant.model.entities.TableData
+import com.example.restuarant.model.entities.WaiterOrderData
 import com.example.restuarant.presentation.waiter.WaiterPresenter
 import com.example.restuarant.presentation.waiter.WaiterView
 import com.example.restuarant.ui.global.BaseFragment
 import moxy.presenter.InjectPresenter
 import moxy.presenter.ProvidePresenter
+import timber.log.Timber
 
 
 class WaiterFragment : BaseFragment(), WaiterView {
@@ -22,8 +25,9 @@ class WaiterFragment : BaseFragment(), WaiterView {
 
     private var _bn: FragmentWaiterBinding? = null
     private val bn get() = _bn ?: throw NullPointerException("error")
-    private lateinit var itemList: ArrayList<CategoryData>
+    private lateinit var categoryList: ArrayList<CategoryData>
     private lateinit var tablePageList: ArrayList<TableData>
+    private lateinit var itemList:ArrayList<CategoryItemData>
     private var goodsCategoryAdapter = CategoryItemAdapter()
     private var categoryAdapter = CategoryAdapter()
     private var tableAdapter = TableAdapter()
@@ -77,35 +81,11 @@ class WaiterFragment : BaseFragment(), WaiterView {
         }
 
         goodsCategoryAdapter = CategoryItemAdapter()
-        goodsCategoryAdapter.submitList(items)
+        goodsCategoryAdapter.submitList(categoryList[0].menuItems)
         categoryAdapter = CategoryAdapter()
-        categoryAdapter.submitList(itemList)
+        categoryAdapter.submitList(categoryList)
         tableAdapter = TableAdapter()
         tableAdapter.submitList(tableList)
-
-        tableAdapter.setOnClickListener {
-            presenter.showMenu()
-            presenter.changeColor()
-            btnId = 2
-            bn.orderBtn.setBackgroundResource(R.color.red)
-            bn.tableNumber.text = it.id.toString()
-        }
-        orderAdapter = OrderAdapter()
-//        orderAdapter.submitList()
-
-        bn.btnPrint.setOnClickListener {
-//            val waiterOrderData = WaiterOrderData()
-//            val orderSendData = OrderSendData("","","",)
-        }
-
-        categoryAdapter.setOnClickListener {
-
-        }
-
-        goodsCategoryAdapter.setOnClickListener {
-
-        }
-
 
         val snapHelper1 = LinearSnapHelper()
         snapHelper1.attachToRecyclerView(bn.categoryRv)
@@ -117,6 +97,36 @@ class WaiterFragment : BaseFragment(), WaiterView {
         bn.tablePageRv.adapter = tableAdapter
 
         bn.orderRv.adapter = orderAdapter
+
+        tableAdapter.setOnClickListener {
+            presenter.showMenu()
+            presenter.changeColor()
+            btnId = 2
+            bn.orderBtn.setBackgroundResource(R.color.red)
+            bn.tableNumber.text = it.id.toString()
+        }
+        orderAdapter = OrderAdapter()
+
+
+        bn.btnPrint.setOnClickListener {
+//            val waiterOrderData = WaiterOrderData()
+//            val orderSendData = OrderSendData("","","",)
+        }
+
+        categoryAdapter.setOnClickListener {
+
+        }
+
+        goodsCategoryAdapter.setOnClickListener {
+            Timber.d(it.name)
+            val list = orderAdapter.currentList.toMutableList()
+            Timber.d(list.size.toString())
+            val waiterOrderData = WaiterOrderData("palov", 15000, 1, 15000)
+            list.add(waiterOrderData)
+            Timber.d(list.size.toString())
+            orderAdapter.submitList(list)
+        }
+
 
     }
 
@@ -173,26 +183,25 @@ class WaiterFragment : BaseFragment(), WaiterView {
     }
 
     private fun loadMenuItems(): ArrayList<CategoryData> {
-        itemList = ArrayList()
+        categoryList = ArrayList()
         for (i in 0..20) {
-//            itemList.add(
-//                CategoryData(1,"",
-//                    "Palov","Milliy",
-//
-//                )
-//            )
+            categoryList.add(
+                CategoryData(1,"",
+                    "Palov","Milliy",
+                    loadItems()
+                )
+            )
+        }
+        return categoryList
+    }
+
+    private fun loadItems():ArrayList<CategoryItemData>{
+        itemList = ArrayList()
+        for (i in 0..30) {
+            itemList.add(CategoryItemData("palov",15000,"milliy",""))
         }
         return itemList
     }
-
-//    private fun loadTables(): ArrayList<Int> {
-//        tableList = ArrayList()
-//        for (i in 0..30) {
-//            tableList.add(i)
-//        }
-//        return tableList
-//
-//    }
 
     override fun onDestroy() {
         super.onDestroy()
