@@ -25,6 +25,11 @@ class OrderAdapter :ListAdapter<WaiterOrderData,OrderAdapter.Vh>(WaiterOrderData
         deleteListener = delete
     }
 
+    private var listener:SingleBlock<WaiterOrderData>? = null
+    fun setOnClickListener(onClick:SingleBlock<WaiterOrderData>){
+        listener = onClick
+    }
+
     inner class Vh(val view:OrderItemBinding):RecyclerView.ViewHolder(view.root){
 
         init {
@@ -34,13 +39,18 @@ class OrderAdapter :ListAdapter<WaiterOrderData,OrderAdapter.Vh>(WaiterOrderData
             view.orderMinus.setOnClickListener {
                 plusListener?.invoke(currentList[adapterPosition])
             }
-
+            itemView.setOnClickListener {
+                listener?.invoke(currentList[adapterPosition])
+            }
         }
 
         fun onBind(){
-            view.productNameTv.text = getItem(adapterPosition).productName
-            view.productPriceTv.text = getItem(adapterPosition).productPrice.toString()
-            view.productCountTv.text = getItem(adapterPosition).productCount.toString()
+            itemView.apply {
+                val w = currentList[adapterPosition]
+                view.productNameTv.text = w.productName
+                view.productPriceTv.text = w.productPrice.toString()
+                view.productCountTv.text = w.productCount.toString()
+            }
 
 
         }
@@ -56,12 +66,19 @@ class OrderAdapter :ListAdapter<WaiterOrderData,OrderAdapter.Vh>(WaiterOrderData
         data.productCount+1
         val i = data.productPrice * data.productCount
         data.productTotalPrice+=i
-
+        data.productTotalPrice*data.productCount
     }
     fun minus(data: WaiterOrderData){
         if (data.productCount!=0){
             data.productCount-1
         }
+        data.productTotalPrice*data.productCount
+    }
+    fun addProduct(data: CategoryData){
+        val list = currentList.toMutableList()
+//        val waiterOrderData = WaiterOrderData()
+//        list.add(waiterOrderData)
+
     }
 
 }

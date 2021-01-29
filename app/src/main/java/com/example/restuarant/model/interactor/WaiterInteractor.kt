@@ -19,7 +19,7 @@ class WaiterInteractor @Inject constructor(
     }
 
     fun sendOrder(){
-
+        
     }
 
 }

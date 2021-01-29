@@ -3,19 +3,21 @@ package com.example.restuarant.model.entities
 import androidx.recyclerview.widget.DiffUtil
 
 data class TableData (
-    val number:Int,
+    val id:Int,
+    val createdAt:String,
+    val updatedAt:String,
     val active:Boolean,
-    val people:Int
+    val count:Int
         ){
 
     companion object{
         val ITEM_CALLBACK = object :DiffUtil.ItemCallback<TableData>(){
             override fun areItemsTheSame(oldItem: TableData, newItem: TableData): Boolean {
-                return oldItem.number==newItem.number
+                return oldItem.id==newItem.id
             }
 
             override fun areContentsTheSame(oldItem: TableData, newItem: TableData): Boolean {
-                return oldItem.people==newItem.people && oldItem.number==newItem.number
+                return oldItem.count==newItem.count && oldItem.id==newItem.id
             }
 
         }

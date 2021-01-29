@@ -6,14 +6,14 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.example.restuarant.databinding.CategoryItemBinding
 import com.example.restuarant.extentions.SingleBlock
-import com.example.restuarant.model.entities.CategoryData
+import com.example.restuarant.model.entities.CategoryItemData
 
 class CategoryItemAdapter :
-    ListAdapter<CategoryData, CategoryItemAdapter.Vh>(CategoryData.ITEM_CALLBACK) {
+    ListAdapter<CategoryItemData, CategoryItemAdapter.Vh>(CategoryItemData.ITEM_CALLBACK) {
 
-    private var listener: SingleBlock<CategoryData>? = null
+    private var listener: SingleBlock<CategoryItemData>? = null
 
-    fun setOnClickListener(data: (CategoryData) -> Unit) {
+    fun setOnClickListener(data: (CategoryItemData) -> Unit) {
         listener = data
     }
 
