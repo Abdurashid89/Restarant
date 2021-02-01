@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.View
 import android.view.animation.AnimationUtils
 import com.example.restuarant.R
+import com.example.restuarant.databinding.FragmentCookerBinding
 import com.example.restuarant.databinding.FragmentSignupBinding
 import com.example.restuarant.extentions.showSnackMessage
 import com.example.restuarant.extentions.vibrate
@@ -24,7 +25,7 @@ import moxy.presenter.ProvidePresenter
 class CookerFragment : BaseFragment(), CookerView {
     override val layoutRes: Int = R.layout.fragment_cooker
 
-    private lateinit var binding : FragmentSignupBinding
+    private lateinit var binding : FragmentCookerBinding
 
     @InjectPresenter
     lateinit var presenter: CookerPresenter
@@ -35,7 +36,7 @@ class CookerFragment : BaseFragment(), CookerView {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        binding = FragmentSignupBinding.bind(view)
+        binding = FragmentCookerBinding.bind(view)
 
 
 //        binding.signButton.setOnClickListener {

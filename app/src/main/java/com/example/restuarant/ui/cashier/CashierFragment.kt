@@ -53,6 +53,7 @@ class CashierFragment : BaseFragment(), CashierView, SwipeRefreshLayout.OnRefres
         super.onViewCreated(view, savedInstanceState)
         _bn = FragmentCashierBinding.bind(view)
 
+
         bn.swiperefresh.setOnRefreshListener(this)
         val v = object : BaseWatcher {
 
@@ -221,8 +222,8 @@ class CashierFragment : BaseFragment(), CashierView, SwipeRefreshLayout.OnRefres
             val data = Item2(orderList)
             val itemNameList = data.getItemNameList()
             val price = data.getItemNameList()
-            val check = Check2().setData(itemNameList,price)
-            val dialog = CheckDialog(requireContext(),check,"text/html", "UTF-8")
+            val check = Check2().setData(itemNameList, price)
+            val dialog = CheckDialog(requireContext(), check, "text/html", "UTF-8")
             dialog.setOnClickListener {
                 dialog.dismiss()
                 dialog._bn = null
@@ -278,8 +279,8 @@ class CashierFragment : BaseFragment(), CashierView, SwipeRefreshLayout.OnRefres
     }
 
     override fun makeLoadingVisible(status: Boolean) {
-            bn.progressBarGlobal.loading.visible(status)
-            bn.layoutGlobal.isClickable = !status
+        bn.progressBarGlobal.loading.visible(status)
+        bn.layoutGlobal.isClickable = !status
     }
 
     override fun openErrorDialog(message: String, status: Boolean) {
@@ -294,7 +295,7 @@ class CashierFragment : BaseFragment(), CashierView, SwipeRefreshLayout.OnRefres
     }
 
     override fun submitTables(list: List<TableResData>) {
-        if(list.isNotEmpty())
+        if (list.isNotEmpty())
             bn.btnPay.visibility = View.VISIBLE
 
         bn.tableProgress.visibility = View.GONE
@@ -308,18 +309,20 @@ class CashierFragment : BaseFragment(), CashierView, SwipeRefreshLayout.OnRefres
     }
 
     override fun openDialog(status: Boolean) {
-        if(status){
+        if (status) {
             // send start price to server
-            val dialog = CashOpenExitDialog(requireContext(),getString(R.string.open_cash),"Start price")
+            val dialog =
+                CashOpenExitDialog(requireContext(), getString(R.string.open_cash), "Start price")
             dialog.setOnClickListener {
                 makeLoadingVisible(false)
                 dialog.dismiss()
                 dialog._bn = null
             }
             dialog.show()
-        }else{
+        } else {
             // send start price to server and exit screen
-            val dialog = CashOpenExitDialog(requireContext(),getString(R.string.exit_cash),"End price")
+            val dialog =
+                CashOpenExitDialog(requireContext(), getString(R.string.exit_cash), "End price")
             dialog.setOnClickListener {
                 makeLoadingVisible(false)
                 dialog.dismiss()
