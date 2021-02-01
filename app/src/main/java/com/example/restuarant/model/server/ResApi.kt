@@ -13,7 +13,7 @@ import retrofit2.http.Query
  */
 interface ResApi {
     @POST("/api/auth/login")
-    suspend fun login(@Body data: LoginData): Response<LoginResData>
+    fun login(@Body data: LoginData): Single<LoginResData>
 
 
     @POST("/api/auth/register")
@@ -51,4 +51,6 @@ interface ResApi {
 
     @GET("/api/table")
     fun getAllTable(): Single<ResData<List<TableResData>>>
+
+
 }

@@ -6,33 +6,22 @@ import com.example.restuarant.model.server.ResApi
 import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
-import retrofit2.Response
 import javax.inject.Inject
 
 /**
  * Created by shohboz on 11,Январь,2021
  */
 class LoginInteractor @Inject constructor(
-        private val api: ResApi
+    private val api: ResApi
 ) {
 
-    suspend fun login(data: LoginData): Response<LoginResData> {
+    fun login(data: LoginData): Single<LoginResData> {
         return api.login(data)
-//       .map {
-//            it
-//        }.subscribeOn(Schedulers.io())
-//                .observeOn(AndroidSchedulers.mainThread())
-//                .doOnError {
-//
-//                }
+            .map {
+                it
+            }.subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+
     }
-
-//    fun getUserMe(): Single<ResponseGetUserMe> {
-//        return api.getUserMe().map {
-//            it
-//        }.subscribeOn(Schedulers.io())
-//                .observeOn(AndroidSchedulers.mainThread())
-//    }
-
 
 }

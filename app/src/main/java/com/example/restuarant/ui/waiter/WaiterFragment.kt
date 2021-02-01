@@ -9,23 +9,26 @@ import androidx.recyclerview.widget.LinearSnapHelper
 import com.example.restuarant.R
 import com.example.restuarant.databinding.FragmentWaiterBinding
 import com.example.restuarant.model.entities.CategoryData
+import com.example.restuarant.model.entities.CategoryItemData
 import com.example.restuarant.model.entities.TableData
+import com.example.restuarant.model.entities.WaiterOrderData
 import com.example.restuarant.presentation.waiter.WaiterPresenter
 import com.example.restuarant.presentation.waiter.WaiterView
 import com.example.restuarant.ui.global.BaseFragment
 import moxy.presenter.InjectPresenter
 import moxy.presenter.ProvidePresenter
+import timber.log.Timber
 
 
 class WaiterFragment : BaseFragment(), WaiterView {
     override val layoutRes: Int = R.layout.fragment_waiter
 
-    private lateinit var binding: FragmentWaiterBinding
-    private lateinit var itemList: ArrayList<CategoryData>
-    private lateinit var tableList: ArrayList<Int>
+    private var _bn: FragmentWaiterBinding? = null
+    private val bn get() = _bn ?: throw NullPointerException("error")
+    private lateinit var categoryList: ArrayList<CategoryData>
     private lateinit var tablePageList: ArrayList<TableData>
+    private lateinit var itemList:ArrayList<CategoryItemData>
     private var goodsCategoryAdapter = CategoryItemAdapter()
-    private var deskAdapter : DeskAdapter? = null
     private var categoryAdapter = CategoryAdapter()
     private var tableAdapter = TableAdapter()
     private var orderAdapter = OrderAdapter()
@@ -41,88 +44,89 @@ class WaiterFragment : BaseFragment(), WaiterView {
     @SuppressLint("ResourceAsColor")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        binding = FragmentWaiterBinding.bind(view)
+        _bn = FragmentWaiterBinding.bind(view)
 
-        binding.tablesBtn.setBackgroundResource(R.color.red)
+        bn.tablesBtn.setBackgroundResource(R.color.red)
         val items = loadMenuItems()
-        val tables = loadTables()
         val tableList = loadTableList()
 
-        binding.tablesBtn.setOnClickListener {
+        bn.tablesBtn.setOnClickListener {
             presenter.changeColor()
             btnId = 1
             presenter.showTables()
-            binding.tablesBtn.setBackgroundResource(R.color.red)
+            bn.tablesBtn.setBackgroundResource(R.color.red)
         }
 
-          binding.orderBtn.setOnClickListener {
+        bn.orderBtn.setOnClickListener {
             presenter.changeColor()
             btnId = 2
             presenter.showMenu()
-            binding.orderBtn.setBackgroundResource(R.color.red)
-              if (binding.tableNumber.text != "0") {
-                  binding.tableNumber.text = "0"
-              }
+            bn.orderBtn.setBackgroundResource(R.color.red)
+            if (bn.tableNumber.text != "0") {
+                bn.tableNumber.text = "0"
+            }
         }
 
-        binding.dashboardBtn.setOnClickListener {
+        bn.dashboardBtn.setOnClickListener {
             presenter.changeColor()
             btnId = 3
-            binding.dashboardBtn.setBackgroundResource(R.color.red)
+            bn.dashboardBtn.setBackgroundResource(R.color.red)
         }
 
-        binding.exitBtn.setOnClickListener {
+        bn.exitBtn.setOnClickListener {
             presenter.changeColor()
             btnId = 4
             presenter.onBackPressed()
-            binding.exitBtn.setBackgroundResource(R.color.red)
+            bn.exitBtn.setBackgroundResource(R.color.red)
         }
 
         goodsCategoryAdapter = CategoryItemAdapter()
-        goodsCategoryAdapter.submitList(items)
+        goodsCategoryAdapter.submitList(categoryList[0].menuItems)
         categoryAdapter = CategoryAdapter()
-        categoryAdapter.submitList(itemList)
+        categoryAdapter.submitList(categoryList)
         tableAdapter = TableAdapter()
         tableAdapter.submitList(tableList)
+
+        val snapHelper1 = LinearSnapHelper()
+        snapHelper1.attachToRecyclerView(bn.categoryRv)
+
+        bn.menuRv.adapter = goodsCategoryAdapter
+
+        bn.categoryRv.adapter = categoryAdapter
+
+        bn.tablePageRv.adapter = tableAdapter
+
+        bn.orderRv.adapter = orderAdapter
 
         tableAdapter.setOnClickListener {
             presenter.showMenu()
             presenter.changeColor()
             btnId = 2
-            binding.orderBtn.setBackgroundResource(R.color.red)
-            binding.tableNumber.text = it.number.toString()
+            bn.orderBtn.setBackgroundResource(R.color.red)
+            bn.tableNumber.text = it.id.toString()
         }
         orderAdapter = OrderAdapter()
-//        orderAdapter.submitList()
 
-        deskAdapter = DeskAdapter(tables, object : DeskAdapter.OnDeskItemClickListener {
-            override fun onClick() {
 
-            }
-
-            override fun onLongClick() {
-
-            }
-
-        })
+        bn.btnPrint.setOnClickListener {
+//            val waiterOrderData = WaiterOrderData()
+//            val orderSendData = OrderSendData("","","",)
+        }
 
         categoryAdapter.setOnClickListener {
 
         }
 
+        goodsCategoryAdapter.setOnClickListener {
+            Timber.d(it.name)
+            val list = orderAdapter.currentList.toMutableList()
+            Timber.d(list.size.toString())
+            val waiterOrderData = WaiterOrderData("palov", 15000, 1, 15000)
+            list.add(waiterOrderData)
+            Timber.d(list.size.toString())
+            orderAdapter.submitList(list)
+        }
 
-        val snapHelper1 = LinearSnapHelper()
-        snapHelper1.attachToRecyclerView(binding.categoryRv)
-
-        binding.menuRv.adapter = goodsCategoryAdapter
-
-//        binding.tablesRv.adapter = deskAdapter
-
-        binding.categoryRv.adapter = categoryAdapter
-
-        binding.tablePageRv.adapter = tableAdapter
-
-        binding.orderRv.adapter = orderAdapter
 
     }
 
@@ -137,6 +141,7 @@ class WaiterFragment : BaseFragment(), WaiterView {
 
     override fun openErrorDialog(message: String, status: Boolean) {
 
+
     }
 
     override fun openClientCountDialog() {
@@ -148,59 +153,59 @@ class WaiterFragment : BaseFragment(), WaiterView {
     }
 
     override fun showTables() {
-        binding.categoryConstraint.visibility = View.GONE
-        binding.menuRv.visibility = View.GONE
-        binding.tablePageRv.visibility = View.VISIBLE
-//        binding.tablesConstraint.visibility = View.GONE
+        bn.categoryConstraint.visibility = View.GONE
+        bn.menuRv.visibility = View.GONE
+        bn.tablePageRv.visibility = View.VISIBLE
     }
 
     override fun showMenu() {
-        binding.categoryConstraint.visibility = View.VISIBLE
-        binding.menuRv.visibility = View.VISIBLE
-//        binding.tablesConstraint.visibility = View.VISIBLE
-        binding.tablePageRv.visibility = View.GONE
+        bn.categoryConstraint.visibility = View.VISIBLE
+        bn.menuRv.visibility = View.VISIBLE
+        bn.tablePageRv.visibility = View.GONE
     }
 
     override fun changeColor() {
         when (btnId) {
-            1 -> binding.tablesBtn.setBackgroundResource(R.color.green)
-            2 -> binding.orderBtn.setBackgroundResource(R.color.green)
-            3 -> binding.dashboardBtn.setBackgroundResource(R.color.green)
-            4 -> binding.exitBtn.setBackgroundResource(R.color.green)
+            1 -> bn.tablesBtn.setBackgroundResource(R.color.green)
+            2 -> bn.orderBtn.setBackgroundResource(R.color.green)
+            3 -> bn.dashboardBtn.setBackgroundResource(R.color.green)
+            4 -> bn.exitBtn.setBackgroundResource(R.color.green)
         }
     }
 
     private fun loadTableList(): ArrayList<TableData> {
         tablePageList = ArrayList()
         for (i in 0..30) {
-            tablePageList.add(TableData(i + 1, false, 4))
+            tablePageList.add(TableData(i + 1, "", "", false, i + 1))
         }
 
         return tablePageList
     }
 
     private fun loadMenuItems(): ArrayList<CategoryData> {
-        itemList = ArrayList()
+        categoryList = ArrayList()
         for (i in 0..20) {
-            itemList.add(
-                CategoryData(
-                    "Palov",
-                    R.drawable.ic_launcher_background,
-                    i + 1000,
-                    "Milliy"
+            categoryList.add(
+                CategoryData(1,"",
+                    "Palov","Milliy",
+                    loadItems()
                 )
             )
+        }
+        return categoryList
+    }
+
+    private fun loadItems():ArrayList<CategoryItemData>{
+        itemList = ArrayList()
+        for (i in 0..30) {
+            itemList.add(CategoryItemData("palov",15000,"milliy",""))
         }
         return itemList
     }
 
-    private fun loadTables(): ArrayList<Int> {
-        tableList = ArrayList()
-        for (i in 0..30) {
-            tableList.add(i)
-        }
-        return tableList
-
+    override fun onDestroy() {
+        super.onDestroy()
+        _bn = null
     }
 
 

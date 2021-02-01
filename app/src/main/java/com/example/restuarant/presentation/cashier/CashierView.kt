@@ -15,7 +15,7 @@ interface CashierView : MvpView {
 
     @StateStrategyType(OneExecutionStateStrategy::class)
     fun showMessage(message: String)
-
+    @StateStrategyType(OneExecutionStateStrategy::class)
     fun makeLoadingVisible(status: Boolean)
     fun submitTables(list: List<TableResData>)
 

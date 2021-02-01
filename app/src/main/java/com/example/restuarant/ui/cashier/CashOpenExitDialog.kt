@@ -27,15 +27,6 @@ class CashOpenExitDialog(context: Context,string: String,price:String) : AlertDi
         bn.btnSend.setOnClickListener {
             val price = bn.inputPrice.text.toString().trim()
             when{
-                price.isEmpty() ->{
-                    bn.inputPrice.startAnimation(AnimationUtils.loadAnimation(context, R.anim.shake))
-                    vibrate(context)
-                    return@setOnClickListener
-                }
-                price.length < 4 ->{
-                    bn.inputPrice.error = "Very little amount"
-                    return@setOnClickListener
-                }
                 else ->{
                     listener?.invoke(price)
                 }
