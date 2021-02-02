@@ -48,28 +48,16 @@ class LoginPresenter @Inject constructor(
 
 
     fun login(data: LoginData) {
-        GlobalScope.launch(Dispatchers.IO) {
-            val res = interactor.login(data)
-            if(res.isSuccessful){
-                if(res.body() != null){
-                    prefs.accessToken = res.body()!!.body.accessToken
-                }else{
-                    withContext(Dispatchers.Main){
-                        viewState.openErrorDialog("Error", false)
-                    }
-                }
-            }
-        }
-////        viewState.makeLoadingVisible(true)
-//        interactor.login(data)
-//            .subscribe({
-//                prefs.accessToken = it.body.accessToken
-////                viewState.showMessage("Success")
-//            }, {
-//                viewState.openErrorDialog(it.errorResponse(), false)
-////                viewState.makeLoadingVisible(false)
-////                viewState.showMessage("Error, Try again!")
-//            }).connect()
+//        viewState.makeLoadingVisible(true)
+        interactor.login(data)
+            .subscribe({
+                prefs.accessToken = it.body.accessToken
+//                viewState.showMessage("Success")
+            }, {
+                viewState.openErrorDialog(it.errorResponse(), false)
+//                viewState.makeLoadingVisible(false)
+//                viewState.showMessage("Error, Try again!")
+            }).connect()
 
 
     }

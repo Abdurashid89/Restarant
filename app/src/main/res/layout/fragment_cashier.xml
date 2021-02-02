@@ -151,7 +151,7 @@
                                 android:layout_weight="1"
                                 app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
                                 app:spanCount="4"
-                                tools:itemCount="20"
+                                tools:itemCount="16"
                                 tools:listitem="@layout/desk_item" />
 
                             <Button
@@ -351,6 +351,9 @@
                 <include
                     android:id="@+id/togo_layout"
                     layout="@layout/cashier_togo_layout" />
+                <include
+                    android:id="@+id/check_layout"
+                    layout="@layout/check_layout" />
             </LinearLayout>
 
         </LinearLayout>

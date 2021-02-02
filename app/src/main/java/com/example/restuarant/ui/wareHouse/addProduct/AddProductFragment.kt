@@ -20,8 +20,6 @@ import androidx.core.content.PermissionChecker
 import com.example.restuarant.R
 import com.example.restuarant.databinding.FragmentAddProductBinding
 import com.example.restuarant.extentions.*
-import com.example.restuarant.model.entities.BrandInData
-import com.example.restuarant.model.entities.CategoryInData
 import com.example.restuarant.presentation.were_house.add_product.AddProductPresenter
 import com.example.restuarant.presentation.were_house.add_product.AddProductView
 import com.example.restuarant.ui.category.CategoryAdapter
@@ -70,15 +68,6 @@ class AddProductFragment : BaseFragment(), AddProductView {
             override fun afterTextChanged(p0: Editable?) {}
         })
 
-        binding.inputEditTextCategory.addTextChangedListener(object : TextWatcher {
-            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
-            override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
-                if (p0.toString().isNotEmpty() && p0.toString() != currentCategoryTxt)
-                    presenter.getCategorySearch(p0.toString().toLowerCase())
-            }
-
-            override fun afterTextChanged(p0: Editable?) {}
-        })
 
 //        binding.inputBrandEditText.addTextChangedListener(object : TextWatcher {
 //            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
@@ -259,10 +248,6 @@ class AddProductFragment : BaseFragment(), AddProductView {
         binding.progressBarAddProduct.loading.visible(status)
     }
 
-    override fun setImage(uri: Uri) {
-
-    }
-
     override fun openDialog(message: String, status: Boolean) {
         if (status) {
             binding.inputName.setText("")
@@ -272,34 +257,6 @@ class AddProductFragment : BaseFragment(), AddProductView {
             brandId = -1
         }
         customDialog(message, status)
-    }
-
-    override fun listCategory(list: List<CategoryInData>) {
-        binding.listCategory.visibility = View.VISIBLE
-        binding.listCategory.adapter = adapter
-
-        adapter.submitList(null)
-        adapter.submitList(list)
-        adapter.setOnClickListener {
-            currentCategoryTxt = it.name
-            binding.inputEditTextCategory.setText(it.name)
-            categoryId = it.id
-            binding.listCategory.visibility = View.GONE
-        }
-    }
-
-    override fun listBrand(list: List<BrandInData>) {
-//        binding.listBrand.visibility = View.VISIBLE
-//        binding.listBrand.adapter = brandAdapter
-//
-//        brandAdapter.submitList(null)
-//        brandAdapter.submitList(list)
-//        brandAdapter.setOnClickListener {
-//            currentCategoryTxt = it.name
-//            binding.inputBrandEditText.setText(it.name)
-//            brandId = it.id
-//            binding.listBrand.visibility = View.GONE
-//        }
     }
 
     override fun errorOrNull(str: String) {

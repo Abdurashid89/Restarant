@@ -34,7 +34,7 @@ class CashierPresenter @Inject constructor(
 
     @SuppressLint("CheckResult")
     fun getTables(){
-        viewState.makeLoadingVisible(true)
+//        viewState.makeLoadingVisible(true)
         interactor.getAllTables()
             .doOnSubscribe {
 //                viewState.makeLoadingVisible(true)

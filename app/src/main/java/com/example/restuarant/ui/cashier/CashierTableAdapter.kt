@@ -33,7 +33,6 @@ class CashierTableAdapter:ListAdapter<TableData,CashierTableAdapter.VHolder>(Tab
 
         init {
             itemView.setOnClickListener {
-//                currentList[tableIndex].color = "#F42B4A"
                 notifyItemChanged(tableIndex)
                 itemView.alpha = 0.5f
                 tableIndex = adapterPosition
@@ -45,7 +44,7 @@ class CashierTableAdapter:ListAdapter<TableData,CashierTableAdapter.VHolder>(Tab
         fun bind() = bindItem{
             val d = currentList[adapterPosition]
             binding.tableText.text = currentList[adapterPosition].id.toString()
-//            binding.groupDesc.setCardBackgroundColor(if(!d.active) R.color.red else R.color.green)
+            binding.linearTable.setBackgroundResource(if(!d.active) R.color.red else R.color.green)
         }
     }
 }
