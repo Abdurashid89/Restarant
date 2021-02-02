@@ -105,7 +105,7 @@ class WaiterFragment : BaseFragment(), WaiterView {
             bn.orderBtn.setBackgroundResource(R.color.red)
             bn.tableNumber.text = it.id.toString()
         }
-        orderAdapter = OrderAdapter()
+
 
 
         bn.btnPrint.setOnClickListener {

@@ -12,6 +12,7 @@ import com.example.restuarant.extentions.isNotDouble
 import com.example.restuarant.extentions.showSnackMessage
 import com.example.restuarant.extentions.stringFormat
 import com.example.restuarant.extentions.visible
+import com.example.restuarant.model.entities.CashierHistoryData
 import com.example.restuarant.model.entities.CashierOrderData
 import com.example.restuarant.model.entities.CashierTableData
 import com.example.restuarant.model.entities.TableResData
@@ -38,7 +39,9 @@ class CashierFragment : BaseFragment(), CashierView, SwipeRefreshLayout.OnRefres
     private val bn get() = _bn ?: throw NullPointerException("error")
     private val tableAdapter = CashierTableAdapter()
     private val orderAdapter = CashierOrderAdapter()
-    val orderList = ArrayList<CashierOrderData>()
+    private val historyAdapter = CashierHistoryAdapter()
+    private val orderList = ArrayList<CashierOrderData>()
+    private val historyList = ArrayList<CashierHistoryData>()
     private var currentText = ""
     var currentMenu = 0
 
@@ -60,13 +63,16 @@ class CashierFragment : BaseFragment(), CashierView, SwipeRefreshLayout.OnRefres
         currentMenu = 1
         bn.tablesLayout.cashierOrderList.adapter = orderAdapter
         bn.tableList.adapter = tableAdapter
+        bn.historyLayout.listHistoryCashier.adapter = historyAdapter
 
         loadTables()
         loadButtons()
+        loadHistory()
 
         bn.logoutMenu.setOnClickListener {
-            makeLoadingVisible(true)
-            presenter.dialogOpen(false)
+            presenter.onBackPressed()
+//            makeLoadingVisible(true)
+//            presenter.dialogOpen(false)
         }
         bn.unfold.setOnClickListener {
             bn.groupButtons.translationZ = 0f
@@ -84,6 +90,7 @@ class CashierFragment : BaseFragment(), CashierView, SwipeRefreshLayout.OnRefres
             bn.historyLayout.cashierHistoryLayout.visibility = View.VISIBLE
             bn.tablesLayout.viewGroupTables.visibility = View.GONE
             bn.togoLayout.cashierOwnLayout.visibility = View.GONE
+            historyAdapter.submitList(historyList)
 
         }
         bn.togoMenu.setOnClickListener {
@@ -109,6 +116,13 @@ class CashierFragment : BaseFragment(), CashierView, SwipeRefreshLayout.OnRefres
 
         }
 
+    }
+
+    private fun loadHistory() {
+        for (i in 1..5){
+            historyList.add(CashierHistoryData(i,"50 000","Card","500","more"))
+            historyList.add(CashierHistoryData(i,"45 000","Cash","100","more"))
+        }
     }
 
     private fun setColorMenu() {
@@ -188,7 +202,7 @@ class CashierFragment : BaseFragment(), CashierView, SwipeRefreshLayout.OnRefres
             if (currentText.length > 1) {
                 currentText = currentText.substring(0, currentText.length - 1)
 
-                val total_price = bn.tablesLayout.totalPrice.text.toString().toLong()
+                val total_price = bn.tablesLayout.totalPrice.text.toString().replace(" ","").toLong()
 
                 if (currentText.isNotDouble()) {
                     val sum = currentText.toLong()
@@ -222,10 +236,9 @@ class CashierFragment : BaseFragment(), CashierView, SwipeRefreshLayout.OnRefres
                 val price = data.getPriceList()
                 val check = Check(itemNameList, price)
                 val dialog = CheckDialog(requireContext(), check.html, "text/html", "UTF-8")
-//                dialog.set
                 Timber.d(check.html)
                 dialog.setOnClickListener {
-//                    dialog._bn = null
+                    dialog._bn = null
                     dialog.dismiss()
                     bn.tablesLayout.priceOnCash.setText("0")
                     orderAdapter.submitList(null)
@@ -283,14 +296,14 @@ class CashierFragment : BaseFragment(), CashierView, SwipeRefreshLayout.OnRefres
 
     override fun submitTables(list: List<TableResData>) {
         Timber.d(list.size.toString())
+        bn.tableProgress.visibility = View.GONE
+        bn.swiperefresh.isRefreshing = false
         if (list.isNotEmpty()) {
             tableAdapter.submitList(list)
             bn.btnPay.visibility = View.VISIBLE
-        } else
-
+        } else{
             bn.btnPay.visibility = View.GONE
-            bn.tableProgress.visibility = View.GONE
-            bn.swiperefresh.isRefreshing = false
+        }
     }
 
     override fun onRefresh() {
