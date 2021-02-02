@@ -25,8 +25,5 @@ class AddProductInteractor @Inject constructor(
         }.subscribeOn(AndroidSchedulers.mainThread())
             .doOnError { }
     }
-//
-//    fun saveImage(image: MultipartBody.Part):Single<ResponseFileData<ResponseFileObjectData>> {
-//return api.uploadImage
-//    }
+
 }

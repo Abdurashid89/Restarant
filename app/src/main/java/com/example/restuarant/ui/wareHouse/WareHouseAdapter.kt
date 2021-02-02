@@ -13,9 +13,9 @@ import com.example.restuarant.model.entities.ProductInData
 class WareHouseAdapter :
     ListAdapter<ProductInData, WareHouseAdapter.VH>(ProductInData.ITEM_CALLBACK) {
 
-    var listener: SingleBlock<ProductData>? = null
+    var listener: SingleBlock<ProductInData>? = null
 
-    fun setOnClickListener(block: SingleBlock<ProductData>) {
+    fun setOnClickListener(block: SingleBlock<ProductInData>) {
         listener = block
     }
 
@@ -28,7 +28,7 @@ class WareHouseAdapter :
     inner class VH(val binding: ItemWareHouseBinding) : RecyclerView.ViewHolder(binding.root) {
         init {
             itemView.setOnClickListener {
-//                listener?.invoke(currentList[adapterPosition])
+                listener?.invoke(currentList[adapterPosition])
             }
         }
 

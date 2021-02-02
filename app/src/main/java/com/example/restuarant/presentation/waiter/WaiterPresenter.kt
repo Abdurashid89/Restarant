@@ -1,5 +1,8 @@
 package com.example.restuarant.presentation.waiter
 
+import com.example.restuarant.di.DI
+import com.example.restuarant.extentions.errorResponse
+import com.example.restuarant.model.entities.OrderSendData
 import com.example.restuarant.model.interactor.WaiterInteractor
 import com.example.restuarant.model.storage.Prefs
 import com.example.restuarant.model.system.pull.FlowRouter
@@ -16,7 +19,8 @@ class WaiterPresenter @Inject constructor(
 
     override fun onFirstViewAttach() {
         super.onFirstViewAttach()
-
+        getMenu()
+        getTableList()
     }
 
     fun openClientDialog(){
@@ -27,24 +31,46 @@ class WaiterPresenter @Inject constructor(
         router.exit()
     }
 
-    fun getMenu(){
+    private fun getMenu(){
         interactor.getMenuList()
+            .doOnSubscribe {
+                viewState.showProgress(DI.MENU_ITEMS_PROGRESS,true)
+            }
+            .doAfterTerminate {
+                viewState.showProgress(DI.MENU_ITEMS_PROGRESS,false)
+            }
+            .subscribe({
+                viewState.getMenu(it)
+            },{
+                viewState.openErrorDialog(it.errorResponse(),false)
+            }).connect()
     }
 
-    fun getMenuItems(){
-        interactor.getMenuItems(1)
+    fun getMenuItems(categoryId:Int){
+        interactor.getMenuItems(categoryId)
     }
 
-    fun getTableList(){
+    private fun getTableList(){
         interactor.getTables()
+            .doOnSubscribe {
+                viewState.showProgress(DI.TABLES_PROGRESS,true)
+            }
+            .doAfterTerminate {
+                viewState.showProgress(DI.TABLES_PROGRESS,false)
+            }
+            .subscribe({
+                 viewState.getTables(it)
+            },{
+                viewState.openErrorDialog(it.errorResponse(),false)
+            }).connect()
     }
 
-    fun sendOrder(){
-        interactor.sendOrder()
+    fun sendOrder(data:OrderSendData){
+        interactor.sendOrder(data)
     }
 
     fun showTables(){
-        viewState.showTables()
+        interactor.getTables()
     }
 
     fun showMenu() {
@@ -54,5 +80,14 @@ class WaiterPresenter @Inject constructor(
     fun changeColor(){
         viewState.changeColor()
     }
+
+    fun totalSum(){
+        viewState.totalSum()
+    }
+
+    fun showProgress(){
+
+    }
+
 
 }

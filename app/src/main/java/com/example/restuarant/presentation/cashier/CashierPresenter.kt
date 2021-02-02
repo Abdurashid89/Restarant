@@ -1,15 +1,11 @@
 package com.example.restuarant.presentation.cashier
 
 import android.annotation.SuppressLint
-import com.example.restuarant.Screens
 import com.example.restuarant.extentions.errorResponse
-import com.example.restuarant.model.entities.RegisterData
 import com.example.restuarant.model.interactor.CashierInteractor
-import com.example.restuarant.model.interactor.CookerInteractor
 import com.example.restuarant.model.storage.Prefs
 import com.example.restuarant.model.system.pull.FlowRouter
 import com.example.restuarant.presentation.global.BasePresenter
-import com.example.restuarant.presentation.signup.SignUpView
 import moxy.InjectViewState
 import javax.inject.Inject
 

@@ -3,10 +3,14 @@ package com.example.restuarant.model.entities
 import androidx.recyclerview.widget.DiffUtil
 
 class CategoryItemData(
+    var id:Int,
+    var photoId:String,
     var name: String,
-    var price: Int,
     var description:String,
-    var photo:String
+    var price: Double,
+    var active:Boolean,
+    var evalution:Int,
+    var categoryId:Int
 ) {
 
     companion object{
