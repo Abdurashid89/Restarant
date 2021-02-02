@@ -195,6 +195,16 @@
                 app:layout_constraintTop_toBottomOf="@id/order_linear"
                 tools:listitem="@layout/order_item" />
 
+            <ProgressBar
+                android:visibility="gone"
+                android:id="@+id/waiter_orderProgress"
+                app:layout_constraintTop_toTopOf="@id/order_rv"
+                app:layout_constraintBottom_toBottomOf="@id/order_rv"
+                app:layout_constraintLeft_toLeftOf="@id/order_rv"
+                app:layout_constraintRight_toRightOf="@id/order_rv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
@@ -416,7 +426,18 @@
             app:spanCount="4"
             tools:listitem="@layout/table_item" />
 
+        <ProgressBar
+            android:id="@+id/waiter_itemsProgress"
+            android:visibility="gone"
+            app:layout_constraintTop_toTopOf="@id/tablePage_rv"
+            app:layout_constraintBottom_toBottomOf="@id/tablePage_rv"
+            app:layout_constraintRight_toRightOf="@id/tablePage_rv"
+            app:layout_constraintLeft_toLeftOf="@id/tablePage_rv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
     </androidx.constraintlayout.widget.ConstraintLayout>
+
 
 
 </LinearLayout>

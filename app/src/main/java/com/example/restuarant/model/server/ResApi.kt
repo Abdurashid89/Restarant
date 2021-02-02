@@ -47,10 +47,22 @@ interface ResApi {
         @Query("page") page: Int,
         @Query("size") size: Int,
         @Query("search") search: String
-    ):Single<GetResponseData<List<ProductInData>>>
+    ): Single<GetResponseData<List<ProductInData>>>
 
     @GET("/api/table")
-    fun getAllTable(): Single<ResData<List<TableResData>>>
+    fun getAllTable(): Single<ResData<List<TableData>>>
 
+    @GET("/api/categoryMenu/all")
+    fun getAllMenus(): Single<ResData<List<CategoryData>>>
 
+    @GET("/api/table")
+    fun getAllTables(): Single<ResData<List<TableData>>>
+
+    @GET("/api/menu/getItemsByCategory")
+    fun getItemsById(
+        @Query("categoryId") categoryId: Int
+    ): Single<List<CategoryItemData>>
+
+    @POST("/api/order")
+    fun sendOrder(@Body data:OrderSendData):Single<ResOrderData>
 }

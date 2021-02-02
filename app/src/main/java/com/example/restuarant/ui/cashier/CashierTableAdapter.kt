@@ -11,17 +11,17 @@ import com.example.restuarant.databinding.DeskItemBinding
 import com.example.restuarant.extentions.SingleBlock
 import com.example.restuarant.extentions.bindItem
 import com.example.restuarant.extentions.inflate
-import com.example.restuarant.model.entities.TableResData
+import com.example.restuarant.model.entities.TableData
 
 /**
  * Created by shohboz on 21,Январь,2021
  */
-class CashierTableAdapter:ListAdapter<TableResData,CashierTableAdapter.VHolder>(TableResData.ITEMCALLBACK){
+class CashierTableAdapter:ListAdapter<TableData,CashierTableAdapter.VHolder>(TableData.ITEM_CALLBACK){
 
-    var listener:SingleBlock<TableResData>? = null
+    var listener:SingleBlock<TableData>? = null
     var tableIndex = 0
 
-    fun setOnClickListener(block: SingleBlock<TableResData>){
+    fun setOnClickListener(block: SingleBlock<TableData>){
         listener = block
     }
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) = VHolder(DeskItemBinding.inflate(

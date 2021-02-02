@@ -14,7 +14,7 @@ import com.example.restuarant.extentions.stringFormat
 import com.example.restuarant.extentions.visible
 import com.example.restuarant.model.entities.CashierOrderData
 import com.example.restuarant.model.entities.CashierTableData
-import com.example.restuarant.model.entities.TableResData
+import com.example.restuarant.model.entities.TableData
 import com.example.restuarant.presentation.cashier.CashierPresenter
 import com.example.restuarant.presentation.cashier.CashierView
 import com.example.restuarant.ui.cashier.check.Check2
@@ -293,7 +293,7 @@ class CashierFragment : BaseFragment(), CashierView, SwipeRefreshLayout.OnRefres
         presenter.onBackPressed()
     }
 
-    override fun submitTables(list: List<TableResData>) {
+    override fun submitTables(list: List<TableData>) {
         if(list.isNotEmpty())
             bn.btnPay.visibility = View.VISIBLE
 
