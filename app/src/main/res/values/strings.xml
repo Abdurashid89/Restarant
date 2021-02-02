@@ -40,4 +40,10 @@
     <string name="exit_cash">Exit Cash</string>
     <string name="price">Price</string>
     <string name="send">Send</string>
+    <string name="cashier_name">Shohboz</string>
+    <string name="number_table">№ Table</string>
+    <string name="order_price">Order Price</string>
+    <string name="pay_type">Pay Type</string>
+    <string name="cash_back">Cash Back</string>
+    <string name="order_detail">Order Details</string>
 </resources>
