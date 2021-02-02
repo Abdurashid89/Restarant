@@ -14,12 +14,11 @@ import com.example.restuarant.extentions.stringFormat
 import com.example.restuarant.extentions.visible
 import com.example.restuarant.model.entities.CashierOrderData
 import com.example.restuarant.model.entities.CashierTableData
-import com.example.restuarant.model.entities.TableResData
+import com.example.restuarant.model.entities.TableData
 import com.example.restuarant.presentation.cashier.CashierPresenter
 import com.example.restuarant.presentation.cashier.CashierView
+import com.example.restuarant.ui.cashier.check.Check2
 import com.example.restuarant.ui.cashier.check.CheckDialog
-import com.example.restuarant.ui.cashier.check.CheckL
-import com.example.restuarant.ui.cashier.check.Item
 import com.example.restuarant.ui.cashier.check.Item2
 import com.example.restuarant.ui.global.BaseFragment
 import com.example.restuarant.ui.global.BaseWatcher
@@ -55,11 +54,13 @@ class CashierFragment : BaseFragment(), CashierView, SwipeRefreshLayout.OnRefres
         _bn = FragmentCashierBinding.bind(view)
 
         bn.swiperefresh.setOnRefreshListener(this)
+        val v = object : BaseWatcher {
+
+        }
 
         bn.tableMenu.setBackgroundResource(R.color.teal_1000)
         currentMenu = 1
-        bn.tablesLayout.cashierOrderList.adapter = orderAdapter
-        bn.tableList.adapter = tableAdapter
+        bn.tablesLayout.viewGroupTables.visibility = View.VISIBLE
 
         loadTables()
         loadButtons()
@@ -73,7 +74,8 @@ class CashierFragment : BaseFragment(), CashierView, SwipeRefreshLayout.OnRefres
 
         }
         bn.btnPay.setOnClickListener {
-            if (notNull()) bn.groupButtons.translationZ = 40f
+            if (bn.tablesLayout.totalPrice.text != "0" && orderAdapter.itemCount != 0)
+                bn.groupButtons.translationZ = 40f
             else showSnackMessage(getString(R.string.choose_table))
         }
         bn.historyMenu.setOnClickListener {
@@ -139,7 +141,7 @@ class CashierFragment : BaseFragment(), CashierView, SwipeRefreshLayout.OnRefres
 
             bn.groupButtons.getChildAt(i + 1).setOnClickListener {
 
-                if (notNull()) {
+                if (bn.tablesLayout.totalPrice.text != "0" && orderAdapter.itemCount != 0) {
 
                     if (it == bn.btn0 || it == bn.btn50) {
 
@@ -153,10 +155,10 @@ class CashierFragment : BaseFragment(), CashierView, SwipeRefreshLayout.OnRefres
                         } else if ((currentText + numberList[i]).length < 15) currentText += numberList[i]
                     }
 
+//                    Log.d("AAA", "currentTex : $currentText")
                     Timber.d(currentText)
 
-                    val total_price =
-                        bn.tablesLayout.totalPrice.text.toString().replace(" ", "").toLong()
+                    val total_price = bn.tablesLayout.totalPrice.text.toString().toLong()
 
                     if (currentText.isNotEmpty())
                         if (currentText.isNotDouble()) {
@@ -216,48 +218,58 @@ class CashierFragment : BaseFragment(), CashierView, SwipeRefreshLayout.OnRefres
             }
         }
         bn.tablesLayout.btnPrint.setOnClickListener {
-            if (notNull()) {
-                val data = Item(orderList)
-                val itemNameList = data.getItemNameList()
-                val price = data.getPriceList()
-                val check = Check(itemNameList, price)
-                val dialog = CheckDialog(requireContext(), check.html, "text/html", "UTF-8")
-//                dialog.set
-                Timber.d(check.html)
-                dialog.setOnClickListener {
-//                    dialog._bn = null
-                    dialog.dismiss()
-                    bn.tablesLayout.priceOnCash.setText("0")
-                    orderAdapter.submitList(null)
-                    currentText = ""
-                    bn.tablesLayout.totalPrice.text = "0"
-                    bn.tablesLayout.tableNumber.text = "0"
-                    bn.tablesLayout.priceCashBack.setText("0")
-                    bn.groupButtons.translationZ = 0f
-                }
-                dialog.show()
+            val data = Item2(orderList)
+            val itemNameList = data.getItemNameList()
+            val price = data.getPriceList()
+            val check = Check2().setData(itemNameList,price)
+            val dialog = CheckDialog(requireContext(),check,"text/html", "UTF-8")
+            dialog.setOnClickListener {
+                dialog.dismiss()
+                dialog._bn = null
+                showSnackMessage(it)
+            }
 
-
+            if (bn.tablesLayout.totalPrice.text.toString() != "0" && orderAdapter.itemCount != 0) {
+                bn.tablesLayout.priceOnCash.setText("0")
+                orderAdapter.submitList(null)
+                currentText = ""
+                bn.tablesLayout.totalPrice.text = "0"
+                bn.tablesLayout.tableNumber.text = "0"
+                bn.tablesLayout.priceCashBack.setText("0")
+                bn.groupButtons.translationZ = 0f
             } else showSnackMessage(getString(R.string.choose_table))
 
         }
     }
 
     private fun loadTables() {
+        val tableList = ArrayList<CashierTableData>()
+        val orderList2 = ArrayList<CashierOrderData>()
         for (i in 1..20) {
             orderList.add(CashierOrderData(i, "Meal $i", i, i, "${i * i}"))
             orderList.add(CashierOrderData(i, "Food $i", i, i, "${i * i}"))
+            orderList2.add(CashierOrderData(i, "Food $i", i + 1, i + 1, "${(i + 1) * (i + 1)}"))
+            orderList2.add(CashierOrderData(i, "Meal $i", i + 1, i + 1, "${(i + 1) * (i + 1)}"))
         }
+        for (i in 1..20) {
+            tableList.add(CashierTableData(i, "#F42B4A", if (i % 2 == 1) orderList else orderList2))
+        }
+        bn.tableList.adapter = tableAdapter
         tableAdapter.setOnClickListener {
-            orderAdapter.submitList(orderList)
             bn.tablesLayout.tableNumber.text = it.id.toString()
+            bn.tablesLayout.cashierOrderList.adapter = orderAdapter
             bn.tablesLayout.priceCashBack.setText("0")
             bn.tablesLayout.priceOnCash.setText("0")
             currentText = ""
             val total = "654 321"
+//            it.currentOrder.forEach {
+//                total += it.total.toInt()
+//            }
             bn.tablesLayout.totalPrice.text = total
+            orderAdapter.submitList(null)
+            orderAdapter.submitList(orderList)
         }
-
+        orderAdapter.submitList(orderList)
 
     }
 
@@ -266,8 +278,8 @@ class CashierFragment : BaseFragment(), CashierView, SwipeRefreshLayout.OnRefres
     }
 
     override fun makeLoadingVisible(status: Boolean) {
-        bn.progressBarGlobal.loading.visible(status)
-        bn.layoutGlobal.isClickable = !status
+            bn.progressBarGlobal.loading.visible(status)
+            bn.layoutGlobal.isClickable = !status
     }
 
     override fun openErrorDialog(message: String, status: Boolean) {
@@ -281,16 +293,14 @@ class CashierFragment : BaseFragment(), CashierView, SwipeRefreshLayout.OnRefres
         presenter.onBackPressed()
     }
 
-    override fun submitTables(list: List<TableResData>) {
-        Timber.d(list.size.toString())
-        if (list.isNotEmpty()) {
-            tableAdapter.submitList(list)
+    override fun submitTables(list: List<TableData>) {
+        if(list.isNotEmpty())
             bn.btnPay.visibility = View.VISIBLE
-        } else
 
-            bn.btnPay.visibility = View.GONE
-            bn.tableProgress.visibility = View.GONE
-            bn.swiperefresh.isRefreshing = false
+        bn.tableProgress.visibility = View.GONE
+
+        bn.swiperefresh.isRefreshing = false
+        tableAdapter.submitList(list)
     }
 
     override fun onRefresh() {
@@ -298,20 +308,18 @@ class CashierFragment : BaseFragment(), CashierView, SwipeRefreshLayout.OnRefres
     }
 
     override fun openDialog(status: Boolean) {
-        if (status) {
+        if(status){
             // send start price to server
-            val dialog =
-                CashOpenExitDialog(requireContext(), getString(R.string.open_cash), "Start price")
+            val dialog = CashOpenExitDialog(requireContext(),getString(R.string.open_cash),"Start price")
             dialog.setOnClickListener {
                 makeLoadingVisible(false)
                 dialog.dismiss()
                 dialog._bn = null
             }
             dialog.show()
-        } else {
+        }else{
             // send start price to server and exit screen
-            val dialog =
-                CashOpenExitDialog(requireContext(), getString(R.string.exit_cash), "End price")
+            val dialog = CashOpenExitDialog(requireContext(),getString(R.string.exit_cash),"End price")
             dialog.setOnClickListener {
                 makeLoadingVisible(false)
                 dialog.dismiss()
@@ -321,10 +329,6 @@ class CashierFragment : BaseFragment(), CashierView, SwipeRefreshLayout.OnRefres
             dialog.show()
         }
 
-    }
-
-    private fun notNull(): Boolean {
-        return bn.tablesLayout.totalPrice.text != "0" && orderAdapter.itemCount != 0
     }
 
     override fun onDestroy() {

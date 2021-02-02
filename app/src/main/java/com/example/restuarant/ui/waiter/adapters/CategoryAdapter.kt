@@ -1,4 +1,4 @@
-package com.example.restuarant.ui.waiter
+package com.example.restuarant.ui.waiter.adapters
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
