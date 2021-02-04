@@ -24,8 +24,8 @@ class CashierPresenter @Inject constructor(
         super.onFirstViewAttach()
         getTables()
 
-        viewState.makeLoadingVisible(true)
-        dialogOpen(true)
+//        viewState.makeLoadingVisible(true)
+//        dialogOpen(true)
     }
 
     fun dialogOpen(status:Boolean){

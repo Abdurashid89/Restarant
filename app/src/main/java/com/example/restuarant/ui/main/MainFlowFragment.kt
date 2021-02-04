@@ -5,7 +5,7 @@ import com.example.restuarant.Screens
 
 class MainFlowFragment : FlowFragment() {
 
-    override fun getLunchScreen() = Screens.Signup
+    override fun getLunchScreen() = Screens.Login
 
 
 }

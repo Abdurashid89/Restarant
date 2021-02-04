@@ -4,10 +4,11 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    app:cardCornerRadius="12dp"
-    android:elevation="4dp">
+    android:elevation="4dp"
+    app:cardCornerRadius="12dp">
 
     <LinearLayout
+        android:id="@+id/loading_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
@@ -212,4 +213,8 @@
             </LinearLayout>
         </LinearLayout>
     </LinearLayout>
+
+    <include
+        android:id="@+id/progress_bar"
+        layout="@layout/progress_bar" />
 </androidx.cardview.widget.CardView>

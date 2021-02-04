@@ -25,4 +25,6 @@ class Prefs @Inject constructor(
         set(value) = localStorage.edit().putString("TOKEN", value).apply()
 
 
+
+    //
 }

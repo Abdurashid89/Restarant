@@ -12,6 +12,7 @@ import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import moxy.InjectViewState
+import ru.terrakok.cicerone.Router
 import javax.inject.Inject
 
 /**
@@ -23,6 +24,7 @@ class LoginPresenter @Inject constructor(
     private val interactor: LoginInteractor,
     private val prefs: Prefs
 ) : BasePresenter<LoginView>() {
+
 
     override fun onFirstViewAttach() {
         super.onFirstViewAttach()

@@ -26,7 +26,7 @@ class ServerModule : Module() {
         // Error handler with logout logic
         bind(ErrorHandler::class.java).singleton()
 
-//        bind(AppDataBase::class.java).toProvider(AppDatabaseProvider::class.java).providesSingleton()
+      //  bind(AppDataBase::class.java).toProvider(AppDatabaseProvider::class.java).providesSingleton()
 //        bind(DashboardDao::class.java).toProvider(DashboardDaoProvider::class.java).providesSingleton()
         //bind(ProductInDao::class.java).toProvider(ProductInProvider::class.java).providesSingleton()
     }

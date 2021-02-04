@@ -14,7 +14,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="1.1"
+            android:layout_weight="0.9"
             tools:ignore="Suspicious0dp">
 
             <FrameLayout
@@ -27,8 +27,8 @@
 
                 <de.hdodenhof.circleimageview.CircleImageView
                     android:id="@+id/logo_rest"
-                    android:layout_width="75dp"
-                    android:layout_height="75dp"
+                    android:layout_width="70dp"
+                    android:layout_height="70dp"
                     android:layout_gravity="start|center"
                     android:layout_marginStart="24dp"
                     android:src="@drawable/apple" />
@@ -40,7 +40,7 @@
                     android:layout_gravity="end|center"
                     android:layout_marginEnd="16dp"
                     android:fontFamily="@font/roboto_medium"
-                    android:text="Shohboz"
+                    android:text="@string/cashier_name"
                     android:textColor="@color/green"
                     android:textSize="24sp"
                     android:textStyle="bold" />
