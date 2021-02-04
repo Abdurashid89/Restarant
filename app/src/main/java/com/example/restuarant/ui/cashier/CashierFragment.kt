@@ -17,7 +17,6 @@ import com.example.restuarant.model.entities.CashierTableData
 import com.example.restuarant.model.entities.TableData
 import com.example.restuarant.presentation.cashier.CashierPresenter
 import com.example.restuarant.presentation.cashier.CashierView
-import com.example.restuarant.ui.cashier.check.Check2
 import com.example.restuarant.ui.cashier.check.CheckDialog
 import com.example.restuarant.ui.cashier.check.Item2
 import com.example.restuarant.ui.global.BaseFragment
@@ -221,8 +220,8 @@ class CashierFragment : BaseFragment(), CashierView, SwipeRefreshLayout.OnRefres
             val data = Item2(orderList)
             val itemNameList = data.getItemNameList()
             val price = data.getPriceList()
-            val check = Check2().setData(itemNameList,price)
-            val dialog = CheckDialog(requireContext(),check,"text/html", "UTF-8")
+            val check = Check(itemNameList,price)
+            val dialog = CheckDialog(requireContext(),check.html,"text/html", "UTF-8")
             dialog.setOnClickListener {
                 dialog.dismiss()
                 dialog._bn = null

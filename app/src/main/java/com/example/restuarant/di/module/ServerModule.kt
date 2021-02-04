@@ -20,8 +20,7 @@ class ServerModule : Module() {
         // Network
         bind(OkHttpClient::class.java).toProvider(OkHttpClientProvider::class.java)
             .providesSingleton()
-        bind(OkHttpClient::class.java).withName(WithErrorHandler::class.java)
-            .toProvider(OkHttpClientWithErrorHandlerProvider::class.java).providesSingleton()
+        bind(OkHttpClient::class.java).withName(WithErrorHandler::class.java).toProvider(OkHttpClientWithErrorHandlerProvider::class.java).providesSingleton()
         bind(ResApi::class.java).toProvider(ApiClient::class.java).providesSingleton()
 
         // Error handler with logout logic
