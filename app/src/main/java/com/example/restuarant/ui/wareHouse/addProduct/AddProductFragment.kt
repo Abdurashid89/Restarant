@@ -22,7 +22,6 @@ import com.example.restuarant.databinding.FragmentAddProductBinding
 import com.example.restuarant.extentions.*
 import com.example.restuarant.presentation.were_house.add_product.AddProductPresenter
 import com.example.restuarant.presentation.were_house.add_product.AddProductView
-import com.example.restuarant.ui.category.CategoryAdapter
 import com.example.restuarant.ui.global.BaseFragment
 import moxy.presenter.InjectPresenter
 import moxy.presenter.ProvidePresenter
@@ -39,7 +38,7 @@ class AddProductFragment : BaseFragment(), AddProductView {
     var currentCategoryTxt = ""
     var currentBrandTxt = ""
 
-    private val adapter = CategoryAdapter()
+//    private val adapter = CategoryAdapter()
 //    private val brandAdapter = BrandAdapter()
 
     @InjectPresenter

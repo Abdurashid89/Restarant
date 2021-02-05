@@ -10,7 +10,6 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.restuarant.R
 import com.example.restuarant.databinding.FragmentWareHouseBinding
 import com.example.restuarant.extentions.showSnackMessage
-import com.example.restuarant.model.entities.CategoryInProductData
 import com.example.restuarant.model.entities.ProductInData
 import com.example.restuarant.presentation.were_house.WareHousePresenter
 import com.example.restuarant.presentation.were_house.WareHouseView
@@ -56,22 +55,22 @@ class WareHouseFragment() : BaseFragment(), WareHouseView {
 
 
     private fun loadAdapter() {
-        itemList = ArrayList()
-        var categoryInData =
-            CategoryInProductData(0, "aa", "aa", "aa", "aa", "aa", "Aa", 0, false, 0)
-        itemList.add(ProductInData(0, "aaaaa", "a", "a", "aa", "go'sht", categoryInData))
-        itemList.add(ProductInData(1, "aaaaa", "a", "a", "aa", "saryog'", categoryInData))
-        itemList.add(ProductInData(2, "aaaaa", "a", "a", "aa", "non", categoryInData))
-        itemList.add(ProductInData(3, "aaaaa", "a", "a", "aa", "suv", categoryInData))
-        itemList.add(ProductInData(4, "aaaaa", "a", "a", "aa", "kartoshka", categoryInData))
-        itemList.add(ProductInData(5, "aaaaa", "a", "a", "aa", "sabzi", categoryInData))
-        itemList.add(ProductInData(6, "aaaaa", "a", "a", "aa", "piyoz", categoryInData))
-        itemList.add(ProductInData(7, "aaaaa", "a", "a", "aa", "sholg'om", categoryInData))
-        itemList.add(ProductInData(8, "aaaaa", "a", "a", "aa", "gorox", categoryInData))
-        itemList.add(ProductInData(9, "aaaaa", "a", "a", "aa", "mosh", categoryInData))
-        itemList.add(ProductInData(10, "aaaaa", "a", "a", "aa", "guruch", categoryInData))
-        itemList.add(ProductInData(11, "aaaaa", "a", "a", "aa", "loviya", categoryInData))
-        itemList.add(ProductInData(12, "aaaaa", "a", "a", "aa", "tovuq go'shti", categoryInData))
+//        itemList = ArrayList()
+//        var categoryInData =
+////            CategoryInProductData(0, "aa", "aa", "aa", "aa", "aa", "Aa", 0, false, 0)
+//        itemList.add(ProductInData(0, "aaaaa", "a", "a", "aa", "go'sht", categoryInData))
+//        itemList.add(ProductInData(1, "aaaaa", "a", "a", "aa", "saryog'", categoryInData))
+//        itemList.add(ProductInData(2, "aaaaa", "a", "a", "aa", "non", categoryInData))
+//        itemList.add(ProductInData(3, "aaaaa", "a", "a", "aa", "suv", categoryInData))
+//        itemList.add(ProductInData(4, "aaaaa", "a", "a", "aa", "kartoshka", categoryInData))
+//        itemList.add(ProductInData(5, "aaaaa", "a", "a", "aa", "sabzi", categoryInData))
+//        itemList.add(ProductInData(6, "aaaaa", "a", "a", "aa", "piyoz", categoryInData))
+//        itemList.add(ProductInData(7, "aaaaa", "a", "a", "aa", "sholg'om", categoryInData))
+//        itemList.add(ProductInData(8, "aaaaa", "a", "a", "aa", "gorox", categoryInData))
+//        itemList.add(ProductInData(9, "aaaaa", "a", "a", "aa", "mosh", categoryInData))
+//        itemList.add(ProductInData(10, "aaaaa", "a", "a", "aa", "guruch", categoryInData))
+//        itemList.add(ProductInData(11, "aaaaa", "a", "a", "aa", "loviya", categoryInData))
+//        itemList.add(ProductInData(12, "aaaaa", "a", "a", "aa", "tovuq go'shti", categoryInData))
 
     }
 

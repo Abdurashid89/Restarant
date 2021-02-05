@@ -17,7 +17,7 @@ class ProductItemDialog(context: Context, item: ProductInData) : AlertDialog(con
     init {
         setView(contentView)
         val view = ItemProductItemBinding.bind(contentView)
-        view.categoryName.text = item.category.name
+//        view.categoryName.text = item.category.name
         view.productName.text = item.name
         view.productDate.text = item.createdAt.substring(0, 16).replace("T", " ")
         view.btnOk.setOnClickListener { dismiss() }
