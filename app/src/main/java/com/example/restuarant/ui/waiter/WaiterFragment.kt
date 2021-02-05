@@ -9,6 +9,7 @@ import androidx.recyclerview.widget.LinearSnapHelper
 import com.example.restuarant.R
 import com.example.restuarant.databinding.FragmentWaiterBinding
 import com.example.restuarant.di.DI
+import com.example.restuarant.extentions.customDialog
 import com.example.restuarant.extentions.stringFormat
 import com.example.restuarant.extentions.visible
 import com.example.restuarant.model.entities.*
@@ -28,8 +29,7 @@ class WaiterFragment : BaseFragment(), WaiterView {
 
     private var _bn: FragmentWaiterBinding? = null
     private val bn get() = _bn ?: throw NullPointerException("error")
-
-
+    
     private lateinit var itemList:ArrayList<CategoryItemData>
 
     private var goodsCategoryAdapter = CategoryItemAdapter()
@@ -124,15 +124,7 @@ class WaiterFragment : BaseFragment(), WaiterView {
             if (orderAdapter.itemCount!=0) {
                 bn.orderRv.smoothScrollToPosition(orderAdapter.itemCount - 1)
             }
-//            Timber.d(it.name)
-//            val list = orderAdapter.currentList.toMutableList()
-//            Timber.d(list.size.toString())
-//            list.add(waiterOrderData)
-//            Timber.d(list.size.toString())
-//            orderAdapter.submitList(list)
         }
-
-
     }
 
 
@@ -145,7 +137,7 @@ class WaiterFragment : BaseFragment(), WaiterView {
     }
 
     override fun openErrorDialog(message: String, status: Boolean) {
-
+        customDialog(message,status)
     }
 
     override fun openClientCountDialog() {
@@ -176,6 +168,10 @@ class WaiterFragment : BaseFragment(), WaiterView {
         tableAdapter.submitList(list.objectData)
     }
 
+    override fun getItemsById(list: ResData<List<CategoryItemData>>) {
+        goodsCategoryAdapter.submitList(list.objectData)
+    }
+
     override fun changeColor() {
         when (btnId) {
             1 -> bn.tablesBtn.setBackgroundResource(R.color.green)
@@ -200,6 +196,8 @@ class WaiterFragment : BaseFragment(), WaiterView {
             DI.TABLES_PROGRESS-> bn.waiterItemsProgress.visible(status)
         }
     }
+
+
 
     override fun onDestroy() {
         super.onDestroy()
