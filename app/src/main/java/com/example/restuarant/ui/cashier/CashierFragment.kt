@@ -12,7 +12,10 @@ import com.example.restuarant.extentions.isNotDouble
 import com.example.restuarant.extentions.showSnackMessage
 import com.example.restuarant.extentions.stringFormat
 import com.example.restuarant.extentions.visible
-import com.example.restuarant.model.entities.*
+import com.example.restuarant.model.entities.CashierHistoryData
+import com.example.restuarant.model.entities.CashierOrderData
+import com.example.restuarant.model.entities.CashierTableData
+import com.example.restuarant.model.entities.TableData
 import com.example.restuarant.presentation.cashier.CashierPresenter
 import com.example.restuarant.presentation.cashier.CashierView
 import com.example.restuarant.ui.cashier.check.CheckDialog

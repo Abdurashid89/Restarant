@@ -1,6 +1,7 @@
 package com.example.restuarant.presentation.waiter
 
 import com.example.restuarant.model.entities.CategoryData
+import com.example.restuarant.model.entities.CategoryItemData
 import com.example.restuarant.model.entities.ResData
 import com.example.restuarant.model.entities.TableData
 import moxy.MvpView
@@ -29,6 +30,8 @@ interface WaiterView : MvpView {
     fun getMenu(list: ResData<List<CategoryData>>)
 
     fun getTables(list: ResData<List<TableData>>)
+
+    fun getItemsById(list: ResData<List<CategoryItemData>>)
 
     fun changeColor()
 

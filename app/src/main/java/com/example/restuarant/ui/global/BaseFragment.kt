@@ -43,6 +43,7 @@ abstract class BaseFragment : MvpAppCompatFragment() {
         }
 
         super.onCreate(savedInstanceState)
+
     }
 
     override fun onCreateView(

@@ -9,7 +9,8 @@ import retrofit2.converter.gson.GsonConverterFactory
 import javax.inject.Inject
 import javax.inject.Provider
 
-class ApiClient @Inject constructor(
+class
+ApiClient @Inject constructor(
         private val okHttpClient: OkHttpClient,
         @ServerPath private val serverPath: String
 ) : Provider<ResApi> {

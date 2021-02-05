@@ -29,8 +29,7 @@ class MainActivity : MvpAppCompatActivity() {
 
     private val navigator: Navigator =
         object : SupportAppNavigator(this, supportFragmentManager,
-            R.id.container
-        ) {
+            R.id.container) {
             override fun setupFragmentTransaction(
                 command: Command?,
                 currentFragment: Fragment?,
@@ -59,8 +58,8 @@ class MainActivity : MvpAppCompatActivity() {
     }
 
     override fun onPause() {
-        navigatorHolder.removeNavigator()
         super.onPause()
+        navigatorHolder.removeNavigator()
     }
 
     override fun onResumeFragments() {
