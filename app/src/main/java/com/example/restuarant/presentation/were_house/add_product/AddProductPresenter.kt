@@ -16,7 +16,6 @@ import javax.inject.Inject
 
 @InjectViewState
 class AddProductPresenter @Inject constructor(
-    private val router: FlowRouter,
     private val intercepter: AddProductInteractor
 ) : BasePresenter<AddProductView>() {
     var page = 0
@@ -50,17 +49,12 @@ class AddProductPresenter @Inject constructor(
     }
 
 
-    fun onBackPressed() {
-        router.exit()
-    }
-
     fun sendImageUri(path: String, uri: Uri) {
         viewState.makeLoadingVisible(true)
         val file = File(path)
         val requestFile = file.asRequestBody("image/*".toMediaTypeOrNull())
         val image = MultipartBody.Part.createFormData("image", file.name, requestFile)
 
-        intercepter
 
     }
 

@@ -21,9 +21,9 @@
             android:orientation="horizontal">
 
             <LinearLayout
-                android:layout_weight="3"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:layout_weight="3"
                 android:gravity="left">
 
                 <ImageView
@@ -218,17 +218,17 @@
             android:gravity="center">
 
             <androidx.cardview.widget.CardView
-                android:elevation="4dp"
-                android:translationZ="5dp"
-                android:clickable="true"
-                android:focusable="true"
-                android:focusableInTouchMode="true"
-                android:background="?android:attr/selectableItemBackground"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
                 android:layout_marginLeft="5dp"
                 android:layout_marginRight="5dp"
+                android:background="?android:attr/selectableItemBackground"
                 android:backgroundTint="@color/green"
+                android:clickable="true"
+                android:elevation="4dp"
+                android:focusable="true"
+                android:focusableInTouchMode="true"
+                android:translationZ="5dp"
                 app:cardCornerRadius="15dp">
 
                 <TextView
@@ -319,4 +319,8 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintTop_toBottomOf="@id/linear_table"
         tools:listitem="@layout/item_ware_house" />
+
+    <include
+        android:id="@+id/progress_bar_layout"
+        layout="@layout/progress_bar" />
 </androidx.constraintlayout.widget.ConstraintLayout>

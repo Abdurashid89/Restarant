@@ -25,23 +25,6 @@ interface ResApi {
     @GET("/api/product/productName")
     fun productExistOrNot(@Query("name") name: String): Single<MessageDataWithoutMessageType>
 
-    @GET("/api/category")
-    fun getAllCategory(
-        @Query("page") page: Int,
-        @Query("size") size: Int,
-        @Query("search") search: String
-    ): Single<GetResponseData<List<CategoryInData>>>
-
-    @GET("/api/categoryProduct/getAll")
-    fun getCategorySearch(
-        @Query("name") name: String
-    ): Single<List<CategoryInData>>
-
-    @GET("/api/brand/getAll")
-    fun getBrandSearch(
-        @Query("name") name: String
-    ): Single<List<BrandInData>>
-
     @GET("/api/product")
     fun getAllProduct(
         @Query("page") page: Int,

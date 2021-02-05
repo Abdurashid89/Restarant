@@ -12,10 +12,7 @@ import com.example.restuarant.extentions.isNotDouble
 import com.example.restuarant.extentions.showSnackMessage
 import com.example.restuarant.extentions.stringFormat
 import com.example.restuarant.extentions.visible
-import com.example.restuarant.model.entities.CashierHistoryData
-import com.example.restuarant.model.entities.CashierOrderData
-import com.example.restuarant.model.entities.CashierTableData
-import com.example.restuarant.model.entities.TableResData
+import com.example.restuarant.model.entities.*
 import com.example.restuarant.presentation.cashier.CashierPresenter
 import com.example.restuarant.presentation.cashier.CashierView
 import com.example.restuarant.ui.cashier.check.CheckDialog
@@ -294,7 +291,7 @@ class CashierFragment : BaseFragment(), CashierView, SwipeRefreshLayout.OnRefres
         presenter.onBackPressed()
     }
 
-    override fun submitTables(list: List<TableResData>) {
+    override fun submitTables(list: List<TableData>) {
         Timber.d(list.size.toString())
         bn.tableProgress.visibility = View.GONE
         bn.swiperefresh.isRefreshing = false
