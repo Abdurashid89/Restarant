@@ -168,6 +168,10 @@ class WaiterFragment : BaseFragment(), WaiterView {
         tableAdapter.submitList(list.objectData)
     }
 
+    override fun getItemsById(list: ResData<List<CategoryItemData>>) {
+        goodsCategoryAdapter.submitList(list.objectData)
+    }
+
     override fun changeColor() {
         when (btnId) {
             1 -> bn.tablesBtn.setBackgroundResource(R.color.green)
