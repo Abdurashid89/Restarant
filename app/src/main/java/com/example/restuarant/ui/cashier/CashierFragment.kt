@@ -12,19 +12,17 @@ import com.example.restuarant.extentions.isNotDouble
 import com.example.restuarant.extentions.showSnackMessage
 import com.example.restuarant.extentions.stringFormat
 import com.example.restuarant.extentions.visible
-import com.example.restuarant.model.entities.*
+import com.example.restuarant.model.entities.CashierHistoryData
+import com.example.restuarant.model.entities.CashierOrderData
+import com.example.restuarant.model.entities.TableData
 import com.example.restuarant.presentation.cashier.CashierPresenter
 import com.example.restuarant.presentation.cashier.CashierView
 import com.example.restuarant.ui.cashier.check.CheckDialog
-import com.example.restuarant.ui.cashier.check.CheckL
 import com.example.restuarant.ui.cashier.check.Item
-import com.example.restuarant.ui.cashier.check.Item2
 import com.example.restuarant.ui.global.BaseFragment
-import com.example.restuarant.ui.global.BaseWatcher
 import moxy.presenter.InjectPresenter
 import moxy.presenter.ProvidePresenter
 import timber.log.Timber
-import java.lang.NullPointerException
 
 /**
  * Created by shohboz on 18,Январь,2021
@@ -41,6 +39,7 @@ class CashierFragment : BaseFragment(), CashierView, SwipeRefreshLayout.OnRefres
     private val historyList = ArrayList<CashierHistoryData>()
     private var currentText = ""
     var currentMenu = 0
+    var historyOpened = false
 
     @InjectPresenter
     lateinit var presenter: CashierPresenter
@@ -62,9 +61,9 @@ class CashierFragment : BaseFragment(), CashierView, SwipeRefreshLayout.OnRefres
         bn.tableList.adapter = tableAdapter
         bn.historyLayout.listHistoryCashier.adapter = historyAdapter
 
+        loadHistory()
         loadTables()
         loadButtons()
-        loadHistory()
 
         bn.logoutMenu.setOnClickListener {
             presenter.onBackPressed()
@@ -81,16 +80,20 @@ class CashierFragment : BaseFragment(), CashierView, SwipeRefreshLayout.OnRefres
         }
         bn.historyMenu.setOnClickListener {
             bn.groupButtons.translationZ = 0f
+            historyOpened = true
             setColorMenu()
             currentMenu = 2
             it.setBackgroundResource(R.color.teal_1000)
             bn.historyLayout.cashierHistoryLayout.visibility = View.VISIBLE
             bn.tablesLayout.viewGroupTables.visibility = View.GONE
             bn.togoLayout.cashierOwnLayout.visibility = View.GONE
+            Timber.d("historyListSize:${historyList.size}")
             historyAdapter.submitList(historyList)
+            Timber.d("historyAdapterListSize:${historyAdapter.itemCount}")
 
         }
         bn.togoMenu.setOnClickListener {
+            historyOpened = false
             bn.groupButtons.translationZ = 0f
             setColorMenu()
             currentMenu = 3
@@ -103,6 +106,7 @@ class CashierFragment : BaseFragment(), CashierView, SwipeRefreshLayout.OnRefres
 
         bn.tableMenu.setOnClickListener {
             bn.groupButtons.translationZ = 0f
+            historyOpened = false
             setColorMenu()
             bn.historyLayout.cashierHistoryLayout.visibility = View.GONE
             bn.togoLayout.cashierOwnLayout.visibility = View.GONE
@@ -116,10 +120,17 @@ class CashierFragment : BaseFragment(), CashierView, SwipeRefreshLayout.OnRefres
     }
 
     private fun loadHistory() {
-        for (i in 1..5){
-            historyList.add(CashierHistoryData(i,"50 000","Card","500","more"))
-            historyList.add(CashierHistoryData(i,"45 000","Cash","100","more"))
+        val list = tableAdapter.currentList.toMutableList()
+        for (i in list.indices) {
+            historyList.add(CashierHistoryData(list[i].id, "50 000", "Card", "0", "more"))
+            historyList.add(CashierHistoryData(list[i].id, "50 000", "Card", "0", "more"))
+            historyList.add(CashierHistoryData(list[i].id, "50 000", "Card", "0", "more"))
+            historyList.add(CashierHistoryData(list[i].id, "45 000", "Cash", "100", "more"))
+            historyList.add(CashierHistoryData(list[i].id, "45 000", "Cash", "100", "more"))
+            historyList.add(CashierHistoryData(list[i].id, "45 000", "Cash", "100", "more"))
+            historyList.add(CashierHistoryData(list[i].id, "45 000", "Cash", "100", "more"))
         }
+        Timber.d("loadedHistoryListSize:${historyList.size}")
     }
 
     private fun setColorMenu() {
@@ -199,7 +210,8 @@ class CashierFragment : BaseFragment(), CashierView, SwipeRefreshLayout.OnRefres
             if (currentText.length > 1) {
                 currentText = currentText.substring(0, currentText.length - 1)
 
-                val total_price = bn.tablesLayout.totalPrice.text.toString().replace(" ","").toLong()
+                val total_price =
+                    bn.tablesLayout.totalPrice.text.toString().replace(" ", "").toLong()
 
                 if (currentText.isNotDouble()) {
                     val sum = currentText.toLong()
@@ -258,14 +270,25 @@ class CashierFragment : BaseFragment(), CashierView, SwipeRefreshLayout.OnRefres
             orderList.add(CashierOrderData(i, "Meal $i", i, i, "${i * i}"))
             orderList.add(CashierOrderData(i, "Food $i", i, i, "${i * i}"))
         }
-        tableAdapter.setOnClickListener {
-            orderAdapter.submitList(orderList)
-            bn.tablesLayout.tableNumber.text = it.id.toString()
-            bn.tablesLayout.priceCashBack.setText("0")
-            bn.tablesLayout.priceOnCash.setText("0")
-            currentText = ""
-            val total = "654 321"
-            bn.tablesLayout.totalPrice.text = total
+        tableAdapter.setOnClickListener { tab ->
+            if (historyOpened) {
+                val tabList = ArrayList<CashierHistoryData>()
+                historyList.forEach {
+                    if (it.id == tab.id) {
+                        tabList.add(it)
+                    }
+                }
+                historyAdapter.submitList(tabList)
+            } else {
+                orderAdapter.submitList(orderList)
+                bn.tablesLayout.tableNumber.text = tab.id.toString()
+                bn.tablesLayout.priceCashBack.setText("0")
+                bn.tablesLayout.priceOnCash.setText("0")
+                currentText = ""
+                val total = "654 321"
+                bn.tablesLayout.totalPrice.text = total
+            }
+
         }
 
 
@@ -298,7 +321,7 @@ class CashierFragment : BaseFragment(), CashierView, SwipeRefreshLayout.OnRefres
         if (list.isNotEmpty()) {
             tableAdapter.submitList(list)
             bn.btnPay.visibility = View.VISIBLE
-        } else{
+        } else {
             bn.btnPay.visibility = View.GONE
         }
     }
