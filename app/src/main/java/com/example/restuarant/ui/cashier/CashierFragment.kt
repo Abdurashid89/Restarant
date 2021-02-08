@@ -32,9 +32,9 @@ class CashierFragment : BaseFragment(), CashierView, SwipeRefreshLayout.OnRefres
 
     private var _bn: FragmentCashierBinding? = null
     private val bn get() = _bn ?: throw NullPointerException("error")
-    private val tableAdapter = CashierTableAdapter()
+    private val tableAdapter = CashierTableAdapter2()
     private val orderAdapter = CashierOrderAdapter()
-    private val historyAdapter = CashierHistoryAdapter()
+    private val historyAdapter = CashierHistoryAdapter2()
     private val orderList = ArrayList<CashierOrderData>()
     private val historyList = ArrayList<CashierHistoryData>()
     private var currentText = ""
@@ -84,8 +84,9 @@ class CashierFragment : BaseFragment(), CashierView, SwipeRefreshLayout.OnRefres
             setColorMenu()
             currentMenu = 2
             it.setBackgroundResource(R.color.teal_1000)
+            bn.cashierContainer.visibility = View.GONE
             bn.historyLayout.cashierHistoryLayout.visibility = View.VISIBLE
-            bn.tablesLayout.viewGroupTables.visibility = View.GONE
+//            bn.tablesLayout.viewGroupTables.visibility = View.GONE
             bn.togoLayout.cashierOwnLayout.visibility = View.GONE
             Timber.d("historyListSize:${historyList.size}")
             historyAdapter.submitList(historyList)
@@ -110,8 +111,7 @@ class CashierFragment : BaseFragment(), CashierView, SwipeRefreshLayout.OnRefres
             setColorMenu()
             bn.historyLayout.cashierHistoryLayout.visibility = View.GONE
             bn.togoLayout.cashierOwnLayout.visibility = View.GONE
-            bn.tablesLayout.viewGroupTables.visibility = View.VISIBLE
-
+            bn.cashierContainer.visibility = View.VISIBLE
             currentMenu = 1
             it.setBackgroundResource(R.color.teal_1000)
 
@@ -120,15 +120,9 @@ class CashierFragment : BaseFragment(), CashierView, SwipeRefreshLayout.OnRefres
     }
 
     private fun loadHistory() {
-        val list = tableAdapter.currentList.toMutableList()
-        for (i in list.indices) {
-            historyList.add(CashierHistoryData(list[i].id, "50 000", "Card", "0", "more"))
-            historyList.add(CashierHistoryData(list[i].id, "50 000", "Card", "0", "more"))
-            historyList.add(CashierHistoryData(list[i].id, "50 000", "Card", "0", "more"))
-            historyList.add(CashierHistoryData(list[i].id, "45 000", "Cash", "100", "more"))
-            historyList.add(CashierHistoryData(list[i].id, "45 000", "Cash", "100", "more"))
-            historyList.add(CashierHistoryData(list[i].id, "45 000", "Cash", "100", "more"))
-            historyList.add(CashierHistoryData(list[i].id, "45 000", "Cash", "100", "more"))
+        for (i in 0 until 10) {
+            historyList.add(CashierHistoryData(i, "50 000", "Card", "0", "more"))
+            historyList.add(CashierHistoryData(i, "45 000", "Cash", "100", "more"))
         }
         Timber.d("loadedHistoryListSize:${historyList.size}")
     }

@@ -1,5 +1,5 @@
 package com.example.restuarant.ui.wareHouse.addProduct
-
+/*
 import android.Manifest
 import android.annotation.SuppressLint
 import android.app.Activity
@@ -18,14 +18,14 @@ import android.view.View
 import android.view.animation.AnimationUtils
 import androidx.core.content.PermissionChecker
 import com.example.restuarant.R
-import com.example.restuarant.databinding.FragmentAddProductBinding
 import com.example.restuarant.extentions.*
 import com.example.restuarant.presentation.were_house.add_product.AddProductPresenter
 import com.example.restuarant.presentation.were_house.add_product.AddProductView
 //import com.example.restuarant.ui.category.CategoryAdapter
 import com.example.restuarant.ui.global.BaseFragment
 import moxy.presenter.InjectPresenter
-import moxy.presenter.ProvidePresenter
+import moxy.presenter.ProvidePresenter*/
+/*
 
 class AddProductFragment : BaseFragment(), AddProductView {
     override val layoutRes: Int = R.layout.fragment_add_product
@@ -274,4 +274,4 @@ class AddProductFragment : BaseFragment(), AddProductView {
             binding.inputName.error = message
         }
     }
-}
+}*/

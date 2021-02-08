@@ -2,7 +2,6 @@ package com.example.restuarant.ui.cashier
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.example.restuarant.databinding.ItemHistoryChashierBinding
 import com.example.restuarant.extentions.SingleBlock
@@ -10,11 +9,17 @@ import com.example.restuarant.extentions.bindItem
 import com.example.restuarant.model.entities.CashierHistoryData
 
 /**
- * Created by shohboz on 02,Февраль,2021
+ * Created by Abdurashid on 08,Февраль,2021
  */
 
-class CashierHistoryAdapter :
-    ListAdapter<CashierHistoryData, CashierHistoryAdapter.VHolder>(CashierHistoryData.ITEMCALLBACK) {
+class CashierHistoryAdapter2 : RecyclerView.Adapter<CashierHistoryAdapter2.HistoryViewHolder>() {
+    val list = ArrayList<CashierHistoryData>()
+
+    fun submitList(ls: List<CashierHistoryData>) {
+        list.clear()
+        list.addAll(ls)
+        notifyDataSetChanged()
+    }
 
     var listener: SingleBlock<CashierHistoryData>? = null
 
@@ -22,25 +27,29 @@ class CashierHistoryAdapter :
         listener = block
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) = VHolder(
+
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) = HistoryViewHolder(
         ItemHistoryChashierBinding.inflate(
             LayoutInflater.from(parent.context), parent, false
         )
     )
 
-    override fun onBindViewHolder(holder: VHolder, position: Int) = holder.bind()
+    override fun onBindViewHolder(holder: HistoryViewHolder, position: Int) = holder.bind()
 
-    inner class VHolder(val binding: ItemHistoryChashierBinding) : RecyclerView.ViewHolder(binding.root) {
+    override fun getItemCount() = list.size
+
+    inner class HistoryViewHolder(val binding: ItemHistoryChashierBinding) :
+        RecyclerView.ViewHolder(binding.root) {
 
         init {
             itemView.setOnClickListener {
-                listener?.invoke(currentList[adapterPosition])
+                listener?.invoke(list[adapterPosition])
             }
         }
 
         fun bind() = bindItem {
 
-            val d = currentList[adapterPosition]
+            val d = list[adapterPosition]
             binding.apply {
                 numberTable.text = d.id.toString()
                 orderPrice.text = d.orderPrice
@@ -50,3 +59,6 @@ class CashierHistoryAdapter :
         }
     }
 }
+
+
+
