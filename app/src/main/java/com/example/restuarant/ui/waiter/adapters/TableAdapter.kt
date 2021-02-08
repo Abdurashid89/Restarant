@@ -26,7 +26,7 @@ class TableAdapter : ListAdapter<TableData, TableAdapter.Vh>(TableData.ITEM_CALL
 
         fun onBind() {
             if (getItem(adapterPosition).active){
-                view.tablePageLinear.setBackgroundResource(android.R.color.holo_red_dark)
+                view.tablePageLinear.setBackgroundResource(android.R.color.holo_green_dark)
             }
             view.tablePageNumberTv.text = getItem(adapterPosition).id.toString()
         }

@@ -37,14 +37,14 @@ class OrderAdapter : ListAdapter<WaiterOrderData, OrderAdapter.Vh>(WaiterOrderDa
     inner class Vh(val view: OrderItemBinding) : RecyclerView.ViewHolder(view.root) {
 
         init {
+            itemView.setOnClickListener {
+                listener?.invoke(currentList[adapterPosition])
+            }
             view.orderPlus.setOnClickListener {
                 plusListener?.invoke(adapterPosition)
             }
             view.orderMinus.setOnClickListener {
                 minusListener?.invoke(adapterPosition)
-            }
-            itemView.setOnClickListener {
-                listener?.invoke(currentList[adapterPosition])
             }
         }
 
