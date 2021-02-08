@@ -31,7 +31,7 @@ interface ResApi {
 //        @Query("size") size: Int,
 //        @Query("search") search: String
 //    ): Single<GetResponseData<List<CategoryInData>>>
-
+//
 //    @GET("/api/categoryProduct/getAll")
 //    fun getCategorySearch(
 //        @Query("name") name: String
@@ -61,7 +61,7 @@ interface ResApi {
     @GET("/api/menu/getItemsByCategory")
     fun getItemsById(
         @Query("categoryId") categoryId: Int
-    ): Single<List<CategoryItemData>>
+    ): Single<ResData<List<CategoryItemData>>>
 
     @POST("/api/order")
     fun sendOrder(@Body data:OrderSendData):Single<ResOrderData>

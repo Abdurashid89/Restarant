@@ -8,7 +8,7 @@ import com.example.restuarant.databinding.ShowItemBinding
 import com.example.restuarant.extentions.SingleBlock
 import com.example.restuarant.extentions.bindItem
 //import com.example.restuarant.model.entities.CategoryInData
-
+//
 //class CategoryAdapter :
 //    ListAdapter<CategoryInData, CategoryAdapter.VH>(CategoryInData.ITEM_CALLBACK) {
 //    private var listener: SingleBlock<CategoryInData>? = null

@@ -17,7 +17,7 @@ class WaiterInteractor @Inject constructor(
             .observeOn(AndroidSchedulers.mainThread())
     }
 
-    fun getMenuItems(categoryId: Int): Single<List<CategoryItemData>> {
+    fun getMenuItems(categoryId: Int): Single<ResData<List<CategoryItemData>>> {
         return api.getItemsById(categoryId).map {
             it
         }.subscribeOn(Schedulers.io())

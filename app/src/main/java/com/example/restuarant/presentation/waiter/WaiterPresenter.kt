@@ -1,5 +1,6 @@
 package com.example.restuarant.presentation.waiter
 
+import android.annotation.SuppressLint
 import com.example.restuarant.di.DI
 import com.example.restuarant.extentions.errorResponse
 import com.example.restuarant.model.entities.OrderSendData
@@ -46,8 +47,18 @@ class WaiterPresenter @Inject constructor(
             }).connect()
     }
 
+
     fun getMenuItems(categoryId:Int){
         interactor.getMenuItems(categoryId)
+            .doOnSubscribe {
+                viewState.showProgress(DI.MENU_ITEMS_PROGRESS,false)
+            }.doAfterTerminate {
+                viewState.showProgress(DI.MENU_ITEMS_PROGRESS,false)
+            }.subscribe({
+                viewState.getItemsById(it)
+            },{
+                viewState.openErrorDialog(it.errorResponse(),false)
+            }).connect()
     }
 
     private fun getTableList(){
