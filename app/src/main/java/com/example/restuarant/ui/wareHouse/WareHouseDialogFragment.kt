@@ -12,10 +12,10 @@ import com.example.restuarant.R
 import com.example.restuarant.databinding.ItemProductBinding
 import com.example.restuarant.di.DI
 import com.example.restuarant.extentions.SingleBlock
+import com.example.restuarant.extentions.showSnackMessage
 import com.example.restuarant.extentions.vibrate
 import com.example.restuarant.extentions.visible
 import com.example.restuarant.model.entities.ProductData
-import com.example.restuarant.model.entities.ProductInData
 import com.example.restuarant.presentation.were_house.add_product.AddProductPresenter
 import com.example.restuarant.presentation.were_house.add_product.AddProductView
 import com.example.restuarant.ui.global.BaseWatcher
@@ -51,10 +51,10 @@ class WareHouseDialogFragment : MvpAppCompatDialogFragment(), AddProductView {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         _bn = ItemProductBinding.bind(view)
 
-        bn.inputProductName.setOnClickListener {
+        bn.btnAdd.setOnClickListener {
             val name = bn.inputProductName.toString().trim()
-            val weight = bn.inputProductWeight.toString().toDouble()
-            val price = bn.inputProductPrice.toString().toDouble()
+            val weight = bn.inputProductWeight.text.toString()
+            val price = bn.inputProductPrice.text.toString()
 
             if (name.isEmpty()) {
                 bn.inputProductName.startAnimation(
@@ -66,7 +66,7 @@ class WareHouseDialogFragment : MvpAppCompatDialogFragment(), AddProductView {
                 vibrate(requireContext())
                 return@setOnClickListener
             }
-            if (weight.equals(0)) {
+            if (weight.equals("")) {
                 bn.inputProductName.startAnimation(
                     AnimationUtils.loadAnimation(
                         requireContext(),
@@ -76,7 +76,7 @@ class WareHouseDialogFragment : MvpAppCompatDialogFragment(), AddProductView {
                 vibrate(requireContext())
                 return@setOnClickListener
             }
-            if (price.equals(0)) {
+            if (price.equals("")) {
                 bn.inputProductName.startAnimation(
                     AnimationUtils.loadAnimation(
                         requireContext(),
@@ -87,7 +87,7 @@ class WareHouseDialogFragment : MvpAppCompatDialogFragment(), AddProductView {
                 return@setOnClickListener
             }
 
-            listener?.invoke(ProductData(0, name, weight, price))
+            listener?.invoke(ProductData(0, name, weight.toDouble(), price.toDouble()))
         }
 
         bn.inputProductName.addTextChangedListener(object : BaseWatcher {
@@ -95,6 +95,10 @@ class WareHouseDialogFragment : MvpAppCompatDialogFragment(), AddProductView {
 
             }
         })
+
+        bn.btnDismiss.setOnClickListener {
+            dialog?.dismiss()
+        }
     }
 
     fun setOnCLickListener(block: SingleBlock<ProductData>) {
@@ -102,12 +106,12 @@ class WareHouseDialogFragment : MvpAppCompatDialogFragment(), AddProductView {
     }
 
     override fun showMessage(message: String) {
-        TODO("Not yet implemented")
+        showSnackMessage(message)
     }
 
     override fun makeLoadingVisible(status: Boolean) {
         bn.loadingLayout.isClickable = !status
-        bn.progressBar.loading.visible(status)
+//      bn.progressBar
     }
 
     override fun openDialog(message: String, status: Boolean) {
