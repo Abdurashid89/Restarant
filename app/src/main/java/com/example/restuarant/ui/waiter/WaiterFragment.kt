@@ -10,6 +10,7 @@ import com.example.restuarant.R
 import com.example.restuarant.databinding.FragmentWaiterBinding
 import com.example.restuarant.di.DI
 import com.example.restuarant.extentions.customDialog
+import com.example.restuarant.extentions.showSnackMessage
 import com.example.restuarant.extentions.stringFormat
 import com.example.restuarant.extentions.visible
 import com.example.restuarant.model.entities.*
@@ -22,6 +23,7 @@ import com.example.restuarant.ui.waiter.adapters.OrderAdapter
 import com.example.restuarant.ui.waiter.adapters.TableAdapter
 import moxy.presenter.InjectPresenter
 import moxy.presenter.ProvidePresenter
+import timber.log.Timber
 
 
 class WaiterFragment : BaseFragment(), WaiterView {
@@ -29,14 +31,21 @@ class WaiterFragment : BaseFragment(), WaiterView {
 
     private var _bn: FragmentWaiterBinding? = null
     private val bn get() = _bn ?: throw NullPointerException("error")
-    
-    private lateinit var itemList:ArrayList<CategoryItemData>
 
+    //
+    private var menuList = ArrayList<CategoryData>()
+    private var tableList = ArrayList<TableData>()
+    private var orderList = ArrayList<MenuSelect>()
+
+    // adapters
     private var goodsCategoryAdapter = CategoryItemAdapter()
     private var categoryAdapter = CategoryAdapter()
     private var tableAdapter = TableAdapter()
     private var orderAdapter = OrderAdapter()
 
+    //
+    private var tableId = -1
+    private var totalSum = 0
     private var btnId: Int = 1
 
     @InjectPresenter
@@ -50,11 +59,17 @@ class WaiterFragment : BaseFragment(), WaiterView {
         super.onViewCreated(view, savedInstanceState)
         _bn = FragmentWaiterBinding.bind(view)
 
+        bn.menuRv.adapter = goodsCategoryAdapter
+        bn.categoryRv.adapter = categoryAdapter
+        bn.tablePageRv.adapter = tableAdapter
+        bn.orderRv.adapter = orderAdapter
+
         bn.tablesBtn.setBackgroundResource(R.color.red)
 
         bn.tablesBtn.setOnClickListener {
             presenter.changeColor()
             btnId = 1
+            tableAdapter.submitList(tableList)
             presenter.showTables()
             bn.tablesBtn.setBackgroundResource(R.color.red)
         }
@@ -62,7 +77,9 @@ class WaiterFragment : BaseFragment(), WaiterView {
         bn.orderBtn.setOnClickListener {
             presenter.changeColor()
             btnId = 2
+            categoryAdapter.submitList(menuList)
             presenter.showMenu()
+            categoryAdapter.notifyDataSetChanged()
             bn.orderBtn.setBackgroundResource(R.color.red)
             if (bn.tableNumber.text != "0") {
                 bn.tableNumber.text = "0"
@@ -85,22 +102,41 @@ class WaiterFragment : BaseFragment(), WaiterView {
         val snapHelper1 = LinearSnapHelper()
         snapHelper1.attachToRecyclerView(bn.categoryRv)
 
-        bn.menuRv.adapter = goodsCategoryAdapter
-        bn.categoryRv.adapter = categoryAdapter
-        bn.tablePageRv.adapter = tableAdapter
-        bn.orderRv.adapter = orderAdapter
-
         tableAdapter.setOnClickListener {
-            presenter.showMenu()
-            presenter.changeColor()
-            btnId = 2
-            bn.orderBtn.setBackgroundResource(R.color.red)
-            bn.tableNumber.text = it.id.toString()
+            if (it.active) {
+                presenter.showMenu()
+                presenter.changeColor()
+                btnId = 2
+                tableId = it.id
+                bn.orderBtn.setBackgroundResource(R.color.red)
+                bn.tableNumber.text = it.id.toString()
+            }
         }
 
         bn.btnPrint.setOnClickListener {
-            presenter.showProgress()
-//            presenter.sendOrder()
+            if (orderAdapter.currentList.size>0) {
+                orderList = ArrayList()
+                orderAdapter.currentList.toMutableList().forEach {
+                    orderList.add(MenuSelect(it.productCount, it.id))
+                }
+                presenter.sendOrder(
+                    OrderSendData(
+                        "Toshkent",
+                        "ON_THE_WAY",
+                        totalSum.toDouble(),
+                        "DELIVERY",
+                        "PAID",
+                        tableId,
+                        null,
+                        orderList,
+                        1
+                    )
+                )
+                presenter.showProgress()
+            }else{
+                showSnackMessage("Avval mahsulot tanlang!")
+            }
+
         }
 
         categoryAdapter.setOnClickListener {
@@ -108,20 +144,24 @@ class WaiterFragment : BaseFragment(), WaiterView {
         }
 
         orderAdapter.setOnPlusClickListener {
-            orderAdapter.plus(it)
             presenter.totalSum()
+            orderAdapter.plus(it)
         }
         orderAdapter.setOnMinusClickListener {
-            orderAdapter.minus(it)
             presenter.totalSum()
+            orderAdapter.minus(it)
+            showSnackMessage(orderAdapter.itemCount.toString())
         }
 
 
         goodsCategoryAdapter.setOnClickListener {
-            val waiterOrderData = WaiterOrderData(it.name, 15000, 1, 15000)
-            orderAdapter.addProduct(waiterOrderData)
+//            val currentList = orderAdapter.currentList.toMutableList()
+//            currentList.add()
+//            orderAdapter.submitList(currentList)
+//            showMessage("${orderAdapter.itemCount}")
+            orderAdapter.addProduct(WaiterOrderData(it.id, it.name, it.price, 1, it.price))
             presenter.totalSum()
-            if (orderAdapter.itemCount!=0) {
+            if (orderAdapter.itemCount != 0) {
                 bn.orderRv.smoothScrollToPosition(orderAdapter.itemCount - 1)
             }
         }
@@ -129,7 +169,7 @@ class WaiterFragment : BaseFragment(), WaiterView {
 
 
     override fun showMessage(message: String) {
-
+        showSnackMessage(message)
     }
 
     override fun makeLoadingVisible(status: Boolean) {
@@ -137,7 +177,7 @@ class WaiterFragment : BaseFragment(), WaiterView {
     }
 
     override fun openErrorDialog(message: String, status: Boolean) {
-        customDialog(message,status)
+        customDialog(message, status)
     }
 
     override fun openClientCountDialog() {
@@ -161,15 +201,19 @@ class WaiterFragment : BaseFragment(), WaiterView {
     }
 
     override fun getMenu(list: ResData<List<CategoryData>>) {
+        menuList = ArrayList()
+        menuList = list.objectData as ArrayList<CategoryData>
         categoryAdapter.submitList(list.objectData)
     }
 
     override fun getTables(list: ResData<List<TableData>>) {
+        tableList = ArrayList()
+        tableList = list.objectData as ArrayList<TableData>
         tableAdapter.submitList(list.objectData)
     }
 
-    override fun getItemsById(list: ResData<List<CategoryItemData>>) {
-        goodsCategoryAdapter.submitList(list.objectData)
+    override fun getItemsById(list: List<CategoryItemData>) {
+        goodsCategoryAdapter.submitList(list)
     }
 
     override fun changeColor() {
@@ -182,57 +226,35 @@ class WaiterFragment : BaseFragment(), WaiterView {
     }
 
     override fun totalSum() {
-        var sum = 0
-        orderAdapter.currentList.toMutableList().forEach {
-            sum+=it.productTotalPrice
+        Timber.d(orderAdapter.itemCount.toString())
+        if (orderAdapter.currentList.size == 0) {
+            bn.totalSumTv.text = "0"
+        } else {
+            orderAdapter.currentList.toMutableList().forEach {
+                totalSum += it.productTotalPrice.toInt()
+            }
+            bn.totalSumTv.text = totalSum.toLong().stringFormat()
         }
-        bn.totalSumTv.text = sum.toLong().stringFormat()
+        totalSum = 0
     }
 
     override fun showProgress(type: Int, status: Boolean) {
-        when(type){
-            DI.ORDER_PROGRESS-> bn.waiterOrderProgress.visible(status)
-            DI.MENU_ITEMS_PROGRESS-> bn.waiterItemsProgress.visible(status)
-            DI.TABLES_PROGRESS-> bn.waiterItemsProgress.visible(status)
+        when (type) {
+            DI.ORDER_PROGRESS -> bn.waiterOrderProgress.visible(status)
+            DI.MENU_ITEMS_PROGRESS -> bn.waiterItemsProgress.visible(status)
+            DI.TABLES_PROGRESS -> bn.waiterItemsProgress.visible(status)
         }
     }
 
-
+    override fun clearList() {
+        bn.totalSumTv.text = "0"
+        bn.tableNumber.text = "0"
+        orderAdapter.submitList(null)
+        showSnackMessage("Success")
+    }
 
     override fun onDestroy() {
         super.onDestroy()
         _bn = null
     }
-
-//    private fun loadTableList(): ArrayList<TableData> {
-//        tablePageList = ArrayList()
-//        for (i in 0..30) {
-//            tablePageList.add(TableData(i + 1, "", "", false, i + 1))
-//        }
-//
-//        return tablePageList
-//    }
-
-//    private fun loadMenuItems(): ArrayList<CategoryData> {
-//        categoryList = ArrayList()
-//        for (i in 0..20) {
-//            categoryList.add(
-//                CategoryData(1,"",
-//                    "Palov","Milliy",
-//                    loadItems()
-//                )
-//            )
-//        }
-//        return categoryList
-//    }
-
-//    private fun loadItems():ArrayList<CategoryItemData>{
-//        itemList = ArrayList()
-//        for (i in 0..30) {
-//            itemList.add(CategoryItemData("palov",15000,"milliy",""))
-//            itemList.add(CategoryItemData("manti",15000,"uyg'ur",""))
-//        }
-//        return itemList
-//    }
-
 }

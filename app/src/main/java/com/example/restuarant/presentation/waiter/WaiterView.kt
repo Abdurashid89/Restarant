@@ -31,11 +31,13 @@ interface WaiterView : MvpView {
 
     fun getTables(list: ResData<List<TableData>>)
 
-    fun getItemsById(list: ResData<List<CategoryItemData>>)
+    fun getItemsById(list: List<CategoryItemData>)
 
     fun changeColor()
 
     fun totalSum()
 
     fun showProgress(type:Int,status: Boolean)
+
+    fun clearList()
 }

@@ -3,11 +3,6 @@ package com.example.restuarant.model.entities
 import androidx.recyclerview.widget.DiffUtil
 
 data class CategoryData(
-//    var menuId: Int,
-//    var photoId: String,
-//    var name: String,
-//    var descprition: String,
-//    var menuItems:List<CategoryItemData>
 
     var id: Int,
     var name: String,

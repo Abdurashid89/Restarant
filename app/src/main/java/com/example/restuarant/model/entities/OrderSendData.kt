@@ -7,7 +7,7 @@ data class OrderSendData(
     var orderType:String,
     var PAID:String,
     var tableId:Int,
-    var roomsId:Int,
+    var roomsId: Int?,
     var menuSelectionList: List<MenuSelect>,
     var restaurantId:Int
 

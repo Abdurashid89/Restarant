@@ -40,8 +40,8 @@
                 android:layout_height="0dp"
                 android:gravity="center"
                 android:maxLines="3"
-                android:text="android bootcamp"
-                android:textSize="20sp"
+                android:text="Donald Trump"
+                android:textSize="24sp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintLeft_toRightOf="@id/logo_image"
                 app:layout_constraintRight_toRightOf="parent"
@@ -139,7 +139,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
-                    android:padding="12dp">
+                    android:padding="6dp">
 
                     <TextView
                         android:layout_width="0dp"
@@ -340,7 +340,7 @@
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:maxLines="2"
-                android:text="Exit"
+                android:text="Log Out"
                 android:background="@color/green"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintLeft_toRightOf="@id/dashboard_btn"

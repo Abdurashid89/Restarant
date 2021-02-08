@@ -4,9 +4,10 @@
     android:layout_marginBottom="1.5dp"
     android:elevation="4dp"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="?actionBarSize">
 
     <LinearLayout
+        android:layout_gravity="center"
         android:layout_width="match_parent"
         android:orientation="horizontal"
         android:padding="12dp"
@@ -15,7 +16,7 @@
             android:layout_width="0dp"
             android:layout_weight="1"
             android:textColor="@color/black"
-            android:textSize="16sp"
+            android:textSize="18sp"
             android:gravity="start"
             android:layout_marginStart="16dp"
             android:layout_height="wrap_content"
@@ -25,7 +26,7 @@
             android:layout_width="0dp"
             android:layout_weight="1"
             android:textColor="@color/black"
-            android:textSize="16sp"
+            android:textSize="18sp"
             android:gravity="center"
             android:layout_height="wrap_content"
             android:id="@+id/product_price_tv"
@@ -83,7 +84,7 @@
             android:layout_width="0dp"
             android:layout_weight="1"
             android:textColor="@color/black"
-            android:textSize="16sp"
+            android:textSize="18sp"
             android:gravity="end"
             android:layout_height="wrap_content"
             android:id="@+id/total_price_tv"

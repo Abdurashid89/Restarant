@@ -3,10 +3,11 @@ package com.example.restuarant.model.entities
 import androidx.recyclerview.widget.DiffUtil
 
 data class WaiterOrderData(
+    var id:Int,
     var productName:String,
-    var productPrice:Int,
+    var productPrice:Double,
     var productCount:Int,
-    var productTotalPrice:Int
+    var productTotalPrice:Double
 ) {
 
     companion object{
@@ -15,14 +16,15 @@ data class WaiterOrderData(
                 oldItem: WaiterOrderData,
                 newItem: WaiterOrderData
             ): Boolean {
-                return oldItem==newItem
+                return oldItem.id==newItem.id
             }
 
             override fun areContentsTheSame(
                 oldItem: WaiterOrderData,
                 newItem: WaiterOrderData
             ): Boolean {
-                return oldItem.productName==newItem.productName
+                return oldItem.productCount==newItem.productCount && oldItem.productName==newItem.productName
+                        && oldItem.productPrice==newItem.productPrice && oldItem.productTotalPrice==newItem.productTotalPrice
             }
 
         }

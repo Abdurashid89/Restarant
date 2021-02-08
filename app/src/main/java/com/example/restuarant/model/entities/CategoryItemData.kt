@@ -9,8 +9,9 @@ class CategoryItemData(
     var description:String,
     var price: Double,
     var active:Boolean,
-    var evalution:Int,
+    var evaluation:Int,
     var categoryId:Int
+
 ) {
 
     companion object{
@@ -19,14 +20,16 @@ class CategoryItemData(
                 oldItem: CategoryItemData,
                 newItem: CategoryItemData
             ): Boolean {
-                return oldItem.name == newItem.name
+                return oldItem.id == newItem.id
             }
 
             override fun areContentsTheSame(
                 oldItem: CategoryItemData,
                 newItem: CategoryItemData
             ): Boolean {
-                return oldItem.description == newItem.description
+                return oldItem.description == newItem.description && oldItem.name == newItem.name
+                        && oldItem.evaluation == newItem.evaluation && oldItem.photoId == newItem.photoId
+                        && oldItem.active == newItem.active
             }
 
         }
