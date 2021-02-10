@@ -3,7 +3,9 @@ package com.example.restuarant.ui.cashier
 import android.annotation.SuppressLint
 import android.os.Build
 import android.os.Bundle
+import android.util.Log
 import android.view.View
+import android.widget.ProgressBar
 import androidx.annotation.RequiresApi
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.example.restuarant.R
@@ -14,6 +16,7 @@ import com.example.restuarant.extentions.stringFormat
 import com.example.restuarant.extentions.visible
 import com.example.restuarant.model.entities.CashierHistoryData
 import com.example.restuarant.model.entities.CashierOrderData
+import com.example.restuarant.model.entities.OrderGetData
 import com.example.restuarant.model.entities.TableData
 import com.example.restuarant.presentation.cashier.CashierPresenter
 import com.example.restuarant.presentation.cashier.CashierView
@@ -37,6 +40,7 @@ class CashierFragment : BaseFragment(), CashierView, SwipeRefreshLayout.OnRefres
     private val historyAdapter = CashierHistoryAdapter2()
     private val orderList = ArrayList<CashierOrderData>()
     private val historyList = ArrayList<CashierHistoryData>()
+    private lateinit var progressBar: ProgressBar
     private var currentText = ""
     var currentMenu = 0
     var historyOpened = false
@@ -52,6 +56,8 @@ class CashierFragment : BaseFragment(), CashierView, SwipeRefreshLayout.OnRefres
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         _bn = FragmentCashierBinding.bind(view)
+
+        progressBar = bn.tableProgress
 
         bn.swiperefresh.setOnRefreshListener(this)
 
@@ -266,7 +272,7 @@ class CashierFragment : BaseFragment(), CashierView, SwipeRefreshLayout.OnRefres
         }
         tableAdapter.setOnClickListener { tab ->
 
-//             presenter.loadOrderByTableId(tab.id)
+            presenter.loadOrderByTableId(tab.id)
             if (historyOpened) {
                 val tabList = ArrayList<CashierHistoryData>()
                 historyList.forEach {
@@ -305,6 +311,15 @@ class CashierFragment : BaseFragment(), CashierView, SwipeRefreshLayout.OnRefres
         bn.btnPay.visibility = View.GONE
         bn.swiperefresh.isRefreshing = false
         showSnackMessage(message)
+    }
+
+    @SuppressLint("LogNotTimber")
+    override fun addTableOrder(objectData: OrderGetData) {
+        Log.d("OrderByTableId", "$objectData")
+    }
+
+    override fun showProgress(isShow: Boolean) {
+        bn.tableProgress.visible(isShow)
     }
 
     override fun onBackPressed() {

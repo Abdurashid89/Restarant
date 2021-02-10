@@ -22,7 +22,10 @@ class CashierInteractor @Inject constructor(
 
     }
 
-    fun loadOrderById(id: Int) {
-
+    fun loadOrderById(id: Int) : Single<ResData<OrderGetData>>{
+    return api.getTableInfo(id).map {
+        it
+    }.subscribeOn(Schedulers.io())
+        .observeOn(AndroidSchedulers.mainThread())
     }
 }
