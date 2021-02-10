@@ -58,10 +58,10 @@ interface ResApi {
     @GET("/api/table")
     fun getAllTables(): Single<ResData<List<TableData>>>
 
-    @GET("/api/menu/getItemsByCategory")
+    @GET("/api/menu/getByCategory")
     fun getItemsById(
         @Query("categoryId") categoryId: Int
-    ): Single<ResData<List<CategoryItemData>>>
+    ): Single<List<CategoryItemData>>
 
     @POST("/api/order")
     fun sendOrder(@Body data:OrderSendData):Single<ResOrderData>

@@ -76,12 +76,24 @@ class WaiterPresenter @Inject constructor(
             }).connect()
     }
 
+    @SuppressLint("CheckResult")
     fun sendOrder(data:OrderSendData){
         interactor.sendOrder(data)
+            .doOnSubscribe {
+                viewState.showProgress(DI.ORDER_PROGRESS,true)
+            }
+            .doAfterTerminate {
+                viewState.showProgress(DI.ORDER_PROGRESS,false)
+            }
+            .subscribe({
+                viewState.clearList()
+            },{
+                viewState.openErrorDialog(it.errorResponse(),false)
+            })
     }
 
     fun showTables(){
-        interactor.getTables()
+        viewState.showTables()
     }
 
     fun showMenu() {
