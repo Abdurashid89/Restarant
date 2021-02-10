@@ -49,41 +49,6 @@
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
-<!--        <androidx.constraintlayout.widget.ConstraintLayout-->
-<!--            android:id="@+id/tables_constraint"-->
-<!--            android:layout_width="match_parent"-->
-<!--            android:layout_height="0dp"-->
-<!--            android:padding="5dp"-->
-<!--            android:visibility="gone"-->
-<!--            app:layout_constraintHeight_percent="0.25"-->
-<!--            app:layout_constraintLeft_toLeftOf="parent"-->
-<!--            app:layout_constraintTop_toBottomOf="@id/logo_constrait">-->
-
-<!--            <androidx.recyclerview.widget.RecyclerView-->
-<!--                android:id="@+id/tables_rv"-->
-<!--                android:layout_width="match_parent"-->
-<!--                android:layout_height="0dp"-->
-<!--                app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"-->
-<!--                app:layout_constraintBottom_toTopOf="@id/bottom_arrow"-->
-<!--                app:layout_constraintHeight_percent="0.8"-->
-<!--                app:layout_constraintLeft_toLeftOf="parent"-->
-<!--                app:layout_constraintRight_toRightOf="parent"-->
-<!--                app:layout_constraintTop_toTopOf="parent"-->
-<!--                app:spanCount="5"-->
-<!--                tools:listitem="@layout/desk_item" />-->
-
-<!--            <ImageView-->
-<!--                android:id="@+id/bottom_arrow"-->
-<!--                android:layout_width="match_parent"-->
-<!--                android:layout_height="0dp"-->
-<!--                android:src="@drawable/ic_baseline_keyboard_arrow_down_24"-->
-<!--                app:layout_constraintBottom_toBottomOf="parent"-->
-<!--                app:layout_constraintHeight_percent="0.15"-->
-<!--                app:layout_constraintLeft_toLeftOf="parent"-->
-<!--                app:layout_constraintTop_toBottomOf="@+id/tables_rv" />-->
-
-<!--        </androidx.constraintlayout.widget.ConstraintLayout>-->
-
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/order_constraint"
             android:layout_width="0dp"
@@ -252,28 +217,6 @@
                     android:textSize="16sp" />
             </LinearLayout>
 
-            <!--            <TextView-->
-            <!--                android:id="@+id/total_sum_tv"-->
-            <!--                android:layout_width="wrap_content"-->
-            <!--                android:layout_height="wrap_content"-->
-            <!--                android:text="TOTAL: $50"-->
-            <!--                android:textSize="30sp"-->
-            <!--                app:layout_constraintHorizontal_bias="0.8"-->
-            <!--                app:layout_constraintLeft_toLeftOf="parent"-->
-            <!--                app:layout_constraintRight_toRightOf="parent"-->
-            <!--                app:layout_constraintTop_toBottomOf="@id/order_rv"-->
-            <!--                app:layout_constraintVertical_bias="0.2" />-->
-
-            <!--            <Button-->
-            <!--                android:layout_width="0dp"-->
-            <!--                android:layout_height="wrap_content"-->
-            <!--                android:text="ORDER"-->
-            <!--                android:textSize="25sp"-->
-            <!--                app:layout_constraintBottom_toBottomOf="parent"-->
-            <!--                app:layout_constraintLeft_toLeftOf="parent"-->
-            <!--                app:layout_constraintRight_toRightOf="parent"-->
-            <!--                app:layout_constraintTop_toBottomOf="@id/total_sum_tv"-->
-            <!--                app:layout_constraintWidth_percent="0.6" />-->
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -422,19 +365,24 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/dashboard_constraint"
+            app:layout_constraintTop_toBottomOf="@id/waiter_itemsProgress"
             app:spanCount="4"
             tools:listitem="@layout/table_item" />
 
         <ProgressBar
             android:id="@+id/waiter_itemsProgress"
             android:visibility="gone"
-            app:layout_constraintTop_toTopOf="@id/tablePage_rv"
-            app:layout_constraintBottom_toBottomOf="@id/tablePage_rv"
-            app:layout_constraintRight_toRightOf="@id/tablePage_rv"
-            app:layout_constraintLeft_toLeftOf="@id/tablePage_rv"
+            app:layout_constraintVertical_bias="0.1"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@id/dashboard_constraint"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"/>
+<!--            app:layout_constraintTop_toTopOf="@id/tablePage_rv"-->
+<!--            app:layout_constraintBottom_toBottomOf="@id/tablePage_rv"-->
+<!--            app:layout_constraintRight_toRightOf="@id/tablePage_rv"-->
+<!--            app:layout_constraintLeft_toLeftOf="@id/tablePage_rv"-->
+
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
