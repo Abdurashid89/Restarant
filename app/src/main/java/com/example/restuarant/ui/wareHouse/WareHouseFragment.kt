@@ -39,7 +39,7 @@ class WareHouseFragment() : BaseFragment(), WareHouseView, SwipeRefreshLayout.On
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        _bn= FragmentWareHouseBinding.bind(view)
+        _bn = FragmentWareHouseBinding.bind(view)
         layoutManager = LinearLayoutManager(requireContext())
         loadAdapter()
         adapter.submitList(itemList)
@@ -50,7 +50,7 @@ class WareHouseFragment() : BaseFragment(), WareHouseView, SwipeRefreshLayout.On
         }
 
         binding.btnEnter.setOnClickListener {
-            Toast.makeText(requireContext(), "Mahsulot qo'shish", Toast.LENGTH_SHORT).show()
+            enterProduct()
         }
 
 
@@ -59,12 +59,12 @@ class WareHouseFragment() : BaseFragment(), WareHouseView, SwipeRefreshLayout.On
         }
     }
 
+    private fun enterProduct() {
+        EnterProductDialog().show(childFragmentManager, "tag")
+    }
+
     private fun addProduct() {
-        val dialog = WareHouseDialogFragment()
-        dialog.setOnCLickListener {
-            presenter.addProduct(it)
-        }
-        dialog.show(childFragmentManager, "tag")
+        WareHouseDialogFragment().show(childFragmentManager,"tag")
     }
 
 
