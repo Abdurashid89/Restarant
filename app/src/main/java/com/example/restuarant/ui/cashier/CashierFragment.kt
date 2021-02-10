@@ -265,11 +265,14 @@ class CashierFragment : BaseFragment(), CashierView, SwipeRefreshLayout.OnRefres
             orderList.add(CashierOrderData(i, "Food $i", i, i, "${i * i}"))
         }
         tableAdapter.setOnClickListener { tab ->
+
+//             presenter.loadOrderByTableId(tab.id)
             if (historyOpened) {
                 val tabList = ArrayList<CashierHistoryData>()
                 historyList.forEach {
                     if (it.id == tab.id) {
                         tabList.add(it)
+
                     }
                 }
                 historyAdapter.submitList(tabList)

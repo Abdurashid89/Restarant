@@ -3,10 +3,7 @@ package com.example.restuarant.model.server
 import com.example.restuarant.model.entities.*
 import io.reactivex.Single
 import retrofit2.Response
-import retrofit2.http.Body
-import retrofit2.http.GET
-import retrofit2.http.POST
-import retrofit2.http.Query
+import retrofit2.http.*
 
 /**
  * Created by shohboz on 11,Январь,2021
@@ -24,6 +21,9 @@ interface ResApi {
 
     @GET("/api/product/productName")
     fun productExistOrNot(@Query("name") name: String): Single<MessageDataWithoutMessageType>
+
+    @GET("/api/order/byTable/{tableId}")
+    fun getOrderByTableId(@Path("tableId") tableId: Long): Single<Long>
 
 //    @GET("/api/category")
 //    fun getAllCategory(
@@ -64,5 +64,5 @@ interface ResApi {
     ): Single<List<CategoryItemData>>
 
     @POST("/api/order")
-    fun sendOrder(@Body data:OrderSendData):Single<ResOrderData>
+    fun sendOrder(@Body data: OrderSendData): Single<ResOrderData>
 }

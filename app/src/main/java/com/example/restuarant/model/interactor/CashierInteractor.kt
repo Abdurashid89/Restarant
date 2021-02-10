@@ -21,4 +21,8 @@ class CashierInteractor @Inject constructor(
             .observeOn(AndroidSchedulers.mainThread())
 
     }
+
+    fun loadOrderById(id: Int) {
+
+    }
 }

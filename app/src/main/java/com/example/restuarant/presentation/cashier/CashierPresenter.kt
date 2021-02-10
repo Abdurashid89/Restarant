@@ -32,6 +32,9 @@ class CashierPresenter @Inject constructor(
         viewState.openDialog(status)
     }
 
+
+
+
     @SuppressLint("CheckResult")
     fun getTables(){
 //        viewState.makeLoadingVisible(true)
@@ -51,6 +54,10 @@ class CashierPresenter @Inject constructor(
 
     fun onBackPressed(){
         router.exit()
+    }
+
+    fun loadOrderByTableId(id: Int) {
+        interactor.loadOrderById(id)
     }
 
 }
