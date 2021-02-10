@@ -5,7 +5,10 @@ import android.app.AlertDialog
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
-import androidx.recyclerview.widget.LinearSnapHelper
+import android.widget.Toast
+import androidx.recyclerview.widget.DividerItemDecoration
+import androidx.recyclerview.widget.ItemTouchHelper
+import androidx.recyclerview.widget.RecyclerView
 import com.example.restuarant.R
 import com.example.restuarant.databinding.FragmentWaiterBinding
 import com.example.restuarant.di.DI
@@ -21,6 +24,7 @@ import com.example.restuarant.ui.waiter.adapters.CategoryAdapter
 import com.example.restuarant.ui.waiter.adapters.CategoryItemAdapter
 import com.example.restuarant.ui.waiter.adapters.OrderAdapter
 import com.example.restuarant.ui.waiter.adapters.TableAdapter
+import com.example.restuarant.ui.waiter.callback.SwipeToDeleteCallback
 import moxy.presenter.InjectPresenter
 import moxy.presenter.ProvidePresenter
 import timber.log.Timber
@@ -32,20 +36,19 @@ class WaiterFragment : BaseFragment(), WaiterView {
     private var _bn: FragmentWaiterBinding? = null
     private val bn get() = _bn ?: throw NullPointerException("error")
 
-    //
+    // ## list ##
     private var menuList = ArrayList<CategoryData>()
-    private var tableList = ArrayList<TableData>()
     private var orderList = ArrayList<MenuSelect>()
 
-    // adapters
+    // ## adapters ##
     private var goodsCategoryAdapter = CategoryItemAdapter()
     private var categoryAdapter = CategoryAdapter()
     private var tableAdapter = TableAdapter()
     private var orderAdapter = OrderAdapter()
 
-    //
+    // ## variable ##
     private var tableId = -1
-    private var totalSum = 0
+    private var totalSum = 0.0
     private var btnId: Int = 1
 
     @InjectPresenter
@@ -64,12 +67,30 @@ class WaiterFragment : BaseFragment(), WaiterView {
         bn.tablePageRv.adapter = tableAdapter
         bn.orderRv.adapter = orderAdapter
 
+        bn.orderRv.addItemDecoration(
+            DividerItemDecoration(
+                requireContext(),
+                DividerItemDecoration.VERTICAL
+            )
+        )
+        val swipeHelper = object : SwipeToDeleteCallback(requireContext()) {
+            override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
+                val adapter = bn.orderRv.adapter as OrderAdapter
+                adapter.removeAt(viewHolder.adapterPosition)
+                totalSum()
+            }
+
+        }
+        val itemTouchHelper = ItemTouchHelper(swipeHelper)
+        itemTouchHelper.attachToRecyclerView(bn.orderRv)
+
         bn.tablesBtn.setBackgroundResource(R.color.red)
 
         bn.tablesBtn.setOnClickListener {
+            clearList(false)
+            presenter.getTableList()
             presenter.changeColor()
             btnId = 1
-            tableAdapter.submitList(tableList)
             presenter.showTables()
             bn.tablesBtn.setBackgroundResource(R.color.red)
         }
@@ -99,8 +120,8 @@ class WaiterFragment : BaseFragment(), WaiterView {
             bn.exitBtn.setBackgroundResource(R.color.red)
         }
 
-        val snapHelper1 = LinearSnapHelper()
-        snapHelper1.attachToRecyclerView(bn.categoryRv)
+//        val snapHelper1 = LinearSnapHelper()
+//        snapHelper1.attachToRecyclerView(bn.categoryRv)
 
         tableAdapter.setOnClickListener {
             if (it.active) {
@@ -110,22 +131,24 @@ class WaiterFragment : BaseFragment(), WaiterView {
                 tableId = it.id
                 bn.orderBtn.setBackgroundResource(R.color.red)
                 bn.tableNumber.text = it.id.toString()
+            }else{
+
             }
         }
 
         bn.btnPrint.setOnClickListener {
-            if (orderAdapter.currentList.size>0) {
+            if (orderAdapter.list.size > 0) {
                 orderList = ArrayList()
-                orderAdapter.currentList.toMutableList().forEach {
+                orderAdapter.list.toMutableList().forEach {
                     orderList.add(MenuSelect(it.productCount, it.id))
                 }
                 presenter.sendOrder(
                     OrderSendData(
                         "Toshkent",
                         "ON_THE_WAY",
-                        totalSum.toDouble(),
+                        totalSum,
                         "DELIVERY",
-                        "PAID",
+                        "UN PAID",
                         tableId,
                         null,
                         orderList,
@@ -133,7 +156,7 @@ class WaiterFragment : BaseFragment(), WaiterView {
                     )
                 )
                 presenter.showProgress()
-            }else{
+            } else {
                 showSnackMessage("Avval mahsulot tanlang!")
             }
 
@@ -143,23 +166,33 @@ class WaiterFragment : BaseFragment(), WaiterView {
             presenter.getMenuItems(it.id)
         }
 
+
+
         orderAdapter.setOnPlusClickListener {
-            presenter.totalSum()
             orderAdapter.plus(it)
+            Toast.makeText(context, "${orderAdapter.list.size}", Toast.LENGTH_SHORT).show()
+            presenter.totalSum()
         }
         orderAdapter.setOnMinusClickListener {
-            presenter.totalSum()
             orderAdapter.minus(it)
-            showSnackMessage(orderAdapter.itemCount.toString())
+            presenter.totalSum()
         }
 
 
         goodsCategoryAdapter.setOnClickListener {
-//            val currentList = orderAdapter.currentList.toMutableList()
-//            currentList.add()
-//            orderAdapter.submitList(currentList)
-//            showMessage("${orderAdapter.itemCount}")
-            orderAdapter.addProduct(WaiterOrderData(it.id, it.name, it.price, 1, it.price))
+            val waiterOrderData = WaiterOrderData(it.id, it.name, it.price, 1, it.price)
+            if (orderAdapter.list.isEmpty()){
+                orderAdapter.addProduct(waiterOrderData)
+            }else{
+                var isHave = false
+                for (i in orderAdapter.list.indices) {
+                    if (waiterOrderData.id == orderAdapter.list[i].id) {
+                        orderAdapter.plus(i)
+                        isHave = true
+                    }
+                }
+                if (!isHave) orderAdapter.addProduct(waiterOrderData)
+            }
             presenter.totalSum()
             if (orderAdapter.itemCount != 0) {
                 bn.orderRv.smoothScrollToPosition(orderAdapter.itemCount - 1)
@@ -206,10 +239,8 @@ class WaiterFragment : BaseFragment(), WaiterView {
         categoryAdapter.submitList(list.objectData)
     }
 
-    override fun getTables(list: ResData<List<TableData>>) {
-        tableList = ArrayList()
-        tableList = list.objectData as ArrayList<TableData>
-        tableAdapter.submitList(list.objectData)
+    override fun getTables(list: List<TableData>) {
+        tableAdapter.submitList(list)
     }
 
     override fun getItemsById(list: List<CategoryItemData>) {
@@ -227,15 +258,13 @@ class WaiterFragment : BaseFragment(), WaiterView {
 
     override fun totalSum() {
         Timber.d(orderAdapter.itemCount.toString())
-        if (orderAdapter.currentList.size == 0) {
-            bn.totalSumTv.text = "0"
-        } else {
-            orderAdapter.currentList.toMutableList().forEach {
-                totalSum += it.productTotalPrice.toInt()
-            }
-            bn.totalSumTv.text = totalSum.toLong().stringFormat()
+        orderAdapter.list.forEach {
+            totalSum += it.productTotalPrice
         }
-        totalSum = 0
+        val split = totalSum.toString().split(".")
+        val s = split[0].toLong().stringFormat() + ".${split[1]}"
+        bn.totalSumTv.text = s
+        totalSum = 0.0
     }
 
     override fun showProgress(type: Int, status: Boolean) {
@@ -246,11 +275,13 @@ class WaiterFragment : BaseFragment(), WaiterView {
         }
     }
 
-    override fun clearList() {
-        bn.totalSumTv.text = "0"
+    override fun clearList(type: Boolean) {
+        bn.totalSumTv.text = "0.0"
         bn.tableNumber.text = "0"
-        orderAdapter.submitList(null)
-        showSnackMessage("Success")
+        orderAdapter.list.clear()
+        tableAdapter.notifyDataSetChanged()
+        if (type) {showSnackMessage("Success")}
+
     }
 
     override fun onDestroy() {

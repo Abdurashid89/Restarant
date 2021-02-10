@@ -32,7 +32,7 @@ class WaiterPresenter @Inject constructor(
         router.exit()
     }
 
-    private fun getMenu(){
+    fun getMenu(){
         interactor.getMenuList()
             .doOnSubscribe {
                 viewState.showProgress(DI.MENU_ITEMS_PROGRESS,true)
@@ -61,7 +61,7 @@ class WaiterPresenter @Inject constructor(
             }).connect()
     }
 
-    private fun getTableList(){
+    fun getTableList(){
         interactor.getTables()
             .doOnSubscribe {
                 viewState.showProgress(DI.TABLES_PROGRESS,true)
@@ -70,7 +70,7 @@ class WaiterPresenter @Inject constructor(
                 viewState.showProgress(DI.TABLES_PROGRESS,false)
             }
             .subscribe({
-                 viewState.getTables(it)
+                 viewState.getTables(it.objectData)
             },{
                 viewState.openErrorDialog(it.errorResponse(),false)
             }).connect()
@@ -86,7 +86,7 @@ class WaiterPresenter @Inject constructor(
                 viewState.showProgress(DI.ORDER_PROGRESS,false)
             }
             .subscribe({
-                viewState.clearList()
+                viewState.clearList(true)
             },{
                 viewState.openErrorDialog(it.errorResponse(),false)
             })

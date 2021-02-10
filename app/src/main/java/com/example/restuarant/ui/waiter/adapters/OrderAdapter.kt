@@ -2,13 +2,17 @@ package com.example.restuarant.ui.waiter.adapters
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.example.restuarant.databinding.OrderItemBinding
 import com.example.restuarant.extentions.SingleBlock
 import com.example.restuarant.model.entities.WaiterOrderData
 
-class OrderAdapter : ListAdapter<WaiterOrderData, OrderAdapter.Vh>(WaiterOrderData.ITEM_CALLBACK) {
+/**
+ * */
+
+class OrderAdapter:RecyclerView.Adapter<OrderAdapter.Vh>() {
+
+    var list = ArrayList<WaiterOrderData>()
 
     private var plusListener: SingleBlock<Int>? = null
     private var minusListener: SingleBlock<Int>? = null
@@ -34,11 +38,12 @@ class OrderAdapter : ListAdapter<WaiterOrderData, OrderAdapter.Vh>(WaiterOrderDa
         listener = onClick
     }
 
-    inner class Vh(val view: OrderItemBinding) : RecyclerView.ViewHolder(view.root) {
+
+    inner class Vh(val view:OrderItemBinding):RecyclerView.ViewHolder(view.root){
 
         init {
             itemView.setOnClickListener {
-                listener?.invoke(currentList[adapterPosition])
+                listener?.invoke(list[adapterPosition])
             }
             view.orderPlus.setOnClickListener {
                 plusListener?.invoke(adapterPosition)
@@ -50,7 +55,7 @@ class OrderAdapter : ListAdapter<WaiterOrderData, OrderAdapter.Vh>(WaiterOrderDa
 
         fun onBind() {
             itemView.apply {
-                val w = currentList[adapterPosition]
+                val w = list[adapterPosition]
                 view.productNameTv.text = w.productName
                 view.productPriceTv.text = w.productPrice.toString()
                 view.productCountTv.text = w.productCount.toString()
@@ -58,39 +63,48 @@ class OrderAdapter : ListAdapter<WaiterOrderData, OrderAdapter.Vh>(WaiterOrderDa
 
             }
         }
+
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): Vh {
-        return Vh(OrderItemBinding.inflate(LayoutInflater.from(parent.context), parent, false))
+        return Vh(OrderItemBinding.inflate(LayoutInflater.from(parent.context),parent,false))
     }
 
     override fun onBindViewHolder(holder: Vh, position: Int) = holder.onBind()
 
+    override fun getItemCount(): Int = list.size
+
     fun plus(index: Int) {
-        currentList[index].productCount++
-        currentList[index].productTotalPrice =
-            (currentList[index].productPrice * currentList[index].productCount)
+        list[index].productCount++
+        list[index].productTotalPrice =
+            (list[index].productPrice * list[index].productCount)
         notifyItemChanged(index)
+
     }
 
     fun minus(index: Int) {
-        val d = currentList[index]
+        val d = list[index]
         if (d.productCount != 1) {
             d.productCount--
             d.productTotalPrice =
                 (d.productPrice * d.productCount)
             notifyItemChanged(index)
         } else {
-            val ls = currentList.toMutableList()
-            ls.removeAt(index)
-            submitList(ls)
+//            list.removeAt(index)
+//            notifyItemRemoved(index)
+            removeAt(index)
         }
     }
 
     fun addProduct(data: WaiterOrderData) {
-        val list = currentList.toMutableList()
         list.add(data)
-        submitList(list)
+        notifyItemInserted(list.size)
     }
+
+    fun removeAt(position: Int){
+        list.removeAt(position)
+        notifyItemRemoved(position)
+    }
+
 
 }

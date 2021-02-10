@@ -29,7 +29,7 @@ interface WaiterView : MvpView {
 
     fun getMenu(list: ResData<List<CategoryData>>)
 
-    fun getTables(list: ResData<List<TableData>>)
+    fun getTables(list: List<TableData>)
 
     fun getItemsById(list: List<CategoryItemData>)
 
@@ -39,5 +39,5 @@ interface WaiterView : MvpView {
 
     fun showProgress(type:Int,status: Boolean)
 
-    fun clearList()
+    fun clearList(type:Boolean)
 }

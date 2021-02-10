@@ -65,4 +65,7 @@ interface ResApi {
 
     @POST("/api/order")
     fun sendOrder(@Body data:OrderSendData):Single<ResOrderData>
+
+    @GET("/api/order/byTable")
+    fun getTableInfo(@Query("tableId")tableId:Int):Single<String>
 }
