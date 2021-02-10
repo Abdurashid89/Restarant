@@ -92,6 +92,22 @@ class WaiterPresenter @Inject constructor(
             })
     }
 
+    @SuppressLint("CheckResult")
+    fun orderGetData(tableId:Int) {
+        interactor.getOrder(tableId)
+            .doOnSubscribe {
+
+            }
+            .doAfterTerminate {
+
+            }
+            .subscribe({
+                       viewState.getOrderInfo(it.objectData)
+            },{
+                viewState.openErrorDialog(it.errorResponse(),false)
+            })
+    }
+
     fun showTables(){
         viewState.showTables()
     }
@@ -111,6 +127,5 @@ class WaiterPresenter @Inject constructor(
     fun showProgress(){
 
     }
-
 
 }

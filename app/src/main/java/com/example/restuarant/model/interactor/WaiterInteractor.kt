@@ -38,4 +38,11 @@ class WaiterInteractor @Inject constructor(
             .observeOn(AndroidSchedulers.mainThread())
     }
 
+    fun getOrder(tableId:Int):Single<ResData<OrderGetData>>{
+        return api.getTableInfo(tableId).map {
+            it
+        }.subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+    }
+
 }

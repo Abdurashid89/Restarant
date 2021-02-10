@@ -1,9 +1,6 @@
 package com.example.restuarant.presentation.waiter
 
-import com.example.restuarant.model.entities.CategoryData
-import com.example.restuarant.model.entities.CategoryItemData
-import com.example.restuarant.model.entities.ResData
-import com.example.restuarant.model.entities.TableData
+import com.example.restuarant.model.entities.*
 import moxy.MvpView
 import moxy.viewstate.strategy.AddToEndSingleStrategy
 import moxy.viewstate.strategy.OneExecutionStateStrategy
@@ -40,4 +37,6 @@ interface WaiterView : MvpView {
     fun showProgress(type:Int,status: Boolean)
 
     fun clearList(type:Boolean)
+
+    fun getOrderInfo(getData: OrderGetData)
 }

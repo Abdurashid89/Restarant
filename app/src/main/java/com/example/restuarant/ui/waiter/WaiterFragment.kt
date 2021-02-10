@@ -62,6 +62,7 @@ class WaiterFragment : BaseFragment(), WaiterView {
         super.onViewCreated(view, savedInstanceState)
         _bn = FragmentWaiterBinding.bind(view)
 
+        // ## adapters ##
         bn.menuRv.adapter = goodsCategoryAdapter
         bn.categoryRv.adapter = categoryAdapter
         bn.tablePageRv.adapter = tableAdapter
@@ -132,7 +133,8 @@ class WaiterFragment : BaseFragment(), WaiterView {
                 bn.orderBtn.setBackgroundResource(R.color.red)
                 bn.tableNumber.text = it.id.toString()
             }else{
-
+                presenter.orderGetData(it.id)
+                openClientCountDialog()
             }
         }
 
@@ -281,6 +283,10 @@ class WaiterFragment : BaseFragment(), WaiterView {
         orderAdapter.list.clear()
         tableAdapter.notifyDataSetChanged()
         if (type) {showSnackMessage("Success")}
+
+    }
+
+    override fun getOrderInfo(getData: OrderGetData) {
 
     }
 
