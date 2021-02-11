@@ -30,8 +30,7 @@ class CashierHistoryAdapter :
 
     override fun onBindViewHolder(holder: VHolder, position: Int) = holder.bind()
 
-    inner class VHolder(val binding: ItemHistoryChashierBinding) :
-        RecyclerView.ViewHolder(binding.root) {
+    inner class VHolder(val binding: ItemHistoryChashierBinding) : RecyclerView.ViewHolder(binding.root) {
 
         init {
             itemView.setOnClickListener {
