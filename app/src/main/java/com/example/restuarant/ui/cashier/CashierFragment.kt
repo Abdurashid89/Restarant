@@ -10,10 +10,7 @@ import androidx.annotation.RequiresApi
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.example.restuarant.R
 import com.example.restuarant.databinding.FragmentCashierBinding
-import com.example.restuarant.extentions.isNotDouble
-import com.example.restuarant.extentions.showSnackMessage
-import com.example.restuarant.extentions.stringFormat
-import com.example.restuarant.extentions.visible
+import com.example.restuarant.extentions.*
 import com.example.restuarant.model.entities.CashierHistoryData
 import com.example.restuarant.model.entities.CashierOrderData
 import com.example.restuarant.model.entities.OrderGetData
@@ -273,24 +270,8 @@ class CashierFragment : BaseFragment(), CashierView, SwipeRefreshLayout.OnRefres
         tableAdapter.setOnClickListener { tab ->
 
             presenter.loadOrderByTableId(tab.id)
-            if (historyOpened) {
-                val tabList = ArrayList<CashierHistoryData>()
-                historyList.forEach {
-                    if (it.id == tab.id) {
-                        tabList.add(it)
+            bn.tablesLayout.tableNumber.text = tab.id.toString()
 
-                    }
-                }
-                historyAdapter.submitList(tabList)
-            } else {
-                orderAdapter.submitList(orderList)
-                bn.tablesLayout.tableNumber.text = tab.id.toString()
-                bn.tablesLayout.priceCashBack.setText("0")
-                bn.tablesLayout.priceOnCash.setText("0")
-                currentText = ""
-                val total = "654 321"
-                bn.tablesLayout.totalPrice.text = total
-            }
 
         }
 
@@ -315,11 +296,18 @@ class CashierFragment : BaseFragment(), CashierView, SwipeRefreshLayout.OnRefres
 
     @SuppressLint("LogNotTimber")
     override fun addTableOrder(objectData: OrderGetData) {
+
         Log.d("OrderByTableId", "$objectData")
+
+//        bn.tablesLayout.tableNumber.text = tab.id.toString()
+        bn.tablesLayout.priceCashBack.setText("0")
+        bn.tablesLayout.priceOnCash.setText("0")
+        currentText = ""
+        bn.tablesLayout.totalPrice.text = objectData.orderPrice.formatDouble()
     }
 
     override fun showProgress(isShow: Boolean) {
-        bn.tableProgress.visible(isShow)
+        bn.tablesLayout.progressBarLoadOrder.visible(isShow)
     }
 
     override fun onBackPressed() {

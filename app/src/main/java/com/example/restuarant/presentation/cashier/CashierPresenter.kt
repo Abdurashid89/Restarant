@@ -1,7 +1,6 @@
 package com.example.restuarant.presentation.cashier
 
 import android.annotation.SuppressLint
-import com.example.restuarant.di.DI
 import com.example.restuarant.extentions.errorResponse
 import com.example.restuarant.model.interactor.CashierInteractor
 import com.example.restuarant.model.storage.Prefs
@@ -56,10 +55,13 @@ class CashierPresenter @Inject constructor(
     }
 
     fun loadOrderByTableId(id: Int) {
-        interactor.loadOrderById(id).doOnSubscribe {
-            viewState.showProgress(true) }
+        interactor.loadOrderById(id)
+            .doOnSubscribe {
+                viewState.showProgress(true)
+            }
             .doAfterTerminate {
-                viewState.showProgress(false) }
+                viewState.showProgress(false)
+            }
             .subscribe({
                 viewState.addTableOrder(it.objectData)
             }, {
