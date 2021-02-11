@@ -132,4 +132,7 @@ dependencies {
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:$coroutine_version"
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-play-services:1.1.1"
 
+    //shimmer text
+    implementation 'com.romainpiel.shimmer:library:1.4.0@aar'
+
 }
