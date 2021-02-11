@@ -27,6 +27,7 @@ class CategoryAdapter : ListAdapter<CategoryData, CategoryAdapter.Vh>(CategoryDa
 
         fun onBind() {
             view.productName.text = currentList[adapterPosition].name
+            view.productName.isSelected = true
         }
     }
 

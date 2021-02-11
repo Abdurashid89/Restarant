@@ -30,6 +30,7 @@ class TableAdapter : ListAdapter<TableData, TableAdapter.Vh>(TableData.ITEM_CALL
             }
             view.tablePageNumberTv.text = getItem(adapterPosition).id.toString()
         }
+
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): Vh {

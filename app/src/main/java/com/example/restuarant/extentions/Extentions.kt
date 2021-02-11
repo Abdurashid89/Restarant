@@ -63,7 +63,7 @@ fun Navigator.setLunchScreen(screen: SupportAppScreen) {
 typealias SingleBlock <T> = (T) -> Unit
 
 fun String.isNotDouble(): Boolean {
-    // if double return false       else return true
+//     if double return false       else return true
     val size = this.length
     val nnn = this.replace(".", "")
     return nnn.length == size
