@@ -5,7 +5,6 @@ import android.net.Uri
 import com.example.restuarant.extentions.errorResponse
 import com.example.restuarant.model.entities.ProductData
 import com.example.restuarant.model.interactor.AddProductInteractor
-import com.example.restuarant.model.system.pull.FlowRouter
 import com.example.restuarant.presentation.global.BasePresenter
 import moxy.InjectViewState
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
@@ -15,22 +14,23 @@ import java.io.File
 import javax.inject.Inject
 
 @InjectViewState
-class AddProductPresenter @Inject constructor(
-    private val intercepter: AddProductInteractor
+class AddNewProductPresenter @Inject constructor(
+    private val interactor: AddProductInteractor
 ) : BasePresenter<AddProductView>() {
     var page = 0
     var size = 20
     var totalElements = 0
 
     @SuppressLint("CheckResult")
-    fun addProduct(data: ProductData) {
-        intercepter.product(data)
+    fun addNewProduct(data: ProductData) {
+        interactor.product(data)
             .doOnSubscribe {
                 viewState.makeLoadingVisible(true)
             }
             .doAfterTerminate {
                 viewState.makeLoadingVisible(false)
             }.subscribe({
+                viewState.showMessage("Product Successfully added")
                 viewState.openDialog("Product Successfully added", true)
             }, {
                 viewState.openDialog(it.errorResponse(), false)
@@ -38,7 +38,7 @@ class AddProductPresenter @Inject constructor(
     }
 
     fun productExistOrNot(name: String) {
-        intercepter.productExistOrNot(name)
+        interactor.productExistOrNot(name)
             .doOnSubscribe {}
             .doAfterTerminate {}
             .subscribe({
@@ -47,15 +47,4 @@ class AddProductPresenter @Inject constructor(
                 viewState.productYON(false, "Wrong")
             }).connect()
     }
-
-
-    fun sendImageUri(path: String, uri: Uri) {
-        viewState.makeLoadingVisible(true)
-        val file = File(path)
-        val requestFile = file.asRequestBody("image/*".toMediaTypeOrNull())
-        val image = MultipartBody.Part.createFormData("image", file.name, requestFile)
-
-
-    }
-
 }

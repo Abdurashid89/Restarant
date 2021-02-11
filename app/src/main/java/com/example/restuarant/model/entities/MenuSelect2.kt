@@ -5,7 +5,7 @@ package com.example.restuarant.model.entities
  */
 data class MenuSelect2(
     var count:Int,
-    var menu:List<MenuData>,
+    var menu:MenuData,
     var id:Int
 ) {
 }

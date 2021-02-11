@@ -19,6 +19,10 @@
             android:id="@+id/logo_constrait"
             android:layout_width="match_parent"
             android:layout_height="0dp"
+            android:layout_marginRight="20dp"
+            android:layout_marginLeft="20dp"
+            android:background="@color/green"
+            android:padding="10dp"
             app:layout_constraintHeight_percent="0.1"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintTop_toTopOf="parent">
@@ -34,12 +38,14 @@
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintWidth_percent="0.3" />
 
-            <TextView
+            <com.romainpiel.shimmer.ShimmerTextView
                 android:id="@+id/waiter_name"
                 android:layout_width="0dp"
                 android:layout_height="0dp"
                 android:gravity="center"
-                android:maxLines="3"
+                android:textColor="@color/white"
+                android:maxLines="2"
+                app:reflectionColor="@color/green"
                 android:text="Donald Trump"
                 android:textSize="24sp"
                 app:layout_constraintBottom_toBottomOf="parent"
@@ -59,6 +65,7 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintHeight_percent="0.85"
             app:layout_constraintTop_toBottomOf="@id/logo_constrait"
             app:layout_constraintWidth_percent="0.9">
 
@@ -216,7 +223,6 @@
                     android:textColor="@color/white"
                     android:textSize="16sp" />
             </LinearLayout>
-
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
