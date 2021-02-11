@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.restuarant.databinding.CategoryItem2Binding
 import com.example.restuarant.extentions.SingleBlock
 import com.example.restuarant.model.entities.CategoryData
+import com.squareup.picasso.Picasso
 
 class CategoryAdapter : ListAdapter<CategoryData, CategoryAdapter.Vh>(CategoryData.ITEM_CALLBACK) {
 

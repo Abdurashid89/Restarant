@@ -6,9 +6,9 @@ package com.example.restuarant.model.entities
 data class OrderGetData(
     var orderType:String,
     var orderStatus:String,
-    var payStatus:String,
+    var payStatus:Any,
     var feedBackStatus:Int,
-    var menuSelectionList: List<MenuSelect2>,
+    var menuSelection: List<MenuSelect2>,
     var orderDateTime:String,
     var orderPrice:Double,
 ) {
