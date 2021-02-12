@@ -9,7 +9,6 @@ import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
 import com.example.restuarant.R
-import com.example.restuarant.databinding.FragmentWaiterBinding
 import com.example.restuarant.di.DI
 import com.example.restuarant.extentions.*
 import com.example.restuarant.model.entities.*
