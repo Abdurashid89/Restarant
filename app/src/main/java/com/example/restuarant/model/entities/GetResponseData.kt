@@ -8,13 +8,6 @@ data class GetResponseData<T>(
     var currentPage: Int = 0
 )
 
-data class ImageData(
-    var id: String = "",
-    var name: String,
-    var contentType: String,
-    var size: Long
-)
-
 data class ProductInData(
     var id: Int = 0,
     var createdAt: String,
@@ -40,17 +33,3 @@ data class ProductInData(
         }
     }
 }
-
-data class ResponseFileData<T>(
-    var success: Boolean,
-    var message: String,
-    var objectData: List<T>
-)
-
-data class ResponseFileObjectData(
-    var fileId: String,
-    var fileName: String,
-    var fileDownloadUri: String,
-    var fileType: String,
-    var size: Int = 0
-)
