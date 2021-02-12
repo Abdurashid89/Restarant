@@ -90,16 +90,23 @@
             </LinearLayout>
         </LinearLayout>
 
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/cashier_order_list"
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="2.7"
-                android:background="@drawable/cashier_order_bgn"
-                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                tools:itemCount="10"
-                android:padding="2dp"
-                tools:listitem="@layout/item_order_cashier" />
+        <ProgressBar
+            android:id="@+id/progressBarLoadOrder"
+            android:layout_width="64dp"
+            android:layout_height="64dp"
+            android:layout_gravity="center"
+            android:visibility="gone" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/cashier_order_list"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="2.7"
+            android:background="@drawable/cashier_order_bgn"
+            android:padding="2dp"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            tools:itemCount="10"
+            tools:listitem="@layout/item_order_cashier" />
 
         <LinearLayout
             android:layout_width="match_parent"
