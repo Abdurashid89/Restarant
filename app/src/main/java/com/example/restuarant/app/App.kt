@@ -1,7 +1,7 @@
 package com.example.restuarant.app
 
 import android.app.Application
-import com.example.restuarant.BuildConfig
+import androidx.multidex.BuildConfig
 import com.example.restuarant.di.DI
 import com.example.restuarant.di.module.AppModule
 import timber.log.Timber

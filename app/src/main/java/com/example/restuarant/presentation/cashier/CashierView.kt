@@ -1,5 +1,6 @@
 package com.example.restuarant.presentation.cashier
 
+import com.example.restuarant.model.entities.OrderGetData
 import com.example.restuarant.model.entities.TableData
 import moxy.MvpView
 import moxy.viewstate.strategy.AddToEndSingleTagStrategy
@@ -15,6 +16,7 @@ interface CashierView : MvpView {
 
     @StateStrategyType(OneExecutionStateStrategy::class)
     fun showMessage(message: String)
+
     @StateStrategyType(OneExecutionStateStrategy::class)
     fun makeLoadingVisible(status: Boolean)
     fun submitTables(list: List<TableData>)
@@ -25,4 +27,7 @@ interface CashierView : MvpView {
 
     @StateStrategyType(OneExecutionStateStrategy::class)
     fun openErrorDialog(message: String, status: Boolean)
+
+    fun addTableOrder(objectData: OrderGetData)
+    fun showProgress(isShow: Boolean)
 }

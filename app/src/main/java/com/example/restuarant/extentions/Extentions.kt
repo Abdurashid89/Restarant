@@ -53,6 +53,10 @@ import java.text.SimpleDateFormat
 import java.util.*
 import java.util.concurrent.Executors
 
+fun Double.formatDouble():String{
+    val split = this.toString().split(".")
+    return split[0].toLong().stringFormat() + ".${split[1]}"
+}
 
 fun Any.objectScopeName() = "${javaClass.simpleName}_${hashCode()}"
 
@@ -68,7 +72,7 @@ fun Double.formatDouble():String{
 }
 
 fun String.isNotDouble(): Boolean {
-    // if double return false       else return true
+//     if double return false       else return true
     val size = this.length
     val nnn = this.replace(".", "")
     return nnn.length == size

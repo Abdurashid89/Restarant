@@ -21,4 +21,11 @@ class CashierInteractor @Inject constructor(
             .observeOn(AndroidSchedulers.mainThread())
 
     }
+
+    fun loadOrderById(id: Int) : Single<ResData<OrderGetData>>{
+    return api.getTableInfo(id).map {
+        it
+    }.subscribeOn(Schedulers.io())
+        .observeOn(AndroidSchedulers.mainThread())
+    }
 }
