@@ -22,7 +22,6 @@ class CashierTableAdapter2 : RecyclerView.Adapter<CashierTableAdapter2.CashierTa
 
     fun submitList(list: ArrayList<TableData>) {
         tableList.clear()
-        list.sortTableItem()
         tableList.addAll(list)
         notifyDataSetChanged()
     }
