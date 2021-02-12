@@ -32,9 +32,9 @@ class CashierFragment : BaseFragment(), CashierView, SwipeRefreshLayout.OnRefres
 
     private var _bn: FragmentCashierBinding? = null
     private val bn get() = _bn ?: throw NullPointerException("error")
-    private val tableAdapter = CashierTableAdapter()
+    private val tableAdapter = CashierTableAdapter2()
     private val orderAdapter = CashierOrderAdapter()
-    private val historyAdapter = CashierHistoryAdapter()
+    private val historyAdapter = CashierHistoryAdapter2()
     private val orderList = ArrayList<CashierOrderData>()
     private val historyList = ArrayList<CashierHistoryData>()
     private lateinit var progressBar: ProgressBar
@@ -70,7 +70,7 @@ class CashierFragment : BaseFragment(), CashierView, SwipeRefreshLayout.OnRefres
 
         tableAdapter.setOnClickListener { tab ->
             if (tab.active) {
-                orderAdapter.clearList()
+//                orderAdapter.clearList()
                 orderList.clear()
                 showSnackMessage("This table is empty!!!")
             } else {

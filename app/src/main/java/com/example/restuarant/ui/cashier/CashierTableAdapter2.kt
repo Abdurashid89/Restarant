@@ -8,6 +8,7 @@ import com.example.restuarant.R
 import com.example.restuarant.databinding.DeskItemBinding
 import com.example.restuarant.extentions.SingleBlock
 import com.example.restuarant.extentions.bindItem
+import com.example.restuarant.extentions.sortTableItem
 import com.example.restuarant.model.entities.TableData
 
 /**
@@ -19,8 +20,9 @@ class CashierTableAdapter2 : RecyclerView.Adapter<CashierTableAdapter2.CashierTa
     var tableIndex = 0
     var listener: SingleBlock<TableData>? = null
 
-    fun submitList(list: List<TableData>) {
+    fun submitList(list: ArrayList<TableData>) {
         tableList.clear()
+        list.sortTableItem()
         tableList.addAll(list)
         notifyDataSetChanged()
     }

@@ -31,6 +31,7 @@ import androidx.core.widget.ImageViewCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import androidx.recyclerview.widget.RecyclerView
+import com.example.restuarant.model.entities.TableData
 import com.example.restuarant.presentation.responseDialog.ResponseStatusDialog
 import com.google.android.material.snackbar.Snackbar
 import com.google.gson.JsonSyntaxException
@@ -52,6 +53,7 @@ import java.net.SocketTimeoutException
 import java.text.SimpleDateFormat
 import java.util.*
 import java.util.concurrent.Executors
+import kotlin.collections.ArrayList
 
 fun Double.formatDouble():String{
     val split = this.toString().split(".")
@@ -66,9 +68,18 @@ fun Navigator.setLunchScreen(screen: SupportAppScreen) {
 
 typealias SingleBlock <T> = (T) -> Unit
 
-fun Double.formatDouble():String{
-    val split = this.toString().split(".")
-    return split[0].toLong().stringFormat() + ".${split[1]}"
+fun ArrayList<TableData>.sortTableItem() : ArrayList<TableData>{
+
+    for (i in this.indices){
+        for (j in i + 1..this.size){
+            if (this[j].id < this[i].id){
+                val tmp = this[j]
+                this[j] = this[i]
+                this[i] = tmp
+            }
+        }
+    }
+return this
 }
 
 fun String.isNotDouble(): Boolean {
