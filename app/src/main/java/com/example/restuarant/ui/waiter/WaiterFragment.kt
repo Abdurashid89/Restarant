@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import androidx.recyclerview.widget.*
 import com.example.restuarant.R
+import com.example.restuarant.databinding.FragmentWaiterBinding
 import com.example.restuarant.di.DI
 import com.example.restuarant.extentions.*
 import com.example.restuarant.model.entities.*
@@ -19,7 +20,6 @@ import com.example.restuarant.ui.waiter.adapters.OrderAdapter
 import com.example.restuarant.ui.waiter.adapters.TableAdapter
 import com.example.restuarant.ui.waiter.callback.SwipeToDeleteCallback
 import com.romainpiel.shimmer.Shimmer
-import com.romainpiel.shimmer.ShimmerTextView
 import moxy.presenter.InjectPresenter
 import moxy.presenter.ProvidePresenter
 import timber.log.Timber
@@ -158,7 +158,7 @@ class WaiterFragment : BaseFragment(), WaiterView {
                         tableId,
                         null,
                         orderList,
-                        1
+                        34
                     )
                 )
                 presenter.showProgress()
