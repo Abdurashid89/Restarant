@@ -13,7 +13,7 @@ import com.example.restuarant.extentions.showSnackMessage
 import com.example.restuarant.extentions.vibrate
 import com.example.restuarant.extentions.visible
 import com.example.restuarant.model.entities.ProductData
-import com.example.restuarant.presentation.were_house.add_product.AddNewProductPresenter
+import com.example.restuarant.model.entities.ProductInData
 import com.example.restuarant.presentation.were_house.add_product.EnterProductPresenter
 import com.example.restuarant.presentation.were_house.add_product.EnterProductView
 import com.example.restuarant.ui.global.BaseWatcher
@@ -30,6 +30,8 @@ class EnterProductDialog : MvpAppCompatDialogFragment(), EnterProductView {
     private var _bn: ItemProductBinding? = null
     private val binding get() = _bn ?: throw NullPointerException("error")
     private var listener: SingleBlock<ProductData>? = null
+    private lateinit var itemList: ArrayList<ProductInData>
+    private var adapter = EnterProductAdapter()
     private var nullOrErrorListener: ((String, Boolean) -> Unit)? = null
 
     @InjectPresenter
@@ -51,6 +53,15 @@ class EnterProductDialog : MvpAppCompatDialogFragment(), EnterProductView {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         _bn = ItemProductBinding.bind(view)
+        loadAdapter()
+        adapter.submitList(itemList)
+        binding.productRv.adapter = adapter
+
+        adapter.setOnClickListener {
+            binding.inputProductName.setText(it.name)
+            binding.productRv.visibility = View.GONE
+            adapter.submitList(null)
+        }
 
 
 //        if (bn.radio2.isChecked) {
@@ -58,6 +69,19 @@ class EnterProductDialog : MvpAppCompatDialogFragment(), EnterProductView {
 //        } else {
 //           binding.sellPrice.visibility = View.GONE
 //        }
+
+        binding.inputProductName.addTextChangedListener(object : BaseWatcher {
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                super.onTextChanged(s, start, before, count)
+                if (s.toString().isNotEmpty()) {
+                    searchProduct(s.toString().toLowerCase())
+
+                } else {
+                    binding.productRv.visibility = View.GONE
+                }
+
+            }
+        })
 
         binding.btnAdd.setOnClickListener {
             val name = binding.inputProductName.text.toString().trim()
@@ -110,17 +134,38 @@ class EnterProductDialog : MvpAppCompatDialogFragment(), EnterProductView {
 
         }
 
-
-
-        binding.inputProductName.addTextChangedListener(object : BaseWatcher {
-            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-
-            }
-        })
-
         binding.btnDismiss.setOnClickListener {
             dialog?.dismiss()
         }
+    }
+
+    private fun loadAdapter() {
+        itemList = ArrayList()
+        itemList.add(ProductInData(0, "", "a", "a", "aa", "go'sht"))
+        itemList.add(ProductInData(1, "", "a", "a", "aa", "saryog'"))
+        itemList.add(ProductInData(2, "", "a", "a", "aa", "non"))
+        itemList.add(ProductInData(3, "", "a", "a", "aa", "suv"))
+        itemList.add(ProductInData(4, "", "a", "a", "aa", "kartoshka"))
+        itemList.add(ProductInData(5, "", "a", "a", "aa", "sabzi"))
+        itemList.add(ProductInData(6, "", "a", "a", "aa", "piyoz"))
+        itemList.add(ProductInData(7, "", "a", "a", "aa", "sholg'om"))
+        itemList.add(ProductInData(8, "", "a", "a", "aa", "gorox"))
+        itemList.add(ProductInData(9, "", "a", "a", "aa", "mosh"))
+        itemList.add(ProductInData(10, "", "a", "a", "aa", "guruch"))
+        itemList.add(ProductInData(11, "", "a", "a", "aa", "loviya"))
+        itemList.add(ProductInData(12, "", "a", "a", "aa", "tovuq go'shti"))
+    }
+
+    private fun searchProduct(newText: String) {
+        val ls = ArrayList<ProductInData>()
+        binding.productRv.visibility = View.VISIBLE
+        itemList.forEach {
+            if (it.name.toLowerCase().contains(newText)) {
+                ls.add(it)
+            }
+        }
+
+        adapter.submitList(ls)
     }
 
     fun setOnCLickListener(block: SingleBlock<ProductData>) {
@@ -146,7 +191,7 @@ class EnterProductDialog : MvpAppCompatDialogFragment(), EnterProductView {
     }
 
     override fun errorOrNull(str: String) {
-        TODO("Not yet implemented")
+
     }
 
     override fun productYON(status: Boolean, message: String) {
