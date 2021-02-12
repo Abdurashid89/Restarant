@@ -18,7 +18,7 @@ data class OrderSendData(
 //"PAID":"PAID",
 //"tableId":null,
 //"roomsId":null,
-//"menuSelectionList":[{
+//"menuSelection":[{
 //    "count":5,
 //    "menu":9
 //}],

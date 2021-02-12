@@ -3,17 +3,17 @@ package com.example.restuarant.ui.cashier
 import android.annotation.SuppressLint
 import android.os.Build
 import android.os.Bundle
+import android.util.Log
 import android.view.View
+import android.widget.ProgressBar
 import androidx.annotation.RequiresApi
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.example.restuarant.R
 import com.example.restuarant.databinding.FragmentCashierBinding
-import com.example.restuarant.extentions.isNotDouble
-import com.example.restuarant.extentions.showSnackMessage
-import com.example.restuarant.extentions.stringFormat
-import com.example.restuarant.extentions.visible
+import com.example.restuarant.extentions.*
 import com.example.restuarant.model.entities.CashierHistoryData
 import com.example.restuarant.model.entities.CashierOrderData
+import com.example.restuarant.model.entities.OrderGetData
 import com.example.restuarant.model.entities.TableData
 import com.example.restuarant.presentation.cashier.CashierPresenter
 import com.example.restuarant.presentation.cashier.CashierView
@@ -32,11 +32,12 @@ class CashierFragment : BaseFragment(), CashierView, SwipeRefreshLayout.OnRefres
 
     private var _bn: FragmentCashierBinding? = null
     private val bn get() = _bn ?: throw NullPointerException("error")
-    private val tableAdapter = CashierTableAdapter()
+    private val tableAdapter = CashierTableAdapter2()
     private val orderAdapter = CashierOrderAdapter()
-    private val historyAdapter = CashierHistoryAdapter()
+    private val historyAdapter = CashierHistoryAdapter2()
     private val orderList = ArrayList<CashierOrderData>()
     private val historyList = ArrayList<CashierHistoryData>()
+    private lateinit var progressBar: ProgressBar
     private var currentText = ""
     var currentMenu = 0
     var historyOpened = false
@@ -52,6 +53,8 @@ class CashierFragment : BaseFragment(), CashierView, SwipeRefreshLayout.OnRefres
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         _bn = FragmentCashierBinding.bind(view)
+
+        progressBar = bn.tableProgress
 
         bn.swiperefresh.setOnRefreshListener(this)
 
@@ -84,8 +87,9 @@ class CashierFragment : BaseFragment(), CashierView, SwipeRefreshLayout.OnRefres
             setColorMenu()
             currentMenu = 2
             it.setBackgroundResource(R.color.teal_1000)
+            bn.cashierContainer.visibility = View.GONE
             bn.historyLayout.cashierHistoryLayout.visibility = View.VISIBLE
-            bn.tablesLayout.viewGroupTables.visibility = View.GONE
+//            bn.tablesLayout.viewGroupTables.visibility = View.GONE
             bn.togoLayout.cashierOwnLayout.visibility = View.GONE
             Timber.d("historyListSize:${historyList.size}")
             historyAdapter.submitList(historyList)
@@ -110,8 +114,7 @@ class CashierFragment : BaseFragment(), CashierView, SwipeRefreshLayout.OnRefres
             setColorMenu()
             bn.historyLayout.cashierHistoryLayout.visibility = View.GONE
             bn.togoLayout.cashierOwnLayout.visibility = View.GONE
-            bn.tablesLayout.viewGroupTables.visibility = View.VISIBLE
-
+            bn.cashierContainer.visibility = View.VISIBLE
             currentMenu = 1
             it.setBackgroundResource(R.color.teal_1000)
 
@@ -120,15 +123,9 @@ class CashierFragment : BaseFragment(), CashierView, SwipeRefreshLayout.OnRefres
     }
 
     private fun loadHistory() {
-        val list = tableAdapter.currentList.toMutableList()
-        for (i in list.indices) {
-            historyList.add(CashierHistoryData(list[i].id, "50 000", "Card", "0", "more"))
-            historyList.add(CashierHistoryData(list[i].id, "50 000", "Card", "0", "more"))
-            historyList.add(CashierHistoryData(list[i].id, "50 000", "Card", "0", "more"))
-            historyList.add(CashierHistoryData(list[i].id, "45 000", "Cash", "100", "more"))
-            historyList.add(CashierHistoryData(list[i].id, "45 000", "Cash", "100", "more"))
-            historyList.add(CashierHistoryData(list[i].id, "45 000", "Cash", "100", "more"))
-            historyList.add(CashierHistoryData(list[i].id, "45 000", "Cash", "100", "more"))
+        for (i in 0 until 10) {
+            historyList.add(CashierHistoryData(i, "50 000", "Card", "0", "more"))
+            historyList.add(CashierHistoryData(i, "45 000", "Cash", "100", "more"))
         }
         Timber.d("loadedHistoryListSize:${historyList.size}")
     }
@@ -271,23 +268,10 @@ class CashierFragment : BaseFragment(), CashierView, SwipeRefreshLayout.OnRefres
             orderList.add(CashierOrderData(i, "Food $i", i, i, "${i * i}"))
         }
         tableAdapter.setOnClickListener { tab ->
-            if (historyOpened) {
-                val tabList = ArrayList<CashierHistoryData>()
-                historyList.forEach {
-                    if (it.id == tab.id) {
-                        tabList.add(it)
-                    }
-                }
-                historyAdapter.submitList(tabList)
-            } else {
-                orderAdapter.submitList(orderList)
-                bn.tablesLayout.tableNumber.text = tab.id.toString()
-                bn.tablesLayout.priceCashBack.setText("0")
-                bn.tablesLayout.priceOnCash.setText("0")
-                currentText = ""
-                val total = "654 321"
-                bn.tablesLayout.totalPrice.text = total
-            }
+
+            presenter.loadOrderByTableId(tab.id)
+            bn.tablesLayout.tableNumber.text = tab.id.toString()
+
 
         }
 
@@ -308,6 +292,22 @@ class CashierFragment : BaseFragment(), CashierView, SwipeRefreshLayout.OnRefres
         bn.btnPay.visibility = View.GONE
         bn.swiperefresh.isRefreshing = false
         showSnackMessage(message)
+    }
+
+    @SuppressLint("LogNotTimber")
+    override fun addTableOrder(objectData: OrderGetData) {
+
+        Log.d("OrderByTableId", "$objectData")
+
+//        bn.tablesLayout.tableNumber.text = tab.id.toString()
+        bn.tablesLayout.priceCashBack.setText("0")
+        bn.tablesLayout.priceOnCash.setText("0")
+        currentText = ""
+        bn.tablesLayout.totalPrice.text = objectData.orderPrice.formatDouble()
+    }
+
+    override fun showProgress(isShow: Boolean) {
+        bn.tablesLayout.progressBarLoadOrder.visible(isShow)
     }
 
     override fun onBackPressed() {
