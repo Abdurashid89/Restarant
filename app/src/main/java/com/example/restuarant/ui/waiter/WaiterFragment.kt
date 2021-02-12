@@ -5,9 +5,7 @@ import android.app.AlertDialog
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
-import androidx.recyclerview.widget.DividerItemDecoration
-import androidx.recyclerview.widget.ItemTouchHelper
-import androidx.recyclerview.widget.RecyclerView
+import androidx.recyclerview.widget.*
 import com.example.restuarant.R
 import com.example.restuarant.databinding.FragmentWaiterBinding
 import com.example.restuarant.di.DI
@@ -60,14 +58,17 @@ class WaiterFragment : BaseFragment(), WaiterView {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         _bn = FragmentWaiterBinding.bind(view)
-        shimmer = Shimmer()
-        shimmer.start(bn.waiterName)
+//        shimmer = Shimmer()
+//        shimmer.start(bn.waiterName)
 
         // ## adapters ##
         bn.menuRv.adapter = goodsCategoryAdapter
         bn.categoryRv.adapter = categoryAdapter
         bn.tablePageRv.adapter = tableAdapter
         bn.orderRv.adapter = orderAdapter
+
+        val snapHelper = LinearSnapHelper()
+        snapHelper.attachToRecyclerView(bn.tablePageRv)
 
         bn.orderRv.addItemDecoration(
             DividerItemDecoration(
@@ -307,6 +308,6 @@ class WaiterFragment : BaseFragment(), WaiterView {
 
     override fun onPause() {
         super.onPause()
-        shimmer.cancel()
+//        shimmer.cancel()
     }
 }
