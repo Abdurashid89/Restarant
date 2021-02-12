@@ -8,7 +8,7 @@ data class CategoryData(
     var name: String,
     var parentId: Any,
     var parentName: Any,
-    var photoId:Any
+    var photoURL:String
 
 ) {
     companion object {

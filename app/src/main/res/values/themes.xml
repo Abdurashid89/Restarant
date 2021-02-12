@@ -65,7 +65,7 @@
         <item name="android:focusableInTouchMode">true</item>
         <item name="android:freezesText">true</item>
         <item name="android:text">@string/app_name</item>
-        <item name="android:textSize">18sp</item>
+        <item name="android:textSize">24sp</item>
     </style>
 
 </resources>

@@ -4,6 +4,7 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import com.example.restuarant.R
 import com.example.restuarant.databinding.CategoryItemBinding
 import com.example.restuarant.extentions.SingleBlock
 import com.example.restuarant.model.entities.CategoryItemData
@@ -26,7 +27,8 @@ class CategoryItemAdapter :
                 val d = currentList[adapterPosition]
                 view.productName.text = d.name
                 view.productName.isSelected = true
-//                Picasso.get().load(d.photoId).into(view.productPhoto)
+                view.productPhoto.setImageResource(R.drawable.apple)
+                Picasso.get().load(d.photoId).into(view.productPhoto)
             }
 
         }
