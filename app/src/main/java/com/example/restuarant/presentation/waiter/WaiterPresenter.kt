@@ -102,7 +102,7 @@ class WaiterPresenter @Inject constructor(
 
             }
             .subscribe({
-                       viewState.getOrderInfo(it.objectData)
+                viewState.getOrderInfo(it.objectData)
             },{
                 viewState.openErrorDialog(it.errorResponse(),false)
             })

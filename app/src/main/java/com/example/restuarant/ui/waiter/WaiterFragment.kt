@@ -5,17 +5,13 @@ import android.app.AlertDialog
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
-import android.widget.Toast
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
 import com.example.restuarant.R
 import com.example.restuarant.databinding.FragmentWaiterBinding
 import com.example.restuarant.di.DI
-import com.example.restuarant.extentions.customDialog
-import com.example.restuarant.extentions.showSnackMessage
-import com.example.restuarant.extentions.stringFormat
-import com.example.restuarant.extentions.visible
+import com.example.restuarant.extentions.*
 import com.example.restuarant.model.entities.*
 import com.example.restuarant.presentation.waiter.WaiterPresenter
 import com.example.restuarant.presentation.waiter.WaiterView
@@ -25,6 +21,8 @@ import com.example.restuarant.ui.waiter.adapters.CategoryItemAdapter
 import com.example.restuarant.ui.waiter.adapters.OrderAdapter
 import com.example.restuarant.ui.waiter.adapters.TableAdapter
 import com.example.restuarant.ui.waiter.callback.SwipeToDeleteCallback
+import com.romainpiel.shimmer.Shimmer
+import com.romainpiel.shimmer.ShimmerTextView
 import moxy.presenter.InjectPresenter
 import moxy.presenter.ProvidePresenter
 import timber.log.Timber
@@ -47,6 +45,7 @@ class WaiterFragment : BaseFragment(), WaiterView {
     private var orderAdapter = OrderAdapter()
 
     // ## variable ##
+    private var shimmer = Shimmer()
     private var tableId = -1
     private var totalSum = 0.0
     private var btnId: Int = 1
@@ -61,6 +60,8 @@ class WaiterFragment : BaseFragment(), WaiterView {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         _bn = FragmentWaiterBinding.bind(view)
+        shimmer = Shimmer()
+        shimmer.start(bn.waiterName)
 
         // ## adapters ##
         bn.menuRv.adapter = goodsCategoryAdapter
@@ -103,9 +104,6 @@ class WaiterFragment : BaseFragment(), WaiterView {
             presenter.showMenu()
             categoryAdapter.notifyDataSetChanged()
             bn.orderBtn.setBackgroundResource(R.color.red)
-            if (bn.tableNumber.text != "0") {
-                bn.tableNumber.text = "0"
-            }
         }
 
         bn.dashboardBtn.setOnClickListener {
@@ -132,9 +130,15 @@ class WaiterFragment : BaseFragment(), WaiterView {
                 tableId = it.id
                 bn.orderBtn.setBackgroundResource(R.color.red)
                 bn.tableNumber.text = it.id.toString()
-            }else{
+            } else {
                 presenter.orderGetData(it.id)
-                openClientCountDialog()
+                presenter.showMenu()
+                presenter.changeColor()
+                btnId = 2
+                tableId = it.id
+                bn.orderBtn.setBackgroundResource(R.color.red)
+                bn.tableNumber.text = it.id.toString()
+
             }
         }
 
@@ -172,7 +176,6 @@ class WaiterFragment : BaseFragment(), WaiterView {
 
         orderAdapter.setOnPlusClickListener {
             orderAdapter.plus(it)
-            Toast.makeText(context, "${orderAdapter.list.size}", Toast.LENGTH_SHORT).show()
             presenter.totalSum()
         }
         orderAdapter.setOnMinusClickListener {
@@ -183,9 +186,9 @@ class WaiterFragment : BaseFragment(), WaiterView {
 
         goodsCategoryAdapter.setOnClickListener {
             val waiterOrderData = WaiterOrderData(it.id, it.name, it.price, 1, it.price)
-            if (orderAdapter.list.isEmpty()){
+            if (orderAdapter.list.isEmpty()) {
                 orderAdapter.addProduct(waiterOrderData)
-            }else{
+            } else {
                 var isHave = false
                 for (i in orderAdapter.list.indices) {
                     if (waiterOrderData.id == orderAdapter.list[i].id) {
@@ -263,9 +266,10 @@ class WaiterFragment : BaseFragment(), WaiterView {
         orderAdapter.list.forEach {
             totalSum += it.productTotalPrice
         }
-        val split = totalSum.toString().split(".")
-        val s = split[0].toLong().stringFormat() + ".${split[1]}"
-        bn.totalSumTv.text = s
+
+//        val split = totalSum.toString().split(".")
+//        val s = split[0].toLong().stringFormat() + ".${split[1]}"
+        bn.totalSumTv.text = totalSum.formatDouble()
         totalSum = 0.0
     }
 
@@ -282,16 +286,27 @@ class WaiterFragment : BaseFragment(), WaiterView {
         bn.tableNumber.text = "0"
         orderAdapter.list.clear()
         tableAdapter.notifyDataSetChanged()
-        if (type) {showSnackMessage("Success")}
+        if (type) {
+            showSnackMessage("Success")
+        }
 
     }
 
     override fun getOrderInfo(getData: OrderGetData) {
-
+        getData.menuSelection.forEach {
+           orderAdapter.addProduct(WaiterOrderData(it.menu.id,it.menu.name,it.menu.price,
+           it.count,it.menu.price*it.count))
+        }
+        totalSum()
     }
 
     override fun onDestroy() {
         super.onDestroy()
         _bn = null
+    }
+
+    override fun onPause() {
+        super.onPause()
+        shimmer.cancel()
     }
 }

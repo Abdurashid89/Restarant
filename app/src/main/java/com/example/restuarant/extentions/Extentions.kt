@@ -53,6 +53,10 @@ import java.text.SimpleDateFormat
 import java.util.*
 import java.util.concurrent.Executors
 
+fun Double.formatDouble():String{
+    val split = this.toString().split(".")
+    return split[0].toLong().stringFormat() + ".${split[1]}"
+}
 
 fun Any.objectScopeName() = "${javaClass.simpleName}_${hashCode()}"
 
@@ -61,6 +65,11 @@ fun Navigator.setLunchScreen(screen: SupportAppScreen) {
 }
 
 typealias SingleBlock <T> = (T) -> Unit
+
+fun Double.formatDouble():String{
+    val split = this.toString().split(".")
+    return split[0].toLong().stringFormat() + ".${split[1]}"
+}
 
 fun String.isNotDouble(): Boolean {
 //     if double return false       else return true
