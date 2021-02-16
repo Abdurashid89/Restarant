@@ -57,6 +57,8 @@ class WareHouseFragment() : BaseFragment(), WareHouseView, SwipeRefreshLayout.On
         binding.btnAdd.setOnClickListener {
             addProduct()
         }
+
+
     }
 
     private fun enterProduct() {
