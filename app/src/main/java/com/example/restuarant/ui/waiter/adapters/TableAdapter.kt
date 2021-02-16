@@ -58,13 +58,8 @@ class TableAdapter :RecyclerView.Adapter<TableAdapter.VHolder>(){
         @SuppressLint("Range", "ResourceAsColor")
         fun onBind() {
             val d = sortedList[adapterPosition]
-            if (d.active){
-                view.tablePageLinear.setBackgroundResource(android.R.color.holo_green_dark)
-            }else{
-                view.tablePageLinear.setBackgroundResource(android.R.color.holo_red_dark)
-            }
-//            val name = d.name.substring(d.name.length - 2, d.name.length)
-//            view.tablePageNumberTv.text = name.replace("-","")
+            if (d.active){ view.tablePageLinear.setBackgroundResource(android.R.color.holo_green_dark) }
+            else{ view.tablePageLinear.setBackgroundResource(android.R.color.holo_red_dark) }
             view.tablePageNumberTv.text = d.id.toString()
         }
     }
