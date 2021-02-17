@@ -82,8 +82,7 @@ class WareHouseDialogFragment : MvpAppCompatDialogFragment(), AddProductView {
 
             presenterNew.addNewProduct(
                 ProductData(
-                    name,
-                    null, null, 0.0
+                    name
                 )
             )
 
