@@ -14,6 +14,7 @@ import com.example.restuarant.databinding.FragmentWareHouseBinding
 import com.example.restuarant.extentions.showSnackMessage
 //import com.example.restuarant.model.entities.CategoryInProductData
 import com.example.restuarant.model.entities.ProductInData
+import com.example.restuarant.model.system.pull.FlowRouter
 import com.example.restuarant.presentation.were_house.WareHousePresenter
 import com.example.restuarant.presentation.were_house.WareHouseView
 import com.example.restuarant.ui.global.BaseFragment
@@ -24,6 +25,7 @@ import java.lang.NullPointerException
 class WareHouseFragment() : BaseFragment(), WareHouseView, SwipeRefreshLayout.OnRefreshListener {
     override val layoutRes: Int = R.layout.fragment_ware_house
     private var _bn: FragmentWareHouseBinding? = null
+   
     private val binding get() = _bn ?: throw  NullPointerException("error")
     private lateinit var layoutManager: LinearLayoutManager
     private lateinit var itemList: ArrayList<ProductInData>
@@ -57,6 +59,9 @@ class WareHouseFragment() : BaseFragment(), WareHouseView, SwipeRefreshLayout.On
         binding.btnAdd.setOnClickListener {
             addProduct()
         }
+        binding.btnHistory.setOnClickListener {
+
+        }
 
 
     }
@@ -66,7 +71,7 @@ class WareHouseFragment() : BaseFragment(), WareHouseView, SwipeRefreshLayout.On
     }
 
     private fun addProduct() {
-        WareHouseDialogFragment().show(childFragmentManager,"tag")
+        WareHouseDialogFragment().show(childFragmentManager, "tag")
     }
 
 
