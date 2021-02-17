@@ -58,8 +58,8 @@ class WaiterFragment : BaseFragment(), WaiterView {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         _bn = FragmentWaiterBinding.bind(view)
-//        shimmer = Shimmer()
-//        shimmer.start(bn.waiterName)
+        shimmer = Shimmer()
+        shimmer.start(bn.waiterName)
 
         // ## adapters ##
         bn.menuRv.adapter = goodsCategoryAdapter
@@ -308,6 +308,6 @@ class WaiterFragment : BaseFragment(), WaiterView {
 
     override fun onPause() {
         super.onPause()
-//        shimmer.cancel()
+        shimmer.cancel()
     }
 }

@@ -22,15 +22,14 @@ interface ResApi {
     @POST("/api/product")
     fun addProduct(@Body data: ProductData): Single<MessageData>
 
+    @POST("/api/purchase")
+    fun productPurchase(@Body data: ReqPurchaseData): Single<MessageData>
+
     @GET("/api/product/productName")
     fun productExistOrNot(@Query("name") name: String): Single<MessageDataWithoutMessageType>
 
-    @GET("/api/product")
-    fun getAllProduct(
-        @Query("page") page: Int,
-        @Query("size") size: Int,
-        @Query("search") search: String
-    ): Single<GetResponseData<List<ProductInData>>>
+    @GET("/api/product/search")
+    fun getAllProduct(): Single<GetResponseData<List<ProductInData>>>
 
     @GET("/api/table")
     fun getAllTable(): Single<ResData<List<TableData>>>

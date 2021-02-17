@@ -33,6 +33,7 @@ class AddNewProductPresenter @Inject constructor(
                 viewState.showMessage("Product Successfully added")
                 viewState.openDialog("Product Successfully added", true)
             }, {
+                viewState.showMessage(it.errorResponse())
                 viewState.openDialog(it.errorResponse(), false)
             }).connect()
     }
