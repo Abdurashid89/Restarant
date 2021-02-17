@@ -35,9 +35,9 @@ class WareHouseAdapter :
         fun bind() = bindItem {
             val d = currentList[adapterPosition]
             binding.apply {
-                productId.text = d.id.toString()
+                productId.text = d.productId.toString()
                 productName.text = d.name
-                productWeight.text = d.createdAt
+                productWeight.text = d.count.toString()
             }
         }
     }
