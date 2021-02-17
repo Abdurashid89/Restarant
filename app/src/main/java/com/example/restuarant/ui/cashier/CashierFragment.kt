@@ -71,6 +71,7 @@ class CashierFragment : BaseFragment(), CashierView, SwipeRefreshLayout.OnRefres
         loadTables()
         loadButtons()
 
+
         // togo
 
         bn.logoutMenu.setOnClickListener {
