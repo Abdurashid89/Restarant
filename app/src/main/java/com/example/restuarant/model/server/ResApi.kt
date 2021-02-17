@@ -2,7 +2,6 @@ package com.example.restuarant.model.server
 
 import com.example.restuarant.model.entities.*
 import io.reactivex.Single
-import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.GET
 import retrofit2.http.POST
@@ -22,14 +21,32 @@ interface ResApi {
     @POST("/api/product")
     fun addProduct(@Body data: ProductData): Single<MessageData>
 
-    @POST("/api/purchase")
-    fun productPurchase(@Body data: ReqPurchaseData): Single<MessageData>
-
     @GET("/api/product/productName")
     fun productExistOrNot(@Query("name") name: String): Single<MessageDataWithoutMessageType>
 
-    @GET("/api/product/search")
-    fun getAllProduct(): Single<GetResponseData<List<ProductInData>>>
+//    @GET("/api/category")
+//    fun getAllCategory(
+//        @Query("page") page: Int,
+//        @Query("size") size: Int,
+//        @Query("search") search: String
+//    ): Single<GetResponseData<List<CategoryInData>>>
+//
+//    @GET("/api/categoryProduct/getAll")
+//    fun getCategorySearch(
+//        @Query("name") name: String
+//    ): Single<List<CategoryInData>>
+//
+//    @GET("/api/brand/getAll")
+//    fun getBrandSearch(
+//        @Query("name") name: String
+//    ): Single<List<BrandInData>>
+
+    @GET("/api/product")
+    fun getAllProduct(
+        @Query("page") page: Int,
+        @Query("size") size: Int,
+        @Query("search") search: String
+    ): Single<GetResponseData<List<ProductInData>>>
 
     @GET("/api/table")
     fun getAllTable(): Single<ResData<List<TableData>>>
@@ -46,8 +63,13 @@ interface ResApi {
     ): Single<List<CategoryItemData>>
 
     @POST("/api/order")
-    fun sendOrder(@Body data: OrderSendData): Single<ResOrderData>
+    fun sendOrder(@Body data:OrderSendData):Single<ResOrderData>
+
+    @POST("/api/order")
+    fun orderUpdate(@Body data:OrderUpdateData):Single<ResOrderData>
 
     @GET("/api/order/byTable")
-    fun getTableInfo(@Query("tableId") tableId: Int): Single<ResData<OrderGetData>>
+    fun getTableInfo(@Query("tableId")tableId:Int):Single<ResData<OrderGetData>>
+
+
 }

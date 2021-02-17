@@ -45,4 +45,11 @@ class WaiterInteractor @Inject constructor(
             .observeOn(AndroidSchedulers.mainThread())
     }
 
+    fun orderUpdate(data: OrderUpdateData):Single<ResOrderData>{
+        return api.orderUpdate(data).map {
+            it
+        }.subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+    }
+
 }
