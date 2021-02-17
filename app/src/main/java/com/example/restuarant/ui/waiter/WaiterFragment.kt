@@ -95,7 +95,7 @@ class WaiterFragment : BaseFragment(), WaiterView {
         val itemTouchHelper = ItemTouchHelper(swipeHelper)
         itemTouchHelper.attachToRecyclerView(bn.orderRv)
 
-        bn.tablesBtn.setBackgroundResource(R.color.red)
+        bn.tablesBtn.setBackgroundResource(R.color.teal_1000)
 
         bn.tablesBtn.setOnClickListener {
             clearList(false)
@@ -103,7 +103,7 @@ class WaiterFragment : BaseFragment(), WaiterView {
             presenter.changeColor()
             btnId = 1
             presenter.showTables()
-            bn.tablesBtn.setBackgroundResource(R.color.red)
+            bn.tablesBtn.setBackgroundResource(R.color.teal_1000)
         }
 
         bn.orderBtn.setOnClickListener {
@@ -112,20 +112,20 @@ class WaiterFragment : BaseFragment(), WaiterView {
             categoryAdapter.submitList(menuList)
             presenter.showMenu()
             categoryAdapter.notifyDataSetChanged()
-            bn.orderBtn.setBackgroundResource(R.color.red)
+            bn.orderBtn.setBackgroundResource(R.color.teal_1000)
         }
 
         bn.dashboardBtn.setOnClickListener {
             presenter.changeColor()
             btnId = 3
-            bn.dashboardBtn.setBackgroundResource(R.color.red)
+            bn.dashboardBtn.setBackgroundResource(R.color.teal_1000)
         }
 
         bn.exitBtn.setOnClickListener {
             presenter.changeColor()
             btnId = 4
             presenter.onBackPressed()
-            bn.exitBtn.setBackgroundResource(R.color.red)
+            bn.exitBtn.setBackgroundResource(R.color.teal_1000)
         }
 
 //        val snapHelper1 = LinearSnapHelper()
@@ -138,7 +138,7 @@ class WaiterFragment : BaseFragment(), WaiterView {
                 presenter.changeColor()
                 btnId = 2
                 tableId = it.id
-                bn.orderBtn.setBackgroundResource(R.color.red)
+                bn.orderBtn.setBackgroundResource(R.color.teal_1000)
                 bn.tableNumber.text = it.name.toString()
             } else {
                 orderAdapter.clear()
@@ -147,7 +147,7 @@ class WaiterFragment : BaseFragment(), WaiterView {
                 presenter.changeColor()
                 btnId = 2
                 tableId = it.id
-                bn.orderBtn.setBackgroundResource(R.color.red)
+                bn.orderBtn.setBackgroundResource(R.color.teal_1000)
                 bn.tableNumber.text = it.name.toString()
 
             }

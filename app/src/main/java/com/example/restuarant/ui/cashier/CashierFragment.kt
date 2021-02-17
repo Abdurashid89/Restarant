@@ -11,15 +11,15 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.example.restuarant.R
 import com.example.restuarant.databinding.FragmentCashierBinding
 import com.example.restuarant.extentions.*
-import com.example.restuarant.model.entities.CashierHistoryData
-import com.example.restuarant.model.entities.CashierOrderData
-import com.example.restuarant.model.entities.OrderGetData
-import com.example.restuarant.model.entities.TableData
+import com.example.restuarant.model.entities.*
 import com.example.restuarant.presentation.cashier.CashierPresenter
 import com.example.restuarant.presentation.cashier.CashierView
 import com.example.restuarant.ui.cashier.check.CheckDialog
 import com.example.restuarant.ui.cashier.check.Item
 import com.example.restuarant.ui.global.BaseFragment
+import com.example.restuarant.ui.waiter.adapters.CategoryAdapter
+import com.example.restuarant.ui.waiter.adapters.CategoryItemAdapter
+import com.example.restuarant.ui.waiter.adapters.OrderAdapter
 import moxy.presenter.InjectPresenter
 import moxy.presenter.ProvidePresenter
 import timber.log.Timber
@@ -32,13 +32,19 @@ class CashierFragment : BaseFragment(), CashierView, SwipeRefreshLayout.OnRefres
 
     private var _bn: FragmentCashierBinding? = null
     private val bn get() = _bn ?: throw NullPointerException("error")
+
     private val tableAdapter = CashierTableAdapter2()
     private val orderAdapter = CashierOrderAdapter()
     private val historyAdapter = CashierHistoryAdapter2()
+    private val goodsCategoryAdapter = CategoryItemAdapter()
+    private val categoryAdapter = CategoryAdapter()
+    private val orderAdapter2 = OrderAdapter()
+
     private val orderList = ArrayList<CashierOrderData>()
     private val historyList = ArrayList<CashierHistoryData>()
     private lateinit var progressBar: ProgressBar
     private var currentText = ""
+    private var totalSum = 0.0
     var currentMenu = 0
     var historyOpened = false
 
@@ -63,6 +69,9 @@ class CashierFragment : BaseFragment(), CashierView, SwipeRefreshLayout.OnRefres
         bn.tablesLayout.cashierOrderList.adapter = orderAdapter
         bn.tableList.adapter = tableAdapter
         bn.historyLayout.listHistoryCashier.adapter = historyAdapter
+        bn.togoLayout.categoryRv.adapter = categoryAdapter
+        bn.togoLayout.menuRv.adapter = goodsCategoryAdapter
+        bn.togoLayout.orderRv.adapter = orderAdapter2
 
         loadHistory()
         loadTables()
@@ -97,13 +106,15 @@ class CashierFragment : BaseFragment(), CashierView, SwipeRefreshLayout.OnRefres
 
         }
         bn.togoMenu.setOnClickListener {
+            
+            presenter.getMenu()
             historyOpened = false
             bn.groupButtons.translationZ = 0f
             setColorMenu()
             currentMenu = 3
             it.setBackgroundResource(R.color.teal_1000)
             bn.historyLayout.cashierHistoryLayout.visibility = View.GONE
-            bn.tablesLayout.viewGroupTables.visibility = View.GONE
+            bn.cashierContainer.visibility = View.GONE
             bn.togoLayout.cashierOwnLayout.visibility = View.VISIBLE
 
         }
@@ -120,6 +131,39 @@ class CashierFragment : BaseFragment(), CashierView, SwipeRefreshLayout.OnRefres
 
         }
 
+        categoryAdapter.setOnClickListener {
+            presenter.getMenuItems(it.id)
+        }
+
+        goodsCategoryAdapter.setOnClickListener {
+
+                val waiterOrderData = WaiterOrderData(it.id, it.name, it.price, 1, it.price)
+                    orderAdapter2.addProduct(waiterOrderData)
+                    var isHave = false
+                    for (i in orderAdapter2.getAllOrder().indices) {
+                        if (waiterOrderData.id == orderAdapter2.getAllOrder()[i].id) {
+                            orderAdapter2.plus(i)
+                            isHave = true
+                        }
+                    }
+                    if (!isHave) orderAdapter2.addProduct(waiterOrderData)
+
+                presenter.totalSum()
+                if (orderAdapter.itemCount != 0) {
+                    bn.togoLayout.orderRv.smoothScrollToPosition(orderAdapter.itemCount - 1)
+                }
+        }
+
+        orderAdapter2.setOnPlusClickListener {
+            orderAdapter2.plus(it)
+            presenter.totalSum()
+        }
+
+        orderAdapter2.setOnMinusClickListener {
+            orderAdapter2.minus(it)
+            presenter.totalSum()
+        }
+
     }
 
     private fun loadHistory() {
@@ -132,11 +176,11 @@ class CashierFragment : BaseFragment(), CashierView, SwipeRefreshLayout.OnRefres
 
     private fun setColorMenu() {
         when (currentMenu) {
-            1 -> bn.tableMenu.setBackgroundResource(R.color.purple_200)
+            1 -> bn.tableMenu.setBackgroundResource(R.color.green)
 
-            2 -> bn.historyMenu.setBackgroundResource(R.color.purple_200)
+            2 -> bn.historyMenu.setBackgroundResource(R.color.green)
 
-            3 -> bn.togoMenu.setBackgroundResource(R.color.purple_200)
+            3 -> bn.togoMenu.setBackgroundResource(R.color.green)
         }
     }
 
@@ -268,10 +312,12 @@ class CashierFragment : BaseFragment(), CashierView, SwipeRefreshLayout.OnRefres
             orderList.add(CashierOrderData(i, "Food $i", i, i, "${i * i}"))
         }
         tableAdapter.setOnClickListener { tab ->
-
-            presenter.loadOrderByTableId(tab.id)
-            bn.tablesLayout.tableNumber.text = tab.id.toString()
-
+            if (!tab.active) {
+                presenter.loadOrderByTableId(tab.id)
+                bn.tablesLayout.tableNumber.text = tab.name.toString()
+            }else{
+                showSnackMessage("Ma'lumot yo'q")
+            }
 
         }
 
@@ -298,7 +344,6 @@ class CashierFragment : BaseFragment(), CashierView, SwipeRefreshLayout.OnRefres
     override fun addTableOrder(objectData: OrderGetData) {
 
         Log.d("OrderByTableId", "$objectData")
-
 //        bn.tablesLayout.tableNumber.text = tab.id.toString()
         bn.tablesLayout.priceCashBack.setText("0")
         bn.tablesLayout.priceOnCash.setText("0")
@@ -308,6 +353,22 @@ class CashierFragment : BaseFragment(), CashierView, SwipeRefreshLayout.OnRefres
 
     override fun showProgress(isShow: Boolean) {
         bn.tablesLayout.progressBarLoadOrder.visible(isShow)
+    }
+
+    override fun getItemsById(list: List<CategoryItemData>) {
+        goodsCategoryAdapter.submitList(list)
+    }
+
+    override fun getMenu(list: ResData<List<CategoryData>>) {
+//        menuList = list.objectData as ArrayList<CategoryData>
+        categoryAdapter.submitList(list.objectData)
+    }
+
+    override fun totalSum() {
+        Timber.d(orderAdapter.itemCount.toString())
+        orderAdapter2.getAllOrder().forEach { totalSum += it.productTotalPrice }
+        bn.togoLayout.totalSumTv.text = totalSum.formatDouble()
+        totalSum = 0.0
     }
 
     override fun onBackPressed() {
