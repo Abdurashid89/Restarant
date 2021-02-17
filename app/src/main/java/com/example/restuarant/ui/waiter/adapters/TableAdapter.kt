@@ -60,7 +60,7 @@ class TableAdapter :RecyclerView.Adapter<TableAdapter.VHolder>(){
             val d = sortedList[adapterPosition]
             if (d.active){ view.tablePageLinear.setBackgroundResource(android.R.color.holo_green_dark) }
             else{ view.tablePageLinear.setBackgroundResource(android.R.color.holo_red_dark) }
-            view.tablePageNumberTv.text = d.id.toString()
+            view.tablePageNumberTv.text = d.name.toString()
         }
     }
 }

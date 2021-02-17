@@ -5,7 +5,6 @@ import android.app.AlertDialog
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
-import android.widget.Toast
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearSnapHelper
@@ -52,6 +51,7 @@ class WaiterFragment : BaseFragment(), WaiterView {
     private var totalSum = 0.0
     private var btnId: Int = 1
     private var isFirst = true
+    private var tableOrderSize = -1
 
     @InjectPresenter
     lateinit var presenter: WaiterPresenter
@@ -63,8 +63,11 @@ class WaiterFragment : BaseFragment(), WaiterView {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         _bn = FragmentWaiterBinding.bind(view)
-//        shimmer = Shimmer()
-//        shimmer.start(bn.waiterName)
+        shimmer.setRepeatCount(4)
+            .setDuration(1000)
+            .setStartDelay(1000)
+            .setDirection(Shimmer.ANIMATION_DIRECTION_LTR)
+        shimmer.start(bn.waiterName)
 
         // ## adapters ##
         bn.menuRv.adapter = goodsCategoryAdapter
@@ -136,7 +139,7 @@ class WaiterFragment : BaseFragment(), WaiterView {
                 btnId = 2
                 tableId = it.id
                 bn.orderBtn.setBackgroundResource(R.color.red)
-                bn.tableNumber.text = it.id.toString()
+                bn.tableNumber.text = it.name.toString()
             } else {
                 orderAdapter.clear()
                 presenter.orderGetData(it.id)
@@ -145,7 +148,7 @@ class WaiterFragment : BaseFragment(), WaiterView {
                 btnId = 2
                 tableId = it.id
                 bn.orderBtn.setBackgroundResource(R.color.red)
-                bn.tableNumber.text = it.id.toString()
+                bn.tableNumber.text = it.name.toString()
 
             }
         }
@@ -199,20 +202,18 @@ class WaiterFragment : BaseFragment(), WaiterView {
             presenter.getMenuItems(it.id)
         }
 
-
-
         orderAdapter.setOnPlusClickListener {
             orderAdapter.plus(it)
             presenter.totalSum()
         }
+
         orderAdapter.setOnMinusClickListener {
             orderAdapter.minus(it)
             presenter.totalSum()
         }
 
-
         goodsCategoryAdapter.setOnClickListener {
-            if (bn.tableNumber.text!="0"){
+            if (bn.tableNumber.text != "0") {
                 val waiterOrderData = WaiterOrderData(it.id, it.name, it.price, 1, it.price)
                 if (orderAdapter.getAllOrder().isEmpty()) {
                     orderAdapter.addProduct(waiterOrderData)
@@ -230,7 +231,7 @@ class WaiterFragment : BaseFragment(), WaiterView {
                 if (orderAdapter.itemCount != 0) {
                     bn.orderRv.smoothScrollToPosition(orderAdapter.itemCount - 1)
                 }
-            }else{
+            } else {
                 showSnackMessage("Avval table tanlang!")
             }
 
@@ -322,6 +323,7 @@ class WaiterFragment : BaseFragment(), WaiterView {
     override fun getOrderInfo(getData: OrderGetData) {
         tableOrderId = getData.id
         isFirst = false
+        tableOrderSize = getData.menuSelection.size
         getData.menuSelection.forEach {
             orderAdapter.addProduct(
                 WaiterOrderData(
@@ -338,8 +340,4 @@ class WaiterFragment : BaseFragment(), WaiterView {
         _bn = null
     }
 
-    override fun onPause() {
-        super.onPause()
-//        shimmer.cancel()
-    }
 }
