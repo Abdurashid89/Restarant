@@ -19,10 +19,9 @@
             android:id="@+id/logo_constrait"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_marginRight="20dp"
-            android:layout_marginLeft="20dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginLeft="10dp"
             android:background="@color/green"
-            android:padding="5dp"
             app:layout_constraintHeight_percent="0.1"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintTop_toTopOf="parent">
@@ -42,9 +41,10 @@
                 android:id="@+id/waiter_name"
                 android:layout_width="0dp"
                 android:layout_height="0dp"
-                android:gravity="center"
+                android:gravity="center|end"
                 android:textColor="@color/white"
                 android:maxLines="2"
+                android:layout_marginEnd="16dp"
                 app:reflectionColor="@color/green"
                 android:text="Donald Trump"
                 android:textSize="24sp"
@@ -242,6 +242,9 @@
             app:layout_constraintTop_toTopOf="parent">
 
             <Button
+                android:textAllCaps="false"
+                android:textStyle="italic"
+                android:textSize="24sp"
                 android:id="@+id/tables_btn"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
@@ -256,6 +259,9 @@
                 app:layout_constraintWidth_percent="0.225" />
 
             <Button
+                android:textAllCaps="false"
+                android:textStyle="italic"
+                android:textSize="24sp"
                 android:textColor="@color/white"
                 android:id="@+id/order_btn"
                 android:layout_width="0dp"
@@ -270,6 +276,9 @@
                 app:layout_constraintWidth_percent="0.225" />
 
             <Button
+                android:textAllCaps="false"
+                android:textStyle="italic"
+                android:textSize="24sp"
                 android:textColor="@color/white"
                 android:id="@+id/dashboard_btn"
                 android:layout_width="0dp"
@@ -281,9 +290,12 @@
                 app:layout_constraintLeft_toRightOf="@id/order_btn"
                 app:layout_constraintRight_toLeftOf="@id/exit_btn"
                 app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintWidth_percent="0.225" />
+                app:layout_constraintWidth_percent="0.25" />
 
             <Button
+                android:textAllCaps="false"
+                android:textStyle="italic"
+                android:textSize="24sp"
                 android:textColor="@color/white"
                 android:id="@+id/exit_btn"
                 android:layout_width="0dp"
