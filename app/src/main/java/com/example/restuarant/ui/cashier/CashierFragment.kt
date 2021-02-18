@@ -3,7 +3,6 @@ package com.example.restuarant.ui.cashier
 import android.annotation.SuppressLint
 import android.os.Build
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import android.widget.ProgressBar
 import androidx.annotation.RequiresApi
@@ -32,9 +31,9 @@ class CashierFragment : BaseFragment(), CashierView, SwipeRefreshLayout.OnRefres
 
     private var _bn: FragmentCashierBinding? = null
     private val bn get() = _bn ?: throw NullPointerException("error")
-    private val tableAdapter = CashierTableAdapter2()
+    private val tableAdapter = CashierTableAdapter()
     private val orderAdapter = CashierOrderAdapter()
-    private val historyAdapter = CashierHistoryAdapter2()
+    private val historyAdapter = CashierHistoryAdapter()
     private val orderList = ArrayList<CashierOrderData>()
     private val historyList = ArrayList<CashierHistoryData>()
     private lateinit var progressBar: ProgressBar
@@ -42,6 +41,8 @@ class CashierFragment : BaseFragment(), CashierView, SwipeRefreshLayout.OnRefres
     var currentMenu = 0
     private var totalPrice = ""
     var historyOpened = false
+    private var orderId = 0
+    var check: Check? = null
 
     @InjectPresenter
     lateinit var presenter: CashierPresenter
@@ -133,6 +134,17 @@ class CashierFragment : BaseFragment(), CashierView, SwipeRefreshLayout.OnRefres
 
         bn.tablesLayout.btnWithCash.setOnClickListener {
             bn.tablesLayout.priceOnCash.setText(bn.tablesLayout.totalPrice.text.toString())
+        }
+
+        bn.tablesLayout.btnSendPay.setOnClickListener {
+            if (orderId != -1) {
+                presenter.sendPay(orderId.toLong(), check!!.html)
+                bn.tablesLayout.btnSendPay.isEnabled = false
+            }
+        }
+
+        bn.tablesLayout.btnWithCash.setOnClickListener {
+            bn.tablesLayout.priceOnCash.setText(totalPrice)
         }
 
     }
@@ -254,18 +266,26 @@ class CashierFragment : BaseFragment(), CashierView, SwipeRefreshLayout.OnRefres
             }
         }
         bn.tablesLayout.btnPrint.setOnClickListener {
+            bn.tablesLayout.btnSendPay.isEnabled = true
             if (notNull()) {
-                val data = Item(orderList)
+                val data = Item(orderAdapter.getOrderList)
                 val itemNameList = data.getItemNameList()
                 val price = data.getPriceList()
-                val check = Check(itemNameList, price)
-                val dialog = CheckDialog(requireContext(), check.html, "text/html", "UTF-8")
-                Timber.d(check.html)
+                check = Check(
+                    "Abdurashid", itemNameList,
+                    price,
+                    totalPrice,
+                    bn.tablesLayout.priceCashBack.text.toString(),
+                    bn.tablesLayout.priceOnCash.text.toString(), "SSD Intership",
+                    "NAQD"
+                )
+                val dialog = CheckDialog(requireContext(), check!!.html, "text/html", "UTF-8")
+                Timber.d(check!!.html)
                 dialog.setOnClickListener {
                     dialog._bn = null
                     dialog.dismiss()
                     bn.tablesLayout.priceOnCash.setText("0")
-                    orderAdapter.submitList(listOf())
+                    orderAdapter.submitList(arrayListOf())
                     currentText = ""
                     bn.tablesLayout.totalPrice.text = "0"
                     bn.tablesLayout.tableNumber.text = "0"
@@ -299,7 +319,20 @@ class CashierFragment : BaseFragment(), CashierView, SwipeRefreshLayout.OnRefres
     @SuppressLint("LogNotTimber")
     override fun addTableOrder(objectData: OrderGetData) {
         totalPrice = objectData.orderPrice.formatDouble()
-        Log.d("OrderByTableId", "${objectData.orderPrice.formatDouble()}")
+        Timber.d("${objectData.orderPrice.formatDouble()}")
+
+        /*objectData.menuSelection.forEach {
+            orderId = it.id
+            orderList.add(
+                CashierOrderData(
+                    it.id,
+                    it.menu.name,
+                    it.count.toDouble(),
+                    it.menu.price.toString(),
+                    (it.count.toLong() * it.menu.price.toLong()).toString()
+                )
+            )
+        }*/
 
 //        bn.tablesLayout.tableNumber.text = tab.id.toString()
         bn.tablesLayout.priceCashBack.setText("0")
@@ -309,8 +342,6 @@ class CashierFragment : BaseFragment(), CashierView, SwipeRefreshLayout.OnRefres
         orderList.clear()
 
         objectData.menuSelection.forEach {
-
-
             orderList.add(
                 CashierOrderData(
                     it.id,
@@ -321,6 +352,7 @@ class CashierFragment : BaseFragment(), CashierView, SwipeRefreshLayout.OnRefres
                 )
             )
         }
+        orderAdapter.submitList(orderList)
 
 
 
@@ -375,7 +407,6 @@ class CashierFragment : BaseFragment(), CashierView, SwipeRefreshLayout.OnRefres
             }
             dialog.show()
         }
-
     }
 
     private fun notNull(): Boolean {

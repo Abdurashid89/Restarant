@@ -12,7 +12,7 @@ import com.example.restuarant.model.entities.CashierHistoryData
  * Created by Abdurashid on 08,Февраль,2021
  */
 
-class CashierHistoryAdapter2 : RecyclerView.Adapter<CashierHistoryAdapter2.HistoryViewHolder>() {
+class CashierHistoryAdapter : RecyclerView.Adapter<CashierHistoryAdapter.HistoryViewHolder>() {
     val list = ArrayList<CashierHistoryData>()
 
     fun submitList(ls: List<CashierHistoryData>) {

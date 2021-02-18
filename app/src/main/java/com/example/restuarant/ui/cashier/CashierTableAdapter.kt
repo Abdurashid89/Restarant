@@ -8,13 +8,13 @@ import com.example.restuarant.R
 import com.example.restuarant.databinding.DeskItemBinding
 import com.example.restuarant.extentions.SingleBlock
 import com.example.restuarant.extentions.bindItem
-import com.example.restuarant.extentions.sortTableItem
+import com.example.restuarant.extentions.sortTable
 import com.example.restuarant.model.entities.TableData
 
 /**
  * Created by shohboz on 21,Январь,2021
  */
-class CashierTableAdapter2 : RecyclerView.Adapter<CashierTableAdapter2.CashierTableHolder>() {
+class CashierTableAdapter : RecyclerView.Adapter<CashierTableAdapter.CashierTableHolder>() {
     val tableList = ArrayList<TableData>()
 
     var tableIndex = 0
@@ -22,7 +22,7 @@ class CashierTableAdapter2 : RecyclerView.Adapter<CashierTableAdapter2.CashierTa
 
     fun submitList(list: ArrayList<TableData>) {
         tableList.clear()
-        tableList.addAll(list)
+        tableList.addAll(list.sortTable())
         notifyDataSetChanged()
     }
 
@@ -36,7 +36,7 @@ class CashierTableAdapter2 : RecyclerView.Adapter<CashierTableAdapter2.CashierTa
         )
     )
 
-    override fun onBindViewHolder(holder: CashierTableAdapter2.CashierTableHolder, position: Int) =
+    override fun onBindViewHolder(holder: CashierTableAdapter.CashierTableHolder, position: Int) =
         holder.bind()
 
     override fun getItemCount() = tableList.size

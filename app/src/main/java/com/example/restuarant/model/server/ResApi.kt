@@ -2,11 +2,7 @@ package com.example.restuarant.model.server
 
 import com.example.restuarant.model.entities.*
 import io.reactivex.Single
-import retrofit2.Response
-import retrofit2.http.Body
-import retrofit2.http.GET
-import retrofit2.http.POST
-import retrofit2.http.Query
+import retrofit2.http.*
 
 /**
  * Created by shohboz on 11,Январь,2021
@@ -64,8 +60,16 @@ interface ResApi {
     ): Single<List<CategoryItemData>>
 
     @POST("/api/order")
-    fun sendOrder(@Body data:OrderSendData):Single<ResOrderData>
+    fun sendOrder(@Body data: OrderSendData): Single<ResOrderData>
 
     @GET("/api/order/byTable")
-    fun getTableInfo(@Query("tableId")tableId:Int):Single<ResData<OrderGetData>>
+    fun getTableInfo(@Query("tableId") tableId: Int): Single<ResData<OrderGetData>>
+
+    @POST("/api/order/pay")
+    fun sendCheckByOrderId(
+        @Field("id") id: Long,
+        @Field("cheque") cheque: String
+    ): Single<CheckData>
+
+    // order/pay?id=id&check=check
 }

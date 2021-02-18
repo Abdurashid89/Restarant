@@ -69,4 +69,17 @@ class CashierPresenter @Inject constructor(
             }).connect()
     }
 
+    fun sendPay(orderId: Long, cheque: String) {
+        interactor.sendToServer(orderId, cheque)
+            .doOnSubscribe {
+                viewState.showProgress(true)
+            }.doAfterTerminate {
+                viewState.showProgress(false)
+            }.subscribe({
+                viewState.showMessage(it.message)
+            }, {
+                viewState.showMessage(it.message!!)
+            }).connect()
+    }
+
 }

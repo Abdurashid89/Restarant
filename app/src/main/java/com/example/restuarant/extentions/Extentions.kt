@@ -1,6 +1,5 @@
 package com.example.restuarant.extentions
 
-import android.accounts.AuthenticatorException
 import android.accounts.NetworkErrorException
 import android.content.ContentResolver
 import android.content.Context
@@ -53,9 +52,21 @@ import java.net.SocketTimeoutException
 import java.text.SimpleDateFormat
 import java.util.*
 import java.util.concurrent.Executors
-import kotlin.collections.ArrayList
 
-fun Double.formatDouble():String{
+fun ArrayList<TableData>.sortTable(): ArrayList<TableData> {
+    for (i in 0 until this.size) {
+        for (j in i + 1 until this.size - 1) {
+            if (this[j].id < this[i].id) {
+                val temp = this[i]
+                this[i] = this[j]
+                this[j] = temp
+            }
+        }
+    }
+    return this
+}
+
+fun Double.formatDouble(): String {
     val split = this.toString().split(".")
     return split[0].toLong().stringFormat() + ".${split[1]}"
 }
@@ -68,18 +79,18 @@ fun Navigator.setLunchScreen(screen: SupportAppScreen) {
 
 typealias SingleBlock <T> = (T) -> Unit
 
-fun ArrayList<TableData>.sortTableItem() : ArrayList<TableData>{
+fun ArrayList<TableData>.sortTableItem(): ArrayList<TableData> {
 
-    for (i in this.indices){
-        for (j in i + 1..this.size){
-            if (this[j].id < this[i].id){
+    for (i in this.indices) {
+        for (j in i + 1..this.size) {
+            if (this[j].id < this[i].id) {
                 val tmp = this[j]
                 this[j] = this[i]
                 this[i] = tmp
             }
         }
     }
-return this
+    return this
 }
 
 fun String.isNotDouble(): Boolean {
@@ -179,7 +190,7 @@ fun PopupMenu.setForceShowIcon() {
 
 fun Fragment.getDate(): String {
     return "${Calendar.getInstance().get(Calendar.MONTH)}/${
-    Calendar.getInstance().get(Calendar.YEAR)
+        Calendar.getInstance().get(Calendar.YEAR)
     }"
 }
 
