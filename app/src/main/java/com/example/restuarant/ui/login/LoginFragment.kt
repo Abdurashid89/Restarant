@@ -6,18 +6,22 @@ import com.example.restuarant.R
 import com.example.restuarant.databinding.PinLockViewBinding
 import com.example.restuarant.extentions.showSnackMessage
 import com.example.restuarant.extentions.visible
+import com.example.restuarant.model.entities.UnPaidData
 import com.example.restuarant.presentation.login.LoginPresenter
 import com.example.restuarant.presentation.login.LoginView
 import com.example.restuarant.ui.global.BaseFragment
 import moxy.presenter.InjectPresenter
 import moxy.presenter.ProvidePresenter
 import java.lang.NullPointerException
+import java.security.Timestamp
 
 class LoginFragment : BaseFragment(), LoginView {
     override val layoutRes: Int = R.layout.pin_lock_view
 
     private var _bn: PinLockViewBinding? = null
     private val bn get() = _bn ?: throw NullPointerException("error")
+
+    private val ordersDB = ArrayList<UnPaidData>()
 
     @InjectPresenter
     lateinit var presenter: LoginPresenter
@@ -99,6 +103,15 @@ class LoginFragment : BaseFragment(), LoginView {
 
 
         }
+    }
+
+    override fun ordersFromServer(list: List<UnPaidData>) {
+
+    }
+
+    override fun ordersFromDB(list: List<UnPaidData>) {
+        ordersDB.clear()
+        ordersDB.addAll(list)
     }
 
     override fun onBackPressed() {

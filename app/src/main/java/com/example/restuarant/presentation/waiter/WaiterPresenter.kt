@@ -132,6 +132,25 @@ class WaiterPresenter @Inject constructor(
 
     }
 
+
+    @SuppressLint("CheckResult")
+    fun getAllUnPaidOrders(tableId:Int) {
+        interactor.getOrder(tableId)
+            .doOnSubscribe {
+//                viewState.showProgress(DI.ORDER_PROGRESS,true)
+            }
+            .doAfterTerminate {
+//                viewState.showProgress(DI.ORDER_PROGRESS,false)
+            }
+            .subscribe({
+//                viewState.getOrderInfo(it.objectData)
+            },{
+//                viewState.openErrorDialog(it.errorResponse(),false)
+                viewState.showMessage(it.toString())
+            })
+
+    }
+
     fun showTables(){
         viewState.showTables()
     }

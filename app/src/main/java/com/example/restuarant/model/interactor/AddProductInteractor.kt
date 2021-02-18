@@ -26,13 +26,13 @@ class AddProductInteractor @Inject constructor(
             .doOnError { }
     }
 
-    fun productPurchase(data: ReqPurchaseData): Single<MessageData> {
-        return api.productPurchase(data).map {
-            it
-        }.subscribeOn(Schedulers.io())
-            .observeOn(AndroidSchedulers.mainThread())
-            .doOnError { }
-    }
+//    fun productPurchase(data: ReqPurchaseData): Single<MessageData> {
+//        return api.productPurchase(data).map {
+//            it
+//        }.subscribeOn(Schedulers.io())
+//            .observeOn(AndroidSchedulers.mainThread())
+//            .doOnError { }
+//    }
 
     fun getAllProduct(): Single<GetResponseData<List<ProductInData>>> {
         return api.getAllProduct().map {

@@ -26,21 +26,21 @@ class EnterProductPresenter @Inject constructor(
         getProduct()
     }
 
-    @SuppressLint("CheckResult")
-    fun purchaseProduct(data: ReqPurchaseData) {
-        interactor.productPurchase(data)
-            .doOnSubscribe {
-                viewState.makeLoadingVisible(true)
-            }
-            .doAfterTerminate {
-                viewState.makeLoadingVisible(false)
-            }.subscribe({
-                viewState.showMessage("Product Successfully added")
-                viewState.clearAllOldData()
-            }, {
-                viewState.showMessage(it.errorResponse())
-            }).connect()
-    }
+//    @SuppressLint("CheckResult")
+//    fun purchaseProduct(data: ReqPurchaseData) {
+//        interactor.productPurchase(data)
+//            .doOnSubscribe {
+//                viewState.makeLoadingVisible(true)
+//            }
+//            .doAfterTerminate {
+//                viewState.makeLoadingVisible(false)
+//            }.subscribe({
+//                viewState.showMessage("Product Successfully added")
+//                viewState.clearAllOldData()
+//            }, {
+//                viewState.showMessage(it.errorResponse())
+//            }).connect()
+//    }
 
     fun getProduct() {
         interactor.getAllProduct()

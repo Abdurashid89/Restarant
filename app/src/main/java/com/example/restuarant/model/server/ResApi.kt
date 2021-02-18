@@ -41,11 +41,8 @@ interface ResApi {
 //        @Query("name") name: String
 //    ): Single<List<BrandInData>>
 
-    @GET("/api/product")
+    @GET("/api/product/search")
     fun getAllProduct(
-        @Query("page") page: Int,
-        @Query("size") size: Int,
-        @Query("search") search: String
     ): Single<GetResponseData<List<ProductInData>>>
 
     @GET("/api/table")
@@ -70,6 +67,9 @@ interface ResApi {
 
     @GET("/api/order/byTable")
     fun getTableInfo(@Query("tableId")tableId:Int):Single<ResData<OrderGetData>>
+
+    @GET("/api/unPayOrder")
+    fun getOrderUnPaid():Single<ResData<List<UnPaidData>>>
 
 
 }
