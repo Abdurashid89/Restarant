@@ -23,37 +23,37 @@ class EnterProductPresenter @Inject constructor(
 
     override fun onFirstViewAttach() {
         super.onFirstViewAttach()
-        getProduct()
+//        getProduct()
     }
 
-    @SuppressLint("CheckResult")
-    fun purchaseProduct(data: ReqPurchaseData) {
-        interactor.productPurchase(data)
-            .doOnSubscribe {
-                viewState.makeLoadingVisible(true)
-            }
-            .doAfterTerminate {
-                viewState.makeLoadingVisible(false)
-            }.subscribe({
-                viewState.showMessage("Product Successfully added")
-                viewState.clearAllOldData()
-            }, {
-                viewState.showMessage(it.errorResponse())
-            }).connect()
-    }
-
-    fun getProduct() {
-        interactor.getAllProduct()
-            .doOnSubscribe {
-
-            }.doAfterTerminate {
-
-            }.subscribe({
-                viewState.listProducts(it.objectDate)
-                viewState.showMessage(it.objectDate.size.toString())
-            }, {
-                viewState.showMessage(it.errorResponse())
-            }).connect()
-    }
+//    @SuppressLint("CheckResult")
+//    fun purchaseProduct(data: ReqPurchaseData) {
+//        interactor.productPurchase(data)
+//            .doOnSubscribe {
+//                viewState.makeLoadingVisible(true)
+//            }
+//            .doAfterTerminate {
+//                viewState.makeLoadingVisible(false)
+//            }.subscribe({
+//                viewState.showMessage("Product Successfully added")
+//                viewState.clearAllOldData()
+//            }, {
+//                viewState.showMessage(it.errorResponse())
+//            }).connect()
+//    }
+//
+//    fun getProduct() {
+//        interactor.getAllProduct()
+//            .doOnSubscribe {
+//
+//            }.doAfterTerminate {
+//
+//            }.subscribe({
+//                viewState.listProducts(it.objectDate)
+//                viewState.showMessage(it.objectDate.size.toString())
+//            }, {
+//                viewState.showMessage(it.errorResponse())
+//            }).connect()
+//    }
 
 }

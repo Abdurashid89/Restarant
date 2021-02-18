@@ -149,11 +149,11 @@ class EnterProductDialog : MvpAppCompatDialogFragment(), EnterProductView {
                             10
                         )
                     )
-                    presenterNew.purchaseProduct(
-                        ReqPurchaseData(
-                            list
-                        )
-                    )
+//                    presenterNew.purchaseProduct(
+//                        ReqPurchaseData(
+//                            list
+//                        )
+//                    )
                     showSnackMessage("send")
                 }
 

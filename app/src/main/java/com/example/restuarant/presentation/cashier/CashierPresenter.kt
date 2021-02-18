@@ -26,7 +26,7 @@ class CashierPresenter @Inject constructor(
     override fun onFirstViewAttach() {
         super.onFirstViewAttach()
         getTables()
-
+        getMenu()
 //        viewState.makeLoadingVisible(true)
 //        dialogOpen(true)
     }
