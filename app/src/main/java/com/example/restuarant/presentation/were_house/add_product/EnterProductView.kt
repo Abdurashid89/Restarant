@@ -1,5 +1,6 @@
 package com.example.restuarant.presentation.were_house.add_product
 
+import com.example.restuarant.model.entities.ProductInData
 import moxy.MvpView
 import moxy.viewstate.strategy.AddToEndSingleTagStrategy
 import moxy.viewstate.strategy.OneExecutionStateStrategy
@@ -22,4 +23,8 @@ interface EnterProductView : MvpView {
     fun errorOrNull(string: String)
 
     fun productYON(status: Boolean, message: String)
+
+    fun listProducts(list: List<ProductInData>)
+
+    fun clearAllOldData()
 }

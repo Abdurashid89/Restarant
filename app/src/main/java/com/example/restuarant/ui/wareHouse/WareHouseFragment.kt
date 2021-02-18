@@ -14,6 +14,7 @@ import com.example.restuarant.databinding.FragmentWareHouseBinding
 import com.example.restuarant.extentions.showSnackMessage
 //import com.example.restuarant.model.entities.CategoryInProductData
 import com.example.restuarant.model.entities.ProductInData
+import com.example.restuarant.model.system.pull.FlowRouter
 import com.example.restuarant.presentation.were_house.WareHousePresenter
 import com.example.restuarant.presentation.were_house.WareHouseView
 import com.example.restuarant.ui.global.BaseFragment
@@ -24,6 +25,7 @@ import java.lang.NullPointerException
 class WareHouseFragment() : BaseFragment(), WareHouseView, SwipeRefreshLayout.OnRefreshListener {
     override val layoutRes: Int = R.layout.fragment_ware_house
     private var _bn: FragmentWareHouseBinding? = null
+   
     private val binding get() = _bn ?: throw  NullPointerException("error")
     private lateinit var layoutManager: LinearLayoutManager
     private lateinit var itemList: ArrayList<ProductInData>
@@ -57,6 +59,11 @@ class WareHouseFragment() : BaseFragment(), WareHouseView, SwipeRefreshLayout.On
         binding.btnAdd.setOnClickListener {
             addProduct()
         }
+        binding.btnHistory.setOnClickListener {
+
+        }
+
+
     }
 
     private fun enterProduct() {
@@ -64,25 +71,25 @@ class WareHouseFragment() : BaseFragment(), WareHouseView, SwipeRefreshLayout.On
     }
 
     private fun addProduct() {
-        WareHouseDialogFragment().show(childFragmentManager,"tag")
+        WareHouseDialogFragment().show(childFragmentManager, "tag")
     }
 
 
     private fun loadAdapter() {
         itemList = ArrayList()
-        itemList.add(ProductInData(0, "aaaaa", "a", "a", "aa", "go'sht"))
-        itemList.add(ProductInData(1, "aaaaa", "a", "a", "aa", "saryog'"))
-        itemList.add(ProductInData(2, "aaaaa", "a", "a", "aa", "non"))
-        itemList.add(ProductInData(3, "aaaaa", "a", "a", "aa", "suv"))
-        itemList.add(ProductInData(4, "aaaaa", "a", "a", "aa", "kartoshka"))
-        itemList.add(ProductInData(5, "aaaaa", "a", "a", "aa", "sabzi"))
-        itemList.add(ProductInData(6, "aaaaa", "a", "a", "aa", "piyoz"))
-        itemList.add(ProductInData(7, "aaaaa", "a", "a", "aa", "sholg'om"))
-        itemList.add(ProductInData(8, "aaaaa", "a", "a", "aa", "gorox"))
-        itemList.add(ProductInData(9, "aaaaa", "a", "a", "aa", "mosh"))
-        itemList.add(ProductInData(10, "aaaaa", "a", "a", "aa", "guruch"))
-        itemList.add(ProductInData(11, "aaaaa", "a", "a", "aa", "loviya"))
-        itemList.add(ProductInData(12, "aaaaa", "a", "a", "aa", "tovuq go'shti"))
+//        itemList.add(ProductInData(0, "aaaaa", 100.0, 100.0, 100, "go'sht"))
+//        itemList.add(ProductInData(1, "aaaaa", 100.0, 100.0, 100, "saryog'"))
+//        itemList.add(ProductInData(2, "aaaaa", 100.0, 100.0, 100, "non"))
+//        itemList.add(ProductInData(3, "aaaaa", 100.0, 100.0, 100, "suv"))
+//        itemList.add(ProductInData(4, "aaaaa", 100.0, 100.0, 100, "kartoshka"))
+//        itemList.add(ProductInData(5, "aaaaa", 100.0, 100.0, 100, "sabzi"))
+//        itemList.add(ProductInData(6, "aaaaa", 100.0, 100.0, 100, "piyoz"))
+//        itemList.add(ProductInData(7, "aaaaa", 100.0, 100.0, 100, "sholg'om"))
+//        itemList.add(ProductInData(8, "aaaaa", 100.0, 100.0, 100, "gorox"))
+//        itemList.add(ProductInData(9, "aaaaa", 100.0, 100.0, 100, "mosh"))
+//        itemList.add(ProductInData(10, "aaaaa", 100.0, 100.0, 100, "guruch"))
+//        itemList.add(ProductInData(11, "aaaaa", 100.0, 100.0, 100, "loviya"))
+//        itemList.add(ProductInData(12, "aaaaa", 100.0, 100.0, 100, "tovuq go'shti"))
 
     }
 

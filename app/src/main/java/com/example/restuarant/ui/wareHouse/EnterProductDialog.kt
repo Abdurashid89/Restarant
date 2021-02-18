@@ -13,7 +13,8 @@ import com.example.restuarant.extentions.showSnackMessage
 import com.example.restuarant.extentions.vibrate
 import com.example.restuarant.extentions.visible
 import com.example.restuarant.model.entities.ProductData
-import com.example.restuarant.presentation.were_house.add_product.AddNewProductPresenter
+import com.example.restuarant.model.entities.ProductInData
+import com.example.restuarant.model.entities.ReqPurchaseData
 import com.example.restuarant.presentation.were_house.add_product.EnterProductPresenter
 import com.example.restuarant.presentation.were_house.add_product.EnterProductView
 import com.example.restuarant.ui.global.BaseWatcher
@@ -21,7 +22,6 @@ import moxy.MvpAppCompatDialogFragment
 import moxy.presenter.InjectPresenter
 import moxy.presenter.ProvidePresenter
 import toothpick.Toothpick
-import java.lang.NullPointerException
 
 /**
  * Created by Davronbek on 09,Февраль,2021
@@ -30,7 +30,10 @@ class EnterProductDialog : MvpAppCompatDialogFragment(), EnterProductView {
     private var _bn: ItemProductBinding? = null
     private val binding get() = _bn ?: throw NullPointerException("error")
     private var listener: SingleBlock<ProductData>? = null
+    private var itemList = ArrayList<ProductInData>()
+    private var adapter = EnterProductAdapter()
     private var nullOrErrorListener: ((String, Boolean) -> Unit)? = null
+    private var productId = -1
 
     @InjectPresenter
     lateinit var presenterNew: EnterProductPresenter
@@ -51,6 +54,18 @@ class EnterProductDialog : MvpAppCompatDialogFragment(), EnterProductView {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         _bn = ItemProductBinding.bind(view)
+//        presenterNew.getProduct()
+//        presenterNew.purchaseProduct(data)
+//        loadAdapter()
+//        adapter.submitList(itemList)
+        binding.productRv.adapter = adapter
+
+        adapter.setOnClickListener {
+            binding.inputProductName.setText(it.name)
+            binding.productRv.visibility = View.GONE
+            adapter.submitList(null)
+            productId = it.productId
+        }
 
 
 //        if (bn.radio2.isChecked) {
@@ -59,68 +74,122 @@ class EnterProductDialog : MvpAppCompatDialogFragment(), EnterProductView {
 //           binding.sellPrice.visibility = View.GONE
 //        }
 
+        binding.inputProductName.addTextChangedListener(object : BaseWatcher {
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                if (s.toString().isNotEmpty()) {
+                    searchProduct(s.toString().toLowerCase())
+                } else {
+                    binding.productRv.visibility = View.GONE
+                    adapter.submitList(null)
+                }
+
+            }
+        })
+
         binding.btnAdd.setOnClickListener {
+//            showSnackMessage("clicked")
             val name = binding.inputProductName.text.toString().trim()
             val weight = binding.inputProductWeight.text.toString()
             val inComePrice = binding.inputProductInComePrice.text.toString()
             val sellPrice = binding.inputProductSellPrice.text.toString()
 
-            if (name.isEmpty()) {
-                binding.inputProductName.startAnimation(
-                    AnimationUtils.loadAnimation(
-                        requireContext(),
-                        R.anim.shake
+            showSnackMessage("send")
+            when {
+                name.isEmpty() -> {
+                    binding.inputProductName.startAnimation(
+                        AnimationUtils.loadAnimation(
+                            requireContext(),
+                            R.anim.shake
+                        )
                     )
-                )
-                vibrate(requireContext())
-                return@setOnClickListener
-            }
-            if (weight == "") {
-                binding.inputProductWeight.startAnimation(
-                    AnimationUtils.loadAnimation(
-                        requireContext(),
-                        R.anim.shake
+                    vibrate(requireContext())
+                    return@setOnClickListener
+                }
+                weight.isEmpty() -> {
+                    binding.inputProductWeight.startAnimation(
+                        AnimationUtils.loadAnimation(
+                            requireContext(),
+                            R.anim.shake
+                        )
                     )
-                )
-                vibrate(requireContext())
-                return@setOnClickListener
-            }
-            if (inComePrice == "") {
-                binding.inputProductInComePrice.startAnimation(
-                    AnimationUtils.loadAnimation(
-                        requireContext(),
-                        R.anim.shake
-                    )
-                )
-                vibrate(requireContext())
-                return@setOnClickListener
-            }
+                    vibrate(requireContext())
+                    return@setOnClickListener
+                }
 
-            if (sellPrice == "") {
-                binding.inputProductSellPrice.startAnimation(
-                    AnimationUtils.loadAnimation(
-                        requireContext(),
-                        R.anim.shake
+                inComePrice.isEmpty() -> {
+                    binding.inputProductInComePrice.startAnimation(
+                        AnimationUtils.loadAnimation(
+                            requireContext(),
+                            R.anim.shake
+                        )
                     )
-                )
-                vibrate(requireContext())
-                return@setOnClickListener
+                    vibrate(requireContext())
+                    return@setOnClickListener
+                }
+
+                sellPrice.isEmpty() -> {
+                    binding.inputProductSellPrice.startAnimation(
+                        AnimationUtils.loadAnimation(
+                            requireContext(),
+                            R.anim.shake
+                        )
+                    )
+                    vibrate(requireContext())
+                    return@setOnClickListener
+                }
+                else -> {
+                    val list = ArrayList<ProductInData>()
+                    list.add(
+                        ProductInData(
+                            87,
+                            name,
+                            inComePrice.toDouble(),
+                            sellPrice.toDouble(),
+                            weight.toInt(),
+                            10
+                        )
+                    )
+//                    presenterNew.purchaseProduct(
+//                        ReqPurchaseData(
+//                            list
+//                        )
+//                    )
+                    showSnackMessage("send")
+                }
+
             }
-
-
         }
-
-
-
-        binding.inputProductName.addTextChangedListener(object : BaseWatcher {
-            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-
-            }
-        })
 
         binding.btnDismiss.setOnClickListener {
             dialog?.dismiss()
         }
+    }
+
+    private fun loadAdapter() {
+//        itemList.add(ProductInData(0, "", "a", "a", "aa", "go'sht"))
+//        itemList.add(ProductInData(1, "", "a", "a", "aa", "saryog'"))
+//        itemList.add(ProductInData(2, "", "a", "a", "aa", "non"))
+//        itemList.add(ProductInData(3, "", "a", "a", "aa", "suv"))
+//        itemList.add(ProductInData(4, "", "a", "a", "aa", "kartoshka"))
+//        itemList.add(ProductInData(5, "", "a", "a", "aa", "sabzi"))
+//        itemList.add(ProductInData(6, "", "a", "a", "aa", "piyoz"))
+//        itemList.add(ProductInData(7, "", "a", "a", "aa", "sholg'om"))
+//        itemList.add(ProductInData(8, "", "a", "a", "aa", "gorox"))
+//        itemList.add(ProductInData(9, "", "a", "a", "aa", "mosh"))
+//        itemList.add(ProductInData(10, "", "a", "a", "aa", "guruch"))
+//        itemList.add(ProductInData(11, "", "a", "a", "aa", "loviya"))
+//        itemList.add(ProductInData(12, "", "a", "a", "aa", "tovuq go'shti"))
+    }
+
+    private fun searchProduct(newText: String) {
+        val ls = ArrayList<ProductInData>()
+        binding.productRv.visibility = View.VISIBLE
+        itemList.forEach {
+            if (it.name.toLowerCase().contains(newText)) {
+                ls.add(it)
+            }
+        }
+        adapter.submitList(ls)
     }
 
     fun setOnCLickListener(block: SingleBlock<ProductData>) {
@@ -146,11 +215,51 @@ class EnterProductDialog : MvpAppCompatDialogFragment(), EnterProductView {
     }
 
     override fun errorOrNull(str: String) {
-        TODO("Not yet implemented")
+
     }
 
     override fun productYON(status: Boolean, message: String) {
         TODO("Not yet implemented")
+    }
+
+    override fun listProducts(list: List<ProductInData>) {
+        if (list.isNotEmpty()) {
+            binding.productRv.visibility = View.VISIBLE
+            binding.productRv.adapter = adapter
+            itemList.clear()
+            itemList.addAll(list)
+            adapter.setOnClickListener {
+                binding.inputProductName.setCompoundDrawablesRelativeWithIntrinsicBounds(
+                    0,
+                    0,
+                    R.drawable.ic_baseline_check_24,
+                    0
+                )
+                binding.inputProductName.setText(it.name)
+//                binding.productType.text=it.t/
+                productId = it.productId
+                binding.productRv.visibility = View.GONE
+            }
+
+        }
+        else {
+            binding.inputProductName.setCompoundDrawablesRelativeWithIntrinsicBounds(
+                0,
+                0,
+                R.drawable.ic_baseline_error_outline_24,
+                0
+            )
+            binding.productRv.visibility = View.GONE
+        }
+    }
+
+    override fun clearAllOldData() {
+        adapter.submitList(null)
+        binding.inputProductName.setText("")
+        binding.inputProductWeight.setText("")
+        binding.inputProductInComePrice.setText("")
+        binding.inputProductSellPrice.setText("")
+        productId = -1
     }
 
     override fun onDestroy() {

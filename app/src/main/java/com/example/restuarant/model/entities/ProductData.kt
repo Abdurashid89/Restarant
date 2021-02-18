@@ -1,8 +1,8 @@
 package com.example.restuarant.model.entities
 
 data class ProductData(
+    val id: Int,
     val name: String,
-    val count: Double?,
-    val incomePrice: Double?,
-    val sellPrice: Double
+    val type: String,
+    val sold: Boolean
 )

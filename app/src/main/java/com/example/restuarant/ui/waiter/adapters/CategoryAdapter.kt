@@ -27,8 +27,10 @@ class CategoryAdapter : ListAdapter<CategoryData, CategoryAdapter.Vh>(CategoryDa
         }
 
         fun onBind() {
-            view.productName.text = currentList[adapterPosition].name
+            val categoryData = currentList[adapterPosition]
+            view.productName.text = categoryData.name
             view.productName.isSelected = true
+            Picasso.get().load(categoryData.photoURL).into(view.productPhoto)
         }
     }
 

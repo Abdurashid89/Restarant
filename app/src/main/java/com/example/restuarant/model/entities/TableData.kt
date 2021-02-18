@@ -6,7 +6,7 @@ data class TableData (
     val id:Int,
     val createdAt:String,
     val updatedAt:String,
-    val name:String,
+    val name:Int,
     val active:Boolean,
     val count:Int
         ){

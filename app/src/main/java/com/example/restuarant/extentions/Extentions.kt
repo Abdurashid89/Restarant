@@ -32,6 +32,7 @@ import androidx.fragment.app.FragmentActivity
 import androidx.recyclerview.widget.RecyclerView
 import com.example.restuarant.model.entities.TableData
 import com.example.restuarant.presentation.responseDialog.ResponseStatusDialog
+import com.example.restuarant.ui.waiter.callback.SwipeToDeleteCallback
 import com.google.android.material.snackbar.Snackbar
 import com.google.gson.JsonSyntaxException
 import com.nabinbhandari.android.permissions.PermissionHandler
@@ -78,20 +79,6 @@ fun Navigator.setLunchScreen(screen: SupportAppScreen) {
 }
 
 typealias SingleBlock <T> = (T) -> Unit
-
-fun ArrayList<TableData>.sortTableItem(): ArrayList<TableData> {
-
-    for (i in this.indices) {
-        for (j in i + 1..this.size) {
-            if (this[j].id < this[i].id) {
-                val tmp = this[j]
-                this[j] = this[i]
-                this[i] = tmp
-            }
-        }
-    }
-    return this
-}
 
 fun String.isNotDouble(): Boolean {
 //     if double return false       else return true
@@ -354,4 +341,13 @@ fun customSubString(string: String): String {
 fun Fragment.customDialog(message: String, status: Boolean) {
     val dialog = ResponseStatusDialog(requireContext(), message, status)
     dialog.show()
+
+//    fun Fragment.SwipeDelete(){
+//        object:SwipeToDeleteCallback(context){
+//            override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
+//
+//            }
+//
+//        }
+//    }
 }

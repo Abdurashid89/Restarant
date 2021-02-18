@@ -68,7 +68,9 @@ class WareHouseDialogFragment : MvpAppCompatDialogFragment(), AddProductView {
 
         bn.btnAdd.setOnClickListener {
             val name = bn.inputProductName.text.toString().trim()
-
+            val sell = if (bn.radio1.isChecked) false else bn.radio2.isChecked
+            val type =
+                if (bn.radioDona.isChecked) "PIECE" else if (bn.radioKg.isChecked) "KG" else if (bn.radioLitr.isChecked) "LITER" else ""
             if (name.isEmpty()) {
                 bn.inputProductName.startAnimation(
                     AnimationUtils.loadAnimation(
@@ -82,8 +84,7 @@ class WareHouseDialogFragment : MvpAppCompatDialogFragment(), AddProductView {
 
             presenterNew.addNewProduct(
                 ProductData(
-                    name,
-                    null, null, 0.0
+                   id, name, type, sell
                 )
             )
 
