@@ -36,6 +36,11 @@ class CashierFragment : BaseFragment(), CashierView, SwipeRefreshLayout.OnRefres
     private val historyAdapter = CashierHistoryAdapter()
     private val orderList = ArrayList<CashierOrderData>()
     private val historyList = ArrayList<CashierHistoryData>()
+    private val categoryAdapter = CategoryAdapter()
+    private val goodsCategoryAdapter = CategoryItemAdapter()
+    private val orderAdapter2 = OrderAdapter()
+
+
     private lateinit var progressBar: ProgressBar
     private var currentText = ""
     private var totalSum = 0.0
@@ -72,6 +77,7 @@ class CashierFragment : BaseFragment(), CashierView, SwipeRefreshLayout.OnRefres
 
         loadHistory()
         loadButtons()
+        loadTables()
 
         tableAdapter.setOnClickListener { tab ->
             if (tab.active) {
@@ -161,7 +167,7 @@ class CashierFragment : BaseFragment(), CashierView, SwipeRefreshLayout.OnRefres
             val waiterOrderData = WaiterOrderData(it.id, it.name, it.price, 1, it.price)
             if (orderAdapter2.getAllOrder().isEmpty()) {
                 orderAdapter2.addProduct(waiterOrderData)
-            }else {
+            } else {
                 var isHave = false
                 for (i in orderAdapter2.getAllOrder().indices) {
                     if (waiterOrderData.id == orderAdapter2.getAllOrder()[i].id) {
@@ -343,14 +349,14 @@ class CashierFragment : BaseFragment(), CashierView, SwipeRefreshLayout.OnRefres
 
     private fun loadTables() {
         for (i in 1..20) {
-            orderList.add(CashierOrderData(i, "Meal $i", i, i, "${i * i}"))
-            orderList.add(CashierOrderData(i, "Food $i", i, i, "${i * i}"))
+            orderList.add(CashierOrderData(i, "Meal $i", i.toDouble(), "$i", "${i * i}"))
+            orderList.add(CashierOrderData(i, "Food $i", i.toDouble(), "$i", "${i * i}"))
         }
         tableAdapter.setOnClickListener { tab ->
             if (!tab.active) {
                 presenter.loadOrderByTableId(tab.id)
                 bn.tablesLayout.tableNumber.text = tab.name.toString()
-            }else{
+            } else {
                 showSnackMessage("Ma'lumot yo'q")
             }
 
