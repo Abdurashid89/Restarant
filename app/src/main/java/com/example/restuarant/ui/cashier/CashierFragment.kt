@@ -46,7 +46,7 @@ class CashierFragment : BaseFragment(), CashierView, SwipeRefreshLayout.OnRefres
 
     @InjectPresenter
     lateinit var presenter: CashierPresenter
-
+//
     @ProvidePresenter
     fun providePresenter(): CashierPresenter = scope.getInstance(CashierPresenter::class.java)
 
