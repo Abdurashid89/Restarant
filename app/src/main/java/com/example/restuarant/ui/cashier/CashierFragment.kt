@@ -136,22 +136,24 @@ class CashierFragment : BaseFragment(), CashierView, SwipeRefreshLayout.OnRefres
         }
 
         goodsCategoryAdapter.setOnClickListener {
-
-                val waiterOrderData = WaiterOrderData(it.id, it.name, it.price, 1, it.price)
-                    orderAdapter2.addProduct(waiterOrderData)
-                    var isHave = false
-                    for (i in orderAdapter2.getAllOrder().indices) {
-                        if (waiterOrderData.id == orderAdapter2.getAllOrder()[i].id) {
-                            orderAdapter2.plus(i)
-                            isHave = true
-                        }
+            val waiterOrderData = WaiterOrderData(it.id, it.name, it.price, 1, it.price)
+            if (orderAdapter2.getAllOrder().isEmpty()) {
+                orderAdapter2.addProduct(waiterOrderData)
+            }else {
+                var isHave = false
+                for (i in orderAdapter2.getAllOrder().indices) {
+                    if (waiterOrderData.id == orderAdapter2.getAllOrder()[i].id) {
+                        orderAdapter2.plus(i)
+                        isHave = true
                     }
-                    if (!isHave) orderAdapter2.addProduct(waiterOrderData)
-
-                presenter.totalSum()
-                if (orderAdapter.itemCount != 0) {
-                    bn.togoLayout.orderRv.smoothScrollToPosition(orderAdapter.itemCount - 1)
                 }
+                if (!isHave) orderAdapter2.addProduct(waiterOrderData)
+
+                if (orderAdapter2.itemCount != 0) {
+                    bn.togoLayout.orderRv.smoothScrollToPosition(orderAdapter2.itemCount - 1)
+                }
+            }
+            presenter.totalSum()
         }
 
         orderAdapter2.setOnPlusClickListener {

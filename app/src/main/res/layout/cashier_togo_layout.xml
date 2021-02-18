@@ -128,7 +128,7 @@
 
             <ProgressBar
                 android:visibility="gone"
-                android:id="@+id/waiter_orderProgress"
+                android:id="@+id/togo_orderProgress"
                 app:layout_constraintTop_toTopOf="@id/order_rv"
                 app:layout_constraintBottom_toBottomOf="@id/order_rv"
                 app:layout_constraintLeft_toLeftOf="@id/order_rv"
@@ -204,6 +204,15 @@
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintHeight_percent="0.2"
             app:layout_constraintLeft_toLeftOf="parent">
+
+            <ProgressBar
+                android:id="@+id/togo_menu_progress"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
 
             <ImageView
                 android:id="@+id/arrow_left"
