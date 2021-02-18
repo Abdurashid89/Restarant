@@ -90,6 +90,8 @@ class CashierFragment : BaseFragment(), CashierView, SwipeRefreshLayout.OnRefres
             }
         }
 
+        // togo
+
         bn.logoutMenu.setOnClickListener {
             presenter.onBackPressed()
 //            makeLoadingVisible(true)
