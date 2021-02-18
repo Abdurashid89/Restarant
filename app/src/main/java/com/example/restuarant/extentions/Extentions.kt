@@ -329,12 +329,4 @@ fun Fragment.customDialog(message: String, status: Boolean) {
     val dialog = ResponseStatusDialog(requireContext(), message, status)
     dialog.show()
 
-//    fun Fragment.SwipeDelete(){
-//        object:SwipeToDeleteCallback(context){
-//            override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
-//
-//            }
-//
-//        }
-//    }
 }
