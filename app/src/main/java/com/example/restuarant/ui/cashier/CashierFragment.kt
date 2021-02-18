@@ -40,7 +40,7 @@ class CashierFragment : BaseFragment(), CashierView, SwipeRefreshLayout.OnRefres
     private val goodsCategoryAdapter = CategoryItemAdapter()
     private val orderAdapter2 = OrderAdapter()
 
-//
+
     private lateinit var progressBar: ProgressBar
     private var currentText = ""
     private var totalSum = 0.0
