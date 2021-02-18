@@ -118,4 +118,5 @@ class CashierPresenter @Inject constructor(
             }).connect()
     }
 
+
 }

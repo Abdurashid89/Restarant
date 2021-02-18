@@ -8,31 +8,28 @@
     android:gravity="center"
     android:orientation="horizontal">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <FrameLayout
         android:layout_width="0dp"
+        android:layout_height="match_parent"
         android:layout_weight="1"
         android:paddingTop="10dp"
-        android:paddingBottom="10dp"
-        android:layout_height="match_parent">
+        android:paddingBottom="10dp">
 
         <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/order_constraint"
-            android:layout_width="0dp"
+            android:id="@+id/togo_order_constraint"
+            android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginBottom="5dp"
             android:background="@drawable/black_line"
             android:padding="5dp"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
+            android:visibility="gone"
             app:layout_constraintWidth_percent="0.9">
 
             <LinearLayout
-                android:gravity="bottom"
                 android:id="@+id/order_linear"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
+                android:gravity="bottom"
                 android:orientation="vertical"
                 app:layout_constraintBottom_toTopOf="@id/order_rv"
                 app:layout_constraintHeight_percent="0.15"
@@ -41,10 +38,10 @@
                 app:layout_constraintTop_toTopOf="parent">
 
                 <LinearLayout
-                    android:layout_marginBottom="10dp"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="24dp"
+                    android:layout_marginBottom="10dp"
                     android:gravity="center"
                     android:orientation="horizontal">
 
@@ -123,18 +120,18 @@
                 app:layout_constraintHeight_percent="0.6"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
-                tools:listitem="@layout/order_item"
-                app:layout_constraintTop_toBottomOf="@id/order_linear"/>
+                app:layout_constraintTop_toBottomOf="@id/order_linear"
+                tools:listitem="@layout/order_item" />
 
             <ProgressBar
-                android:visibility="gone"
                 android:id="@+id/togo_orderProgress"
-                app:layout_constraintTop_toTopOf="@id/order_rv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:visibility="gone"
                 app:layout_constraintBottom_toBottomOf="@id/order_rv"
                 app:layout_constraintLeft_toLeftOf="@id/order_rv"
                 app:layout_constraintRight_toRightOf="@id/order_rv"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
+                app:layout_constraintTop_toTopOf="@id/order_rv" />
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -146,11 +143,11 @@
                 app:layout_constraintTop_toBottomOf="@id/order_rv">
 
                 <LinearLayout
-                    android:padding="10dp"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:gravity="center"
-                    android:orientation="horizontal">
+                    android:orientation="horizontal"
+                    android:padding="10dp">
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -169,12 +166,13 @@
                         android:textSize="24sp"
                         android:textStyle="bold" />
                 </LinearLayout>
+
                 <Button
-                    android:layout_marginTop="10dp"
                     android:id="@+id/btn_print"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="60dp"
+                    android:layout_marginTop="10dp"
                     android:layout_marginRight="60dp"
                     android:layout_marginBottom="12dp"
                     android:background="@drawable/cashier_btn_bgn"
@@ -185,34 +183,43 @@
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/table_list_rv"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+            app:spanCount="4"
+            tools:listitem="@layout/desk_item" />
+
+    </FrameLayout>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="0dp"
+        android:layout_height="match_parent"
         android:layout_weight="1.5"
         android:paddingTop="10dp"
-        android:paddingBottom="10dp"
-        android:layout_height="match_parent">
+        android:paddingBottom="10dp">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/category_constraint"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:padding="5dp"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintWidth_percent="0.9"
-            app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintHeight_percent="0.2"
-            app:layout_constraintLeft_toLeftOf="parent">
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintWidth_percent="0.9">
 
             <ProgressBar
                 android:id="@+id/togo_menu_progress"
-                app:layout_constraintTop_toTopOf="parent"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
+                app:layout_constraintTop_toTopOf="parent" />
 
             <ImageView
                 android:id="@+id/arrow_left"
