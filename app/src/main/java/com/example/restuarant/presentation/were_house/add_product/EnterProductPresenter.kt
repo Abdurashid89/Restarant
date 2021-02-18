@@ -23,7 +23,7 @@ class EnterProductPresenter @Inject constructor(
 
     override fun onFirstViewAttach() {
         super.onFirstViewAttach()
-        getProduct()
+//        getProduct()
     }
 
 //    @SuppressLint("CheckResult")
@@ -41,19 +41,19 @@ class EnterProductPresenter @Inject constructor(
 //                viewState.showMessage(it.errorResponse())
 //            }).connect()
 //    }
-
-    fun getProduct() {
-        interactor.getAllProduct()
-            .doOnSubscribe {
-
-            }.doAfterTerminate {
-
-            }.subscribe({
-                viewState.listProducts(it.objectDate)
-                viewState.showMessage(it.objectDate.size.toString())
-            }, {
-                viewState.showMessage(it.errorResponse())
-            }).connect()
-    }
+//
+//    fun getProduct() {
+//        interactor.getAllProduct()
+//            .doOnSubscribe {
+//
+//            }.doAfterTerminate {
+//
+//            }.subscribe({
+//                viewState.listProducts(it.objectDate)
+//                viewState.showMessage(it.objectDate.size.toString())
+//            }, {
+//                viewState.showMessage(it.errorResponse())
+//            }).connect()
+//    }
 
 }

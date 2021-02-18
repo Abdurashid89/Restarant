@@ -32,6 +32,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import androidx.recyclerview.widget.RecyclerView
 import com.example.restuarant.presentation.responseDialog.ResponseStatusDialog
+import com.example.restuarant.ui.waiter.callback.SwipeToDeleteCallback
 import com.google.android.material.snackbar.Snackbar
 import com.google.gson.JsonSyntaxException
 import com.nabinbhandari.android.permissions.PermissionHandler
@@ -327,4 +328,13 @@ fun customSubString(string: String): String {
 fun Fragment.customDialog(message: String, status: Boolean) {
     val dialog = ResponseStatusDialog(requireContext(), message, status)
     dialog.show()
+
+//    fun Fragment.SwipeDelete(){
+//        object:SwipeToDeleteCallback(context){
+//            override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
+//
+//            }
+//
+//        }
+//    }
 }

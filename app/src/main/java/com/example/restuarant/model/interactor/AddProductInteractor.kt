@@ -33,12 +33,12 @@ class AddProductInteractor @Inject constructor(
 //            .observeOn(AndroidSchedulers.mainThread())
 //            .doOnError { }
 //    }
-
-    fun getAllProduct(): Single<GetResponseData<List<ProductInData>>> {
-        return api.getAllProduct().map {
-            it
-        }.subscribeOn(Schedulers.io())
-            .observeOn(AndroidSchedulers.mainThread())
-    }
+//
+//    fun getAllProduct(): Single<GetResponseData<List<ProductInData>>> {
+//        return api.getAllProduct().map {
+//            it
+//        }.subscribeOn(Schedulers.io())
+//            .observeOn(AndroidSchedulers.mainThread())
+//    }
 
 }

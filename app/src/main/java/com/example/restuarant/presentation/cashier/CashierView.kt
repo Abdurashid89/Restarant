@@ -1,7 +1,6 @@
 package com.example.restuarant.presentation.cashier
 
-import com.example.restuarant.model.entities.OrderGetData
-import com.example.restuarant.model.entities.TableData
+import com.example.restuarant.model.entities.*
 import moxy.MvpView
 import moxy.viewstate.strategy.AddToEndSingleTagStrategy
 import moxy.viewstate.strategy.OneExecutionStateStrategy
@@ -30,4 +29,8 @@ interface CashierView : MvpView {
 
     fun addTableOrder(objectData: OrderGetData)
     fun showProgress(isShow: Boolean)
+
+    fun getItemsById(list: List<CategoryItemData>)
+    fun getMenu(list: ResData<List<CategoryData>>)
+    fun totalSum()
 }
