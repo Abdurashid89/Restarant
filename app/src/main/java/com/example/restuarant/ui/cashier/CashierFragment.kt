@@ -3,10 +3,10 @@ package com.example.restuarant.ui.cashier
 import android.annotation.SuppressLint
 import android.os.Build
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.ProgressBar
 import androidx.annotation.RequiresApi
-import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
@@ -43,7 +43,7 @@ class CashierFragment : BaseFragment(), CashierView, SwipeRefreshLayout.OnRefres
     private val categoryAdapter = CategoryAdapter()
     private val goodsCategoryAdapter = CategoryItemAdapter()
     private val orderAdapter2 = OrderAdapter()
-
+    private val tableAdapter3 = CashierTableAdapter3()
 
     private lateinit var progressBar: ProgressBar
     private var currentText = ""
@@ -83,7 +83,8 @@ class CashierFragment : BaseFragment(), CashierView, SwipeRefreshLayout.OnRefres
 
         loadHistory()
         loadTables()
-
+        loadButtons()
+//
         tableAdapter.setOnClickListener { tab ->
             if (tab.active) {
 //                orderAdapter.clearList()
@@ -98,7 +99,7 @@ class CashierFragment : BaseFragment(), CashierView, SwipeRefreshLayout.OnRefres
         // togo
 
 //        bn.togoLayout.orderRv.addItemDecoration(DividerItemDecoration(requireContext(),DividerItemDecoration.VERTICAL))
-        val swipeHelper = object :SwipeToDeleteCallback(requireContext()){
+        val swipeHelper = object : SwipeToDeleteCallback(requireContext()) {
             override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
                 val swipeAdapter = bn.togoLayout.orderRv.adapter as OrderAdapter
                 swipeAdapter.removeAt(viewHolder.adapterPosition)
@@ -477,7 +478,6 @@ class CashierFragment : BaseFragment(), CashierView, SwipeRefreshLayout.OnRefres
             bn.btnPay.visibility = View.GONE
         }
     }
-
 
 
     override fun onRefresh() {
