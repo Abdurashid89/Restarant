@@ -168,7 +168,7 @@ class CashierFragment : BaseFragment(), CashierView, SwipeRefreshLayout.OnRefres
             3 -> bn.togoMenu.setBackgroundResource(R.color.purple_200)
         }
     }
-
+//
     @SuppressLint("SetTextI18n", "TimberArgCount")
     @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
     private fun loadButtons() {
