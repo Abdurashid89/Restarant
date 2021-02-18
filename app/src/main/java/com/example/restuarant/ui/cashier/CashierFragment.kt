@@ -158,7 +158,7 @@ class CashierFragment : BaseFragment(), CashierView, SwipeRefreshLayout.OnRefres
         Timber.d("loadedHistoryListSize:${historyList.size}")
     }
 
-    //
+    
     private fun setColorMenu() {
         when (currentMenu) {
             1 -> bn.tableMenu.setBackgroundResource(R.color.purple_200)
