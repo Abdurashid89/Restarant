@@ -46,7 +46,8 @@ class CashierFragment : BaseFragment(), CashierView, SwipeRefreshLayout.OnRefres
 
     @InjectPresenter
     lateinit var presenter: CashierPresenter
-//
+
+    //
     @ProvidePresenter
     fun providePresenter(): CashierPresenter = scope.getInstance(CashierPresenter::class.java)
 
@@ -142,7 +143,7 @@ class CashierFragment : BaseFragment(), CashierView, SwipeRefreshLayout.OnRefres
                 bn.tablesLayout.btnSendPay.isEnabled = false
             }
         }
-
+//
         bn.tablesLayout.btnWithCash.setOnClickListener {
             bn.tablesLayout.priceOnCash.setText(totalPrice)
         }
@@ -156,7 +157,7 @@ class CashierFragment : BaseFragment(), CashierView, SwipeRefreshLayout.OnRefres
         }
         Timber.d("loadedHistoryListSize:${historyList.size}")
     }
-
+//
     private fun setColorMenu() {
         when (currentMenu) {
             1 -> bn.tableMenu.setBackgroundResource(R.color.purple_200)
