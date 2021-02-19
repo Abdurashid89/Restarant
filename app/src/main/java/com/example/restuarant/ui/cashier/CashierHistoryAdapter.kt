@@ -6,24 +6,24 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.restuarant.databinding.ItemHistoryChashierBinding
 import com.example.restuarant.extentions.SingleBlock
 import com.example.restuarant.extentions.bindItem
-import com.example.restuarant.model.entities.CashierHistoryData
+import com.example.restuarant.model.entities.OrderGetData
 
 /**
  * Created by Abdurashid on 08,Февраль,2021
  */
 
 class CashierHistoryAdapter : RecyclerView.Adapter<CashierHistoryAdapter.HistoryViewHolder>() {
-    val list = ArrayList<CashierHistoryData>()
+    val list = ArrayList<OrderGetData>()
 
-    fun submitList(ls: List<CashierHistoryData>) {
+    fun submitList(ls: OrderGetData) {
         list.clear()
-        list.addAll(ls)
+        list.add(ls)
         notifyDataSetChanged()
     }
 
-    var listener: SingleBlock<CashierHistoryData>? = null
+    var listener: SingleBlock<OrderGetData>? = null
 
-    fun setOnClickListener(block: SingleBlock<CashierHistoryData>) {
+    fun setOnClickListener(block: SingleBlock<OrderGetData>) {
         listener = block
     }
 
@@ -52,9 +52,9 @@ class CashierHistoryAdapter : RecyclerView.Adapter<CashierHistoryAdapter.History
             val d = list[adapterPosition]
             binding.apply {
                 numberTable.text = d.id.toString()
-                orderPrice.text = d.orderPrice
+                orderPrice.text = d.orderPrice.toString()
                 payType.text = d.orderType
-                cashBack.text = d.cashBack
+//                cashBack.text = d.cashBack
             }
         }
     }

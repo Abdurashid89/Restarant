@@ -39,7 +39,7 @@ class CashierFragment : BaseFragment(), CashierView, SwipeRefreshLayout.OnRefres
     private val orderAdapter = CashierOrderAdapter()
     private val historyAdapter = CashierHistoryAdapter()
     private val orderList = ArrayList<CashierOrderData>()
-    private val historyList = ArrayList<CashierHistoryData>()
+    private val historyList = ArrayList<OrderGetData>()
     private val categoryAdapter = CategoryAdapter()
     private val goodsCategoryAdapter = CategoryItemAdapter()
     private val orderAdapter2 = OrderAdapter()
@@ -84,7 +84,7 @@ class CashierFragment : BaseFragment(), CashierView, SwipeRefreshLayout.OnRefres
         loadHistory()
         loadTables()
         loadButtons()
-//
+
         tableAdapter.setOnClickListener { tab ->
             if (tab.active) {
 //                orderAdapter.clearList()
@@ -125,6 +125,8 @@ class CashierFragment : BaseFragment(), CashierView, SwipeRefreshLayout.OnRefres
             else showSnackMessage(getString(R.string.choose_table))
         }
         bn.historyMenu.setOnClickListener {
+            //all history loaded
+            presenter.loadHistory()
             bn.groupButtons.translationZ = 0f
             historyOpened = true
             setColorMenu()
@@ -135,7 +137,6 @@ class CashierFragment : BaseFragment(), CashierView, SwipeRefreshLayout.OnRefres
 //            bn.tablesLayout.viewGroupTables.visibility = View.GONE
             bn.togoLayout.cashierOwnLayout.visibility = View.GONE
             Timber.d("historyListSize:${historyList.size}")
-            historyAdapter.submitList(historyList)
             Timber.d("historyAdapterListSize:${historyAdapter.itemCount}")
 
         }
@@ -225,10 +226,10 @@ class CashierFragment : BaseFragment(), CashierView, SwipeRefreshLayout.OnRefres
     }
 
     private fun loadHistory() {
-        for (i in 0 until 10) {
-            historyList.add(CashierHistoryData(i, "50 000", "Card", "0", "more"))
-            historyList.add(CashierHistoryData(i, "45 000", "Cash", "100", "more"))
-        }
+        /* for (i in 0 until 10) {
+             historyList.add(CashierHistoryData(i, "50 000", "Card", "0", "more"))
+             historyList.add(CashierHistoryData(i, "45 000", "Cash", "100", "more"))
+         }*/
         Timber.d("loadedHistoryListSize:${historyList.size}")
     }
 
@@ -354,7 +355,7 @@ class CashierFragment : BaseFragment(), CashierView, SwipeRefreshLayout.OnRefres
                     bn.tablesLayout.priceOnCash.text.toString(), "SSD Intership",
                     "NAQD"
                 )
-                val dialog = CheckDialog(requireContext(), check!!.html, "text/html", "UTF-8")
+                val dialog = CheckDialog(requireContext(), check!!.html, textHtml, utf)
                 Timber.d(check!!.html)
                 dialog.setOnClickListener {
                     dialog._bn = null
@@ -461,6 +462,10 @@ class CashierFragment : BaseFragment(), CashierView, SwipeRefreshLayout.OnRefres
         totalSum = 0.0
     }
 
+    override fun allHistory(orderGetData: OrderGetData) {
+        historyAdapter.submitList(orderGetData)
+    }
+
     override fun onBackPressed() {
         presenter.onBackPressed()
     }
@@ -517,5 +522,11 @@ class CashierFragment : BaseFragment(), CashierView, SwipeRefreshLayout.OnRefres
     override fun onDestroy() {
         super.onDestroy()
         _bn = null
+    }
+
+    companion object {
+        const val textHtml = "text/html"
+        const val utf = "UTF-8"
+
     }
 }

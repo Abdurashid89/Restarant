@@ -72,7 +72,11 @@ interface ResApi {
     fun getTableInfo(@Query("tableId") tableId: Int): Single<ResData<OrderGetData>>
 
     @POST("/api/order/pay")
-    fun sendCheckByOrderId(@Body orderId: Long, @Body cheque: String): Single<CheckData>
+    fun sendCheckByOrderId(
+        @Query("id") orderId: Long,
+        @Query("cheque") cheque: String
+    ): Single<CheckData>
 
-
+    @GET("/api/order/unPayOrder/PAID")
+    fun getAllHistory(): Single<OrderGetData>
 }

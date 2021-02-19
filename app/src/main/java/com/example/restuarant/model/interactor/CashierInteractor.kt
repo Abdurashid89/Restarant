@@ -37,4 +37,10 @@ class CashierInteractor @Inject constructor(
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
     }
+
+    fun loadHistory(): Single<OrderGetData> {
+        return api.getAllHistory().map { it }
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+    }
 }

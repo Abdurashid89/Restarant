@@ -23,6 +23,11 @@
             android:textColor="@color/black"
             android:textSize="16sp" />
 
+        <View
+            android:layout_width="0.5dp"
+            android:layout_height="match_parent"
+            android:background="@color/black" />
+
         <TextView
             android:id="@+id/number_table"
             android:layout_width="0dp"

@@ -1,7 +1,6 @@
 package com.example.restuarant.presentation.cashier
 
 import android.annotation.SuppressLint
-import com.example.restuarant.di.DI
 import com.example.restuarant.extentions.errorResponse
 import com.example.restuarant.model.interactor.CashierInteractor
 import com.example.restuarant.model.interactor.WaiterInteractor
@@ -19,7 +18,7 @@ import javax.inject.Inject
 class CashierPresenter @Inject constructor(
     private val router: FlowRouter,
     private val interactor: CashierInteractor,
-    private val interactorWaiter:WaiterInteractor,
+    private val interactorWaiter: WaiterInteractor,
     private val prefs: Prefs
 ) : BasePresenter<CashierView>() {
 
@@ -72,7 +71,7 @@ class CashierPresenter @Inject constructor(
             }).connect()
     }
 
-    fun getMenu(){
+    fun getMenu() {
         interactorWaiter.getMenuList()
             .doOnSubscribe {
 
@@ -82,13 +81,13 @@ class CashierPresenter @Inject constructor(
             }
             .subscribe({
                 viewState.getMenu(it)
-            },{
-                viewState.openErrorDialog(it.errorResponse(),false)
+            }, {
+                viewState.openErrorDialog(it.errorResponse(), false)
             }).connect()
     }
 
 
-    fun getMenuItems(categoryId:Int){
+    fun getMenuItems(categoryId: Int) {
         interactorWaiter.getMenuItems(categoryId)
             .doOnSubscribe {
 
@@ -96,11 +95,12 @@ class CashierPresenter @Inject constructor(
 
             }.subscribe({
                 viewState.getItemsById(it)
-            },{
-                viewState.openErrorDialog(it.errorResponse(),false)
+            }, {
+                viewState.openErrorDialog(it.errorResponse(), false)
             }).connect()
     }
-    fun totalSum(){
+
+    fun totalSum() {
         viewState.totalSum()
     }
 
@@ -115,6 +115,17 @@ class CashierPresenter @Inject constructor(
                 viewState.showMessage(it.message)
             }, {
                 viewState.showMessage(it.message!!)
+            }).connect()
+    }
+
+    fun loadHistory() {
+        interactor.loadHistory().doOnSubscribe { viewState.showProgress(true) }
+            .doAfterTerminate {
+                viewState.showProgress(false)
+            }.subscribe({
+    viewState.allHistory(it)
+            }, {
+
             }).connect()
     }
 
