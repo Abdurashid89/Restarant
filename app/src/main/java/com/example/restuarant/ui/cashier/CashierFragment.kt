@@ -5,6 +5,8 @@ import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import android.view.animation.Animation
+import android.widget.MultiAutoCompleteTextView
 import android.widget.ProgressBar
 import androidx.annotation.RequiresApi
 import androidx.recyclerview.widget.ItemTouchHelper
@@ -14,6 +16,7 @@ import com.example.restuarant.R
 import com.example.restuarant.databinding.FragmentCashierBinding
 import com.example.restuarant.extentions.*
 import com.example.restuarant.model.entities.*
+import com.example.restuarant.model.entities.check.PaidCheck
 import com.example.restuarant.presentation.cashier.CashierPresenter
 import com.example.restuarant.presentation.cashier.CashierView
 import com.example.restuarant.ui.cashier.check.CheckDialog
@@ -23,6 +26,7 @@ import com.example.restuarant.ui.waiter.adapters.CategoryAdapter
 import com.example.restuarant.ui.waiter.adapters.CategoryItemAdapter
 import com.example.restuarant.ui.waiter.adapters.OrderAdapter
 import com.example.restuarant.ui.waiter.callback.SwipeToDeleteCallback
+import com.labo.kaji.fragmentanimations.CubeAnimation
 import moxy.presenter.InjectPresenter
 import moxy.presenter.ProvidePresenter
 import timber.log.Timber
@@ -54,6 +58,7 @@ class CashierFragment : BaseFragment(), CashierView, SwipeRefreshLayout.OnRefres
     private var totalSum = 0.0
     var currentMenu = 0
     private var totalPrice = ""
+    private var orderPrice = 0.0
     var historyOpened = false
     private var orderId = 0
     var check: Check? = null
@@ -67,7 +72,7 @@ class CashierFragment : BaseFragment(), CashierView, SwipeRefreshLayout.OnRefres
     fun providePresenter(): CashierPresenter = scope.getInstance(CashierPresenter::class.java)
 
     @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
-    @SuppressLint("ResourceAsColor")
+    @SuppressLint("ResourceAsColor", "TimberArgCount")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         _bn = FragmentCashierBinding.bind(view)
@@ -86,7 +91,10 @@ class CashierFragment : BaseFragment(), CashierView, SwipeRefreshLayout.OnRefres
         bn.togoLayout.orderRv.adapter = orderAdapter2
         bn.togoLayout.tableListRv.adapter = tableAdapter3
 
-        loadHistory()
+        bn.historyLayout.historySearch.setTokenizer(MultiAutoCompleteTextView.CommaTokenizer())
+        bn.historyLayout.historySearch.threshold = 2
+
+//        loadHistory()
         loadTables()
         loadButtons()
 
@@ -100,9 +108,7 @@ class CashierFragment : BaseFragment(), CashierView, SwipeRefreshLayout.OnRefres
                 bn.tablesLayout.tableNumber.text = tab.id.toString()
             }
         }
-
-        // togo
-
+//
 //        bn.togoLayout.orderRv.addItemDecoration(DividerItemDecoration(requireContext(),DividerItemDecoration.VERTICAL))
         val swipeHelper = object : SwipeToDeleteCallback(requireContext()) {
             override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
@@ -197,14 +203,25 @@ class CashierFragment : BaseFragment(), CashierView, SwipeRefreshLayout.OnRefres
         }
 
         bn.tablesLayout.btnSendPay.setOnClickListener {
-            if (orderId != -1) {
-                presenter.sendPay(orderId.toLong(), check!!.html)
-                bn.tablesLayout.btnSendPay.isEnabled = false
+            val paidPrice = bn.tablesLayout.priceOnCash.text.toString().replace(" ", "").toDouble()
+            if (paidPrice < orderPrice) {
+                showSnackMessage("Iltimos yetarli mablag' kiriting!")
+            } else {
+                val cash = paidPrice - orderPrice
+                if (orderId != -1) {
+                    Timber.d("$orderId")
+                    presenter.sendPay(
+                        PaidCheck(
+                            orderId.toLong(),
+                            paidPrice,
+                            cash,
+                            "NAQD",
+                            createCheck()
+                        )
+                    )
+                }
             }
-        }
-//
-        bn.tablesLayout.btnWithCash.setOnClickListener {
-            bn.tablesLayout.priceOnCash.setText(totalPrice)
+
         }
 
         categoryAdapter.setOnClickListener {
@@ -287,6 +304,22 @@ class CashierFragment : BaseFragment(), CashierView, SwipeRefreshLayout.OnRefres
             }
         }
 
+
+        bn.historyLayout.tvDay.setOnClickListener {
+            presenter.loadHistory()
+        }
+
+        bn.historyLayout.tvStartDay.setOnClickListener { }
+        bn.historyLayout.tvEndDay.setOnClickListener { }
+
+        historyAdapter.setOnClickListener {
+
+        }
+    }
+
+
+    override fun onCreateAnimation(transit: Int, enter: Boolean, nextAnim: Int): Animation {
+        return CubeAnimation.create(CubeAnimation.DOWN, enter, 1000)
     }
 
     private fun loadHistory() {
@@ -408,28 +441,13 @@ class CashierFragment : BaseFragment(), CashierView, SwipeRefreshLayout.OnRefres
         bn.tablesLayout.btnPrint.setOnClickListener {
             bn.tablesLayout.btnSendPay.isEnabled = true
             if (notNull()) {
-                val data = Item(orderAdapter.getOrderList)
-                val itemNameList = data.getItemNameList()
-                val price = data.getPriceList()
-                check = Check(
-                    "Abdurashid", itemNameList,
-                    price,
-                    totalPrice,
-                    bn.tablesLayout.priceCashBack.text.toString(),
-                    bn.tablesLayout.priceOnCash.text.toString(), "SSD Intership",
-                    "NAQD"
-                )
-                val dialog = CheckDialog(requireContext(), check!!.html, textHtml, utf)
+
+                val dialog = CheckDialog(requireContext(), createCheck(), textHtml, utf)
                 Timber.d(check!!.html)
                 dialog.setOnClickListener {
                     dialog._bn = null
                     dialog.dismiss()
-                    bn.tablesLayout.priceOnCash.setText("0")
-                    orderAdapter.submitList(arrayListOf())
-                    currentText = ""
-                    bn.tablesLayout.totalPrice.text = "0"
-                    bn.tablesLayout.tableNumber.text = "0"
-                    bn.tablesLayout.priceCashBack.setText("0")
+
                     bn.groupButtons.translationZ = 0f
                 }
                 dialog.show()
@@ -438,6 +456,23 @@ class CashierFragment : BaseFragment(), CashierView, SwipeRefreshLayout.OnRefres
             } else showSnackMessage(getString(R.string.choose_table))
 
         }
+    }
+
+    private fun createCheck(): String {
+        val data = Item(orderAdapter.getOrderList)
+        val itemNameList = data.getItemNameList()
+        val price = data.getPriceList()
+
+
+        check = Check(
+            "Abdurashid", itemNameList,
+            price,
+            totalPrice,
+            bn.tablesLayout.priceCashBack.text.toString(),
+            bn.tablesLayout.priceOnCash.text.toString(), "SSD Intership",
+            "NAQD"
+        )
+        return check!!.html
     }
 
     private fun loadTables() {
@@ -554,7 +589,7 @@ class CashierFragment : BaseFragment(), CashierView, SwipeRefreshLayout.OnRefres
         totalSum = 0.0
     }
 
-    override fun allHistory(orderGetData: OrderGetData) {
+    override fun allHistory(orderGetData: List<OrderGetData>) {
         historyAdapter.submitList(orderGetData)
     }
 

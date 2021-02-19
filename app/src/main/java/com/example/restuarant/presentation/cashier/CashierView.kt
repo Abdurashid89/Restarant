@@ -34,6 +34,7 @@ interface CashierView : MvpView {
     fun getMenu(list: ResData<List<CategoryData>>)
     fun clearList(type:Boolean)
     fun totalSum()
+    fun allHistory(orderGetData: List<OrderGetData>)
 
     fun allHistory(orderGetData: OrderGetData)
 }

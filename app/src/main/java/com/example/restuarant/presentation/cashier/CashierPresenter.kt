@@ -3,6 +3,7 @@ package com.example.restuarant.presentation.cashier
 import android.annotation.SuppressLint
 import com.example.restuarant.di.DI
 import com.example.restuarant.extentions.errorResponse
+import com.example.restuarant.model.entities.check.PaidCheck
 import com.example.restuarant.model.entities.OrderSendData
 import com.example.restuarant.model.entities.OrderUpdateData
 import com.example.restuarant.model.interactor.CashierInteractor
@@ -108,8 +109,8 @@ class CashierPresenter @Inject constructor(
     }
 
 
-    fun sendPay(orderId: Long, cheque: String) {
-        interactor.sendToServer(orderId, cheque)
+    fun sendPay(paidCheck: PaidCheck) {
+        interactor.sendToServer(paidCheck)
             .doOnSubscribe {
                 viewState.showProgress(true, 1)
             }.doAfterTerminate {
@@ -117,7 +118,7 @@ class CashierPresenter @Inject constructor(
             }.subscribe({
                 viewState.showMessage(it.message)
             }, {
-                viewState.showMessage(it.message!!)
+                viewState.showMessage(it.errorResponse())
             }).connect()
     }
 
@@ -128,7 +129,7 @@ class CashierPresenter @Inject constructor(
             }.subscribe({
                 viewState.allHistory(it)
             }, {
-
+                viewState.showMessage(it.errorResponse())
             }).connect()
     }
 

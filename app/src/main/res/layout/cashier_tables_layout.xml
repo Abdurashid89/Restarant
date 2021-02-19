@@ -170,7 +170,6 @@
                     android:layout_marginBottom="24dp"
                     android:layout_weight="1"
                     android:background="@drawable/cashier_btn_bgn"
-                    android:enabled="false"
                     android:text="Pay"
                     android:textColor="@color/white"
                     android:textSize="16sp" />
