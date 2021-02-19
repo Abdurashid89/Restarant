@@ -1,19 +1,31 @@
 package com.example.restuarant.ui.login
 
 import android.os.Bundle
+import android.os.Environment
 import android.view.View
+import androidx.core.net.toUri
 import com.example.restuarant.R
 import com.example.restuarant.databinding.PinLockViewBinding
 import com.example.restuarant.extentions.showSnackMessage
 import com.example.restuarant.extentions.visible
+import com.example.restuarant.model.entities.OrderGetData
 import com.example.restuarant.model.entities.UnPaidData
 import com.example.restuarant.presentation.login.LoginPresenter
 import com.example.restuarant.presentation.login.LoginView
+import com.example.restuarant.ui.cashier.check.CookerCheckDialog
 import com.example.restuarant.ui.global.BaseFragment
 import moxy.presenter.InjectPresenter
 import moxy.presenter.ProvidePresenter
+import com.itextpdf.text.Document
+import com.itextpdf.text.Paragraph
+import com.itextpdf.text.pdf.PdfWriter
+import java.io.File
+import java.io.FileOutputStream
 import java.lang.NullPointerException
 import java.security.Timestamp
+import java.text.SimpleDateFormat
+import java.util.*
+import kotlin.collections.ArrayList
 
 class LoginFragment : BaseFragment(), LoginView {
     override val layoutRes: Int = R.layout.pin_lock_view
@@ -21,7 +33,9 @@ class LoginFragment : BaseFragment(), LoginView {
     private var _bn: PinLockViewBinding? = null
     private val bn get() = _bn ?: throw NullPointerException("error")
 
-    private val ordersDB = ArrayList<UnPaidData>()
+
+    private val unPaidList = ArrayList<OrderGetData>()
+    private val unPaidListOld = ArrayList<OrderGetData>()
 
     @InjectPresenter
     lateinit var presenter: LoginPresenter
@@ -103,16 +117,68 @@ class LoginFragment : BaseFragment(), LoginView {
 
 
         }
+        val ls = ArrayList<String>()
+        ls.add("Shohboz")
+        ls.add("Shohboz")
+        ls.add("Shohboz")
+        createPdf(ls)
     }
 
-    override fun ordersFromServer(list: List<UnPaidData>) {
+    override fun ordersFromServer(list: List<OrderGetData>) {
+        if(unPaidListOld.isEmpty()){
+            unPaidListOld.addAll(list)
+//            createPdf(list)
+        }else{
 
+        }
+        unPaidList.addAll(list)
     }
 
-    override fun ordersFromDB(list: List<UnPaidData>) {
-        ordersDB.clear()
-        ordersDB.addAll(list)
+//    private fun createPdf(list: List<OrderGetData>) {
+//        list.forEach {
+//            val mDoc = Document()
+//            val mFileName = SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault()).format(System.currentTimeMillis())
+//            val mFilePath = Environment.getExternalStorageDirectory().toString() + "/" + mFileName + ".pdf"
+//            try {
+//                PdfWriter.getInstance(mDoc,FileOutputStream(mFilePath))
+//                mDoc.open()
+//                mDoc.addAuthor("Table No ${it.id}")
+//                it.menuSelection.forEach {menu->
+//                    mDoc.add(Paragraph("${menu.menu.name}    count  " ))
+//                }
+//                mDoc.close()
+//
+//            }catch (t:Throwable){
+//                t.message?.let { it1 -> showSnackMessage(it1) }
+//            }
+//            val uri = File(mFilePath).toUri()
+//            CookerCheckDialog(requireContext(),uri).show()
+//        }
+//    }
+    private fun createPdf(list: List<String>) {
+        list.forEach {
+            val mDoc = Document()
+            val mFileName = SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault()).format(System.currentTimeMillis())
+            val mFilePath = Environment.getExternalStorageDirectory().toString() + "/" + mFileName + ".pdf"
+            try {
+                PdfWriter.getInstance(mDoc,FileOutputStream(mFilePath))
+                mDoc.open()
+                mDoc.addAuthor("Table No {it.id}")
+               for(i in 0 until 10) {
+                   mDoc.add(Paragraph("{menu.menu.name}    count  "))
+
+                }
+                mDoc.close()
+
+            }catch (t:Throwable){
+                t.message?.let { it1 -> showSnackMessage(it1) }
+            }
+            val uri = File(mFilePath).toUri()
+            showSnackMessage(uri.toString())
+            CookerCheckDialog(requireContext(),uri).show()
+        }
     }
+
 
     override fun onBackPressed() {
         presenter.onBackPressed()

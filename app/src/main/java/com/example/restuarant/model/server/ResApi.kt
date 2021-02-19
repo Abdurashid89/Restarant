@@ -69,7 +69,7 @@ interface ResApi {
     fun getTableInfo(@Query("tableId")tableId:Int):Single<ResData<OrderGetData>>
 
     @GET("/api/unPayOrder")
-    fun getOrderUnPaid():Single<ResData<List<UnPaidData>>>
+    fun getOrderUnPaid():Single<ResData<List<OrderGetData>>>
 
 
 }

@@ -1,5 +1,6 @@
 package com.example.restuarant.presentation.login
 
+import android.os.Handler
 import com.example.restuarant.Screens
 import com.example.restuarant.extentions.errorResponse
 import com.example.restuarant.extentions.runOnWorkerThread
@@ -34,8 +35,7 @@ class LoginPresenter @Inject constructor(
     override fun onFirstViewAttach() {
         super.onFirstViewAttach()
         login(LoginData("+998909013285", "321"))
-        getAllOrdersFromDb()
-        getAllUnPaidOrders()
+//        getAllUnPaidOrders()
     }
 
     fun onBackPressed() {
@@ -73,25 +73,26 @@ class LoginPresenter @Inject constructor(
     }
 
     private fun getAllUnPaidOrders() {
-        interactor.unPaid()
-            .doOnSubscribe {
+        val handler = Handler()
+        val runnable = object : Runnable{
+            override fun run() {
+                handler.postDelayed(this,5000)
 
-            }.doAfterTerminate {
+                interactor.unPaid()
+                    .doOnSubscribe {
 
-            }.subscribe({
-                 viewState.ordersFromServer(it.objectData)
-            }, {
-                viewState.showMessage(it.errorResponse())
-            })
-            .connect()
-    }
-    private fun getAllOrdersFromDb(){
-        runOnWorkerThread {
-//            list.clear()
-//            list.addAll(dao.getAllUnPaidOrder())
-            viewState.ordersFromDB(dao.getAllUnPaidOrder())
+                    }.doAfterTerminate {
+
+                    }.subscribe({
+                        viewState.ordersFromServer(it.objectData)
+                    }, {
+                        viewState.showMessage(it.errorResponse())
+                    })
+                    .connect()
+            }
         }
-//        return list
-    }
+        handler.post(runnable)
 
+
+    }
 }

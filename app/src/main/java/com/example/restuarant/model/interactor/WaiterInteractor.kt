@@ -6,7 +6,6 @@ import com.example.restuarant.model.storage.dao.UnPaidDao
 import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
-import java.util.concurrent.Executors
 import javax.inject.Inject
 
 class WaiterInteractor @Inject constructor(
@@ -55,7 +54,7 @@ class WaiterInteractor @Inject constructor(
             .observeOn(AndroidSchedulers.mainThread())
     }
 
-    fun unPaid(): Single<ResData<List<UnPaidData>>> {
+    fun unPaid(): Single<ResData<List<OrderGetData>>> {
         return api.getOrderUnPaid().map {
             it
         }.subscribeOn(Schedulers.io())
