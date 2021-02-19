@@ -1,7 +1,6 @@
 package com.example.restuarant.model.interactor
 
-import com.example.restuarant.model.entities.LoginData
-import com.example.restuarant.model.entities.LoginResData
+import com.example.restuarant.model.entities.*
 import com.example.restuarant.model.server.ResApi
 import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -22,6 +21,12 @@ class LoginInteractor @Inject constructor(
             }.subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
 
+    }
+    fun unPaid(): Single<ResData<List<OrderGetData>>> {
+        return api.getOrderUnPaid().map {
+            it
+        }.subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
     }
 
 }

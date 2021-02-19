@@ -2,10 +2,10 @@ package com.example.restuarant.di.module
 
 import com.example.restuarant.di.ServerPath
 import com.example.restuarant.di.WithErrorHandler
-import com.example.restuarant.di.provider.ApiClient
-import com.example.restuarant.di.provider.OkHttpClientProvider
-import com.example.restuarant.di.provider.OkHttpClientWithErrorHandlerProvider
+import com.example.restuarant.di.provider.*
 import com.example.restuarant.model.server.ResApi
+import com.example.restuarant.model.storage.AppDatabase
+import com.example.restuarant.model.storage.dao.UnPaidDao
 import okhttp3.OkHttpClient
 import org.xml.sax.ErrorHandler
 import toothpick.config.Module
@@ -26,8 +26,8 @@ class ServerModule : Module() {
         // Error handler with logout logic
         bind(ErrorHandler::class.java).singleton()
 
-      //  bind(AppDataBase::class.java).toProvider(AppDatabaseProvider::class.java).providesSingleton()
-//        bind(DashboardDao::class.java).toProvider(DashboardDaoProvider::class.java).providesSingleton()
+        bind(AppDatabase::class.java).toProvider(AppDatabaseProvider::class.java).providesSingleton()
+        bind(UnPaidDao::class.java).toProvider(UnPaidDaoProvider::class.java).providesSingleton()
         //bind(ProductInDao::class.java).toProvider(ProductInProvider::class.java).providesSingleton()
     }
 }
