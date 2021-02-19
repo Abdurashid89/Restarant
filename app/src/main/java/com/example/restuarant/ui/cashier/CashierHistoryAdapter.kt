@@ -38,17 +38,11 @@ class CashierHistoryAdapter : RecyclerView.Adapter<CashierHistoryAdapter.History
 
     override fun getItemCount() = list.size
 
-    fun showCheckPosition(position: Int) {
-
-    }
-
     inner class HistoryViewHolder(val binding: ItemHistoryChashierBinding) :
         RecyclerView.ViewHolder(binding.root) {
 
         init {
-            itemView.setOnClickListener {
-                listener?.invoke(list[adapterPosition])
-            }
+            binding.orderDetail.setOnClickListener { listener!!.invoke(list[adapterPosition]) }
         }
 
         fun bind() = bindItem {
@@ -60,7 +54,6 @@ class CashierHistoryAdapter : RecyclerView.Adapter<CashierHistoryAdapter.History
                 orderPrice.text = d.orderPrice.toString()
                 payType.text = d.orderType
 //                cashBack.text = d.cashBack
-                orderDetail.setOnClickListener { listener!!.invoke(list[adapterPosition]) }
             }
         }
     }

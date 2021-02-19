@@ -39,17 +39,25 @@ class CashierFragment : BaseFragment(), CashierView, SwipeRefreshLayout.OnRefres
 
     private var _bn: FragmentCashierBinding? = null
     private val bn get() = _bn ?: throw NullPointerException("error")
+
+    // lists
+    private val orderList = ArrayList<CashierOrderData>()
+    private val historyList = ArrayList<OrderGetData>()
+    private var tableList = ArrayList<TableData>()
+
+    // adapters
     private val tableAdapter = CashierTableAdapter()
     private val orderAdapter = CashierOrderAdapter()
     private val historyAdapter = CashierHistoryAdapter()
-    private val orderList = ArrayList<CashierOrderData>()
-    private val historyList = ArrayList<OrderGetData>()
     private val categoryAdapter = CategoryAdapter()
     private val goodsCategoryAdapter = CategoryItemAdapter()
     private val orderAdapter2 = OrderAdapter()
     private val tableAdapter3 = CashierTableAdapter3()
 
+    // views
     private lateinit var progressBar: ProgressBar
+
+    // temp
     private var currentText = ""
     private var totalSum = 0.0
     var currentMenu = 0
@@ -58,7 +66,6 @@ class CashierFragment : BaseFragment(), CashierView, SwipeRefreshLayout.OnRefres
     var historyOpened = false
     private var orderId = 0
     var check: Check? = null
-    private var tableList = ArrayList<TableData>()
 
     @InjectPresenter
     lateinit var presenter: CashierPresenter
@@ -255,6 +262,14 @@ class CashierFragment : BaseFragment(), CashierView, SwipeRefreshLayout.OnRefres
 
         historyAdapter.setOnClickListener {
 
+
+            val dialog = CheckDialog(requireContext(), it.cheque, textHtml, utf)
+            Timber.d(check!!.html)
+            dialog.setOnClickListener {
+                dialog._bn = null
+                dialog.dismiss()
+            }
+            dialog.show()
         }
     }
 
