@@ -20,9 +20,9 @@ import com.example.restuarant.ui.cashier.check.CookerCheckData
 class CashierHistoryAdapter : RecyclerView.Adapter<CashierHistoryAdapter.HistoryViewHolder>() {
     val list = ArrayList<OrderGetData>()
 
-    fun submitList(ls: OrderGetData) {
+    fun submitList(ls: List<OrderGetData>) {
         list.clear()
-        list.add(ls)
+        list.addAll(ls)
         notifyDataSetChanged()
     }
 
@@ -43,6 +43,10 @@ class CashierHistoryAdapter : RecyclerView.Adapter<CashierHistoryAdapter.History
 
     override fun getItemCount() = list.size
 
+    fun showCheckPosition(position: Int) {
+
+    }
+
     inner class HistoryViewHolder(val binding: ItemHistoryChashierBinding) :
         RecyclerView.ViewHolder(binding.root) {
 
@@ -54,12 +58,14 @@ class CashierHistoryAdapter : RecyclerView.Adapter<CashierHistoryAdapter.History
 
         fun bind() = bindItem {
 
+
             val d = list[adapterPosition]
             binding.apply {
                 numberTable.text = d.id.toString()
                 orderPrice.text = d.orderPrice.toString()
                 payType.text = d.orderType
 //                cashBack.text = d.cashBack
+                orderDetail.setOnClickListener { listener!!.invoke(list[adapterPosition]) }
             }
         }
     }
