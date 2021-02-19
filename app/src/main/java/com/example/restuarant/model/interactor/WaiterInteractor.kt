@@ -2,13 +2,15 @@ package com.example.restuarant.model.interactor
 
 import com.example.restuarant.model.entities.*
 import com.example.restuarant.model.server.ResApi
+import com.example.restuarant.model.storage.dao.UnPaidDao
 import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 import javax.inject.Inject
 
 class WaiterInteractor @Inject constructor(
-    val api: ResApi
+    val api: ResApi,
+    val dao: UnPaidDao
 ) {
     fun getMenuList(): Single<ResData<List<CategoryData>>> {
         return api.getAllMenus().map {
@@ -47,6 +49,13 @@ class WaiterInteractor @Inject constructor(
 
     fun orderUpdate(data: OrderUpdateData):Single<ResOrderData>{
         return api.orderUpdate(data).map {
+            it
+        }.subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+    }
+
+    fun unPaid(): Single<ResData<List<OrderGetData>>> {
+        return api.getOrderUnPaid().map {
             it
         }.subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())

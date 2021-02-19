@@ -137,4 +137,11 @@ dependencies {
     //shimmer text
     implementation 'com.romainpiel.shimmer:library:1.4.0@aar'
 
+    //write pdf library
+    implementation 'com.itextpdf:itextg:5.5.10'
+
+    implementation 'com.github.barteksc:android-pdf-viewer:2.8.2'
+    implementation 'com.mindorks.android:prdownloader:0.6.0'
+
+
 }
