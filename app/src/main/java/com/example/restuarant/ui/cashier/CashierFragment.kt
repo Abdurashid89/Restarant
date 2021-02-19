@@ -155,9 +155,14 @@ class CashierFragment : BaseFragment(), CashierView, SwipeRefreshLayout.OnRefres
         }
 
         tableAdapter3.setOnClickListener {
-            bn.togoLayout.togoOrderConstraint.visibility = View.VISIBLE
-            bn.togoLayout.tableListRv.visibility = View.GONE
-            bn.togoLayout.tableNumber.text = it.name.toString()
+            if (it.active){
+                bn.togoLayout.togoOrderConstraint.visibility = View.VISIBLE
+                bn.togoLayout.tableListRv.visibility = View.GONE
+                bn.togoLayout.tableNumber.text = it.name.toString()
+            }else{
+                presenter.loadOrderByTableId(it.id)
+            }
+
 
         }
 
