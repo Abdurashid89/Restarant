@@ -184,7 +184,7 @@ class LoginFragment : BaseFragment(), LoginView {
                     val uri = File(mFilePath).toUri()
                     showSnackMessage(uri.toString())
                     customLog("Success")
-                    CookerCheckDialog(requireContext(), uri).show()
+//                    CookerCheckDialog(requireContext(), uri).show()
                 }
             }
         }

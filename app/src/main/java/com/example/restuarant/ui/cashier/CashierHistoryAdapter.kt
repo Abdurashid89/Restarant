@@ -1,35 +1,39 @@
 package com.example.restuarant.ui.cashier
 
+import android.annotation.SuppressLint
+import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.example.restuarant.databinding.ItemHistoryChashierBinding
+import com.example.restuarant.R
+import com.example.restuarant.databinding.ItemCookerOrderBinding
 import com.example.restuarant.extentions.SingleBlock
 import com.example.restuarant.extentions.bindItem
 import com.example.restuarant.model.entities.OrderGetData
+import com.example.restuarant.ui.cashier.check.CookerCheckData
 
 /**
  * Created by Abdurashid on 08,Февраль,2021
  */
 
 class CashierHistoryAdapter : RecyclerView.Adapter<CashierHistoryAdapter.HistoryViewHolder>() {
-    val list = ArrayList<OrderGetData>()
+    val list = ArrayList<CookerCheckData>()
 
-    fun submitList(ls: OrderGetData) {
+    fun submitList(ls: CookerCheckData) {
         list.clear()
         list.add(ls)
         notifyDataSetChanged()
     }
 
-    var listener: SingleBlock<OrderGetData>? = null
+    var listener: SingleBlock<CookerCheckData>? = null
 
-    fun setOnClickListener(block: SingleBlock<OrderGetData>) {
+    fun setOnClickListener(block: SingleBlock<CookerCheckData>) {
         listener = block
     }
 
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) = HistoryViewHolder(
-        ItemHistoryChashierBinding.inflate(
+        ItemCookerOrderBinding.inflate(
             LayoutInflater.from(parent.context), parent, false
         )
     )
@@ -38,7 +42,7 @@ class CashierHistoryAdapter : RecyclerView.Adapter<CashierHistoryAdapter.History
 
     override fun getItemCount() = list.size
 
-    inner class HistoryViewHolder(val binding: ItemHistoryChashierBinding) :
+    inner class HistoryViewHolder(val binding: ItemCookerOrderBinding) :
         RecyclerView.ViewHolder(binding.root) {
 
         init {
@@ -47,14 +51,19 @@ class CashierHistoryAdapter : RecyclerView.Adapter<CashierHistoryAdapter.History
             }
         }
 
+        @SuppressLint("ResourceAsColor")
         fun bind() = bindItem {
 
             val d = list[adapterPosition]
-            binding.apply {
-                numberTable.text = d.id.toString()
-                orderPrice.text = d.orderPrice.toString()
-                payType.text = d.orderType
-//                cashBack.text = d.cashBack
+            itemView.apply {
+              binding.apply {
+                  mealName.text = d.name
+                  olderCount.text = d.older
+                  plusMinus.text = d.plus_minus
+                   if(d.latest == ""){ viewGroup.setBackgroundColor(R.color.light_black)
+                  latestCount.text = d.latest
+              } else  latestCount.text = d.latest
+              }
             }
         }
     }
