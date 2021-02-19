@@ -1,6 +1,5 @@
 package com.example.restuarant.extentions
 
-import android.accounts.AuthenticatorException
 import android.accounts.NetworkErrorException
 import android.content.ContentResolver
 import android.content.Context
@@ -31,6 +30,7 @@ import androidx.core.widget.ImageViewCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import androidx.recyclerview.widget.RecyclerView
+import com.example.restuarant.model.entities.TableData
 import com.example.restuarant.presentation.responseDialog.ResponseStatusDialog
 import com.example.restuarant.ui.waiter.callback.SwipeToDeleteCallback
 import com.google.android.material.snackbar.Snackbar
@@ -54,7 +54,20 @@ import java.text.SimpleDateFormat
 import java.util.*
 import java.util.concurrent.Executors
 
-fun Double.formatDouble():String{
+fun ArrayList<TableData>.sortTable(): ArrayList<TableData> {
+    for (i in 0 until this.size) {
+        for (j in i + 1 until this.size - 1) {
+            if (this[j].id < this[i].id) {
+                val temp = this[i]
+                this[i] = this[j]
+                this[j] = temp
+            }
+        }
+    }
+    return this
+}
+
+fun Double.formatDouble(): String {
     val split = this.toString().split(".")
     return split[0].toLong().stringFormat() + ".${split[1]}"
 }
@@ -164,7 +177,7 @@ fun PopupMenu.setForceShowIcon() {
 
 fun Fragment.getDate(): String {
     return "${Calendar.getInstance().get(Calendar.MONTH)}/${
-    Calendar.getInstance().get(Calendar.YEAR)
+        Calendar.getInstance().get(Calendar.YEAR)
     }"
 }
 
