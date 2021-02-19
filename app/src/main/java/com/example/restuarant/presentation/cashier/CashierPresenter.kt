@@ -127,7 +127,7 @@ class CashierPresenter @Inject constructor(
             .doAfterTerminate {
                 viewState.showProgress(false, 1)
             }.subscribe({
-                viewState.allHistory(it)
+                viewState.allHistory(it.objectData)
             }, {
                 viewState.showMessage(it.errorResponse())
             }).connect()
