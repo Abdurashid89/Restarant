@@ -1,30 +1,19 @@
 package com.example.restuarant.ui.login
 
-import android.Manifest
 import android.os.Bundle
-import android.os.Environment
 import android.view.View
-import androidx.core.net.toUri
 import com.example.restuarant.R
 import com.example.restuarant.databinding.PinLockViewBinding
-import com.example.restuarant.extentions.checkPermission
-import com.example.restuarant.extentions.customLog
 import com.example.restuarant.extentions.showSnackMessage
 import com.example.restuarant.extentions.visible
 import com.example.restuarant.model.entities.OrderGetData
 import com.example.restuarant.presentation.login.LoginPresenter
 import com.example.restuarant.presentation.login.LoginView
+import com.example.restuarant.ui.cashier.check.CookerCheckData
 import com.example.restuarant.ui.cashier.check.CookerCheckDialog
 import com.example.restuarant.ui.global.BaseFragment
-import com.itextpdf.text.Document
-import com.itextpdf.text.Paragraph
-import com.itextpdf.text.pdf.PdfWriter
 import moxy.presenter.InjectPresenter
 import moxy.presenter.ProvidePresenter
-import java.io.File
-import java.io.FileOutputStream
-import java.text.SimpleDateFormat
-import java.util.*
 import kotlin.collections.ArrayList
 
 class LoginFragment : BaseFragment(), LoginView {
@@ -117,11 +106,13 @@ class LoginFragment : BaseFragment(), LoginView {
 
 
         }
-        val ls = ArrayList<String>()
-        ls.add("Shohboz")
-//        ls.add("Shohboz")
-//        ls.add("Shohboz")
-        createPdf(ls)
+        val ls = ArrayList<CookerCheckData>()
+        ls.add(CookerCheckData("palov", "+3"))
+        ls.add(CookerCheckData("somsa", "-3"))
+        ls.add(CookerCheckData("manti", "7"))
+        ls.add(CookerCheckData("cola", "1"))
+        CookerCheckDialog(requireContext(),5,ls).show()
+//        createPdf(ls)
     }
 
     override fun ordersFromServer(list: List<OrderGetData>) {
@@ -155,41 +146,41 @@ class LoginFragment : BaseFragment(), LoginView {
 //            CookerCheckDialog(requireContext(),uri).show()
 //        }
 //    }
-    private fun createPdf(list: List<String>) {
-        checkPermission(Manifest.permission.READ_EXTERNAL_STORAGE) {
-            checkPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE) {
-                list.forEach {
-                    val mDoc = Document()
-                    val mFileName = SimpleDateFormat(
-                        "yyyyMMdd_HHmmss",
-                        Locale.getDefault()
-                    ).format(System.currentTimeMillis())
-                    val mFilePath = Environment.getExternalStorageDirectory()
-                        .toString() + "/" + mFileName + ".pdf"
-                    try {
-                        PdfWriter.getInstance(mDoc, FileOutputStream(mFilePath))
-                        mDoc.open()
-                        mDoc.addAuthor("Table No {it.id}")
-                        mDoc.add(Paragraph("{menu.menu.name}    count  "))
-                        for (i in 0 until 10) {
-                            mDoc.add(Paragraph("{menu.menu.name}    count  "))
-
-                        }
-                        mDoc.close()
-
-                    } catch (t: Throwable) {
-                        t.message?.let { it1 -> showSnackMessage(it1) }
-                        t.message?.let { it1 -> customLog(it1) }
-                    }
-                    val uri = File(mFilePath).toUri()
-                    showSnackMessage(uri.toString())
-                    customLog("Success")
-                    CookerCheckDialog(requireContext(), uri).show()
-                }
-            }
-        }
-
-    }
+//    private fun createPdf(list: List<OrderGetData>) {
+////        checkPermission(Manifest.permission.READ_EXTERNAL_STORAGE) {
+////            checkPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE) {
+//                list.forEach {
+//                    val mDoc = Document()
+//                    val mFileName = SimpleDateFormat(
+//                        "yyyyMMdd_HHmmss",
+//                        Locale.getDefault()
+//                    ).format(System.currentTimeMillis())
+//                    val mFilePath = Environment.getExternalStorageDirectory()
+//                        .toString() + "/" + mFileName + ".pdf"
+//                    try {
+//                        PdfWriter.getInstance(mDoc, FileOutputStream(mFilePath))
+//                        mDoc.open()
+//                        mDoc.addAuthor("Table No {it.id}")
+//                        mDoc.add(Paragraph("{menu.menu.name}    count  "))
+//                        for (i in 0 until 10) {
+//                            mDoc.add(Paragraph("{menu.menu.name}    count  "))
+//
+//                        }
+//                        mDoc.close()
+//
+//                    } catch (t: Throwable) {
+//                        t.message?.let { it1 -> showSnackMessage(it1) }
+//                        t.message?.let { it1 -> customLog(it1) }
+//                    }
+//                    val uri = File(mFilePath).toUri()
+//                    showSnackMessage(uri.toString())
+//                    customLog("Success")
+////                    CookerCheckDialog(requireContext(), uri).show()
+//                }
+////            }
+////        }
+//
+//    }
 
 
     override fun onBackPressed() {
