@@ -4,6 +4,7 @@ import com.example.restuarant.model.entities.check.CheckData
 import com.example.restuarant.model.entities.OrderGetData
 import com.example.restuarant.model.entities.ResData
 import com.example.restuarant.model.entities.TableData
+import com.example.restuarant.model.entities.check.PaidCheck
 import com.example.restuarant.model.server.ResApi
 import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -32,14 +33,17 @@ class CashierInteractor @Inject constructor(
             .observeOn(AndroidSchedulers.mainThread())
     }
 
-    fun sendToServer(orderId: Long, cheque: String): Single<CheckData> {
-        return api.sendCheckByOrderId(orderId, cheque).map { it }
+    fun sendToServer(paidCheck: PaidCheck): Single<CheckData> {
+        return api.sendCheckByOrderId(paidCheck).map { it }
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
     }
 
-    fun loadHistory(): Single<OrderGetData> {
-        return api.getAllHistory().map { it }
+    fun loadHistory(): Single<ResData<List<OrderGetData>>> {
+        return api.getAllHistory()
+            .map {
+                it
+            }
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
     }

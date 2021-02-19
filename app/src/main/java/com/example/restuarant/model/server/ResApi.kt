@@ -2,6 +2,7 @@ package com.example.restuarant.model.server
 
 import com.example.restuarant.model.entities.*
 import com.example.restuarant.model.entities.check.CheckData
+import com.example.restuarant.model.entities.check.PaidCheck
 import io.reactivex.Single
 import retrofit2.http.Body
 import retrofit2.http.GET
@@ -71,13 +72,13 @@ interface ResApi {
 
     @POST("/api/order/pay")
     fun sendCheckByOrderId(
-        @Query("id") orderId: Long,
-        @Query("cheque") cheque: String
+        @Body data: PaidCheck
     ): Single<CheckData>
+
     @GET("/api/unPayOrder")
-    fun getOrderUnPaid():Single<ResData<List<OrderGetData>>>
+    fun getOrderUnPaid(): Single<ResData<List<OrderGetData>>>
 
 
     @GET("/api/order/unPayOrder/PAID")
-    fun getAllHistory(): Single<OrderGetData>
+    fun getAllHistory(): Single<ResData<List<OrderGetData>>>
 }
