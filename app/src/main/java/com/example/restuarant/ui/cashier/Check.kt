@@ -1,7 +1,16 @@
 package com.example.restuarant.ui.cashier
 
 
-class Check(name: String, price: String) {
+class Check(
+    cashierName: String,
+    orderName: String,
+    price: String,
+    totalPrice: String,
+    cash: String,
+    paid: String,
+    companyName: String,
+    payType : String
+) {
     val html = "<!DOCTYPE html>" +
             "<html lang=\"en\">" +
             "<head>" +
@@ -73,13 +82,13 @@ class Check(name: String, price: String) {
             "</head>" +
             "<body>" +
             "    <div class=\"check\">" +
-            "        <h3>\"Anglesey Food\" MCHJ XK</h3>" +
+            "        <h3>\" $companyName \" </h3>" +
             "        <h3></h3>" +
             "        <section>" +
             "            <div class=\"box section_01\">" +
             "                <div>" +
             "                    <p class=\"stir\">STIR: 000202099756</p>" +
-            "                    <p class=\"cashier\">KASSIR: Абдулазиз</p>" +
+            "                    <p class=\"cashier\">KASSIR: $cashierName </p>" +
             "                    <p class=\"trade\">SAVDO CHEKI N 206</p>" +
             "                </div>" +
             "                <div>" +
@@ -90,7 +99,7 @@ class Check(name: String, price: String) {
             "            </div>" +
             "            <div class=\"box section_02\">" +
             "                <div>" +
-            "                    $name" +
+            "                    $orderName" +
             "                </div>" +
             "                <div> $price </div>" +
             "            </div>" +
@@ -102,10 +111,10 @@ class Check(name: String, price: String) {
             "                    <p class=\"form_pay\">TO'LOV SHAKLI:</p>" +
             "                </div>" +
             "                <div>" +
-            "                    <p class=\"price_01\">29690,00 So'm</p>" +
-            "                    <p class=\"price_03\">50700,00 So'm</p>" +
-            "                    <p class=\"price_04\">21010,00 So'm</p>" +
-            "                    <p class=\"price_05\">NAQD</p>" +
+            "                    <p class=\"price_01\"> $totalPrice So'm</p>" +
+            "                    <p class=\"price_03\"> $paid So'm</p>" +
+            "                    <p class=\"price_04\"> $cash So'm</p>" +
+            "                    <p class=\"price_05\"> $payType </p>" +
             "                </div>" +
             "            </div>" +
             "            <div class=\" section_04\">" +
