@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.restuarant.R
 import com.example.restuarant.databinding.ItemCookerOrderBinding
+import com.example.restuarant.databinding.ItemHistoryChashierBinding
 import com.example.restuarant.extentions.SingleBlock
 import com.example.restuarant.extentions.bindItem
 import com.example.restuarant.model.entities.OrderGetData
@@ -17,23 +18,23 @@ import com.example.restuarant.ui.cashier.check.CookerCheckData
  */
 
 class CashierHistoryAdapter : RecyclerView.Adapter<CashierHistoryAdapter.HistoryViewHolder>() {
-    val list = ArrayList<CookerCheckData>()
+    val list = ArrayList<OrderGetData>()
 
-    fun submitList(ls: CookerCheckData) {
+    fun submitList(ls: OrderGetData) {
         list.clear()
         list.add(ls)
         notifyDataSetChanged()
     }
 
-    var listener: SingleBlock<CookerCheckData>? = null
+    var listener: SingleBlock<OrderGetData>? = null
 
-    fun setOnClickListener(block: SingleBlock<CookerCheckData>) {
+    fun setOnClickListener(block: SingleBlock<OrderGetData>) {
         listener = block
     }
 
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) = HistoryViewHolder(
-        ItemCookerOrderBinding.inflate(
+        ItemHistoryChashierBinding.inflate(
             LayoutInflater.from(parent.context), parent, false
         )
     )
@@ -42,7 +43,7 @@ class CashierHistoryAdapter : RecyclerView.Adapter<CashierHistoryAdapter.History
 
     override fun getItemCount() = list.size
 
-    inner class HistoryViewHolder(val binding: ItemCookerOrderBinding) :
+    inner class HistoryViewHolder(val binding: ItemHistoryChashierBinding) :
         RecyclerView.ViewHolder(binding.root) {
 
         init {
@@ -51,19 +52,14 @@ class CashierHistoryAdapter : RecyclerView.Adapter<CashierHistoryAdapter.History
             }
         }
 
-        @SuppressLint("ResourceAsColor")
         fun bind() = bindItem {
 
             val d = list[adapterPosition]
-            itemView.apply {
-              binding.apply {
-                  mealName.text = d.name
-                  olderCount.text = d.older
-                  plusMinus.text = d.plus_minus
-                   if(d.latest == ""){ viewGroup.setBackgroundColor(R.color.light_black)
-                  latestCount.text = d.latest
-              } else  latestCount.text = d.latest
-              }
+            binding.apply {
+                numberTable.text = d.id.toString()
+                orderPrice.text = d.orderPrice.toString()
+                payType.text = d.orderType
+//                cashBack.text = d.cashBack
             }
         }
     }

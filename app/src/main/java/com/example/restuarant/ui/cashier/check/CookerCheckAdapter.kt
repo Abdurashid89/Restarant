@@ -1,9 +1,12 @@
 package com.example.restuarant.ui.cashier.check
 
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import com.example.restuarant.R
+import com.example.restuarant.databinding.ItemCookerOrderBinding
 import com.example.restuarant.databinding.ItemHistoryChashierBinding
 import com.example.restuarant.extentions.SingleBlock
 import com.example.restuarant.extentions.bindItem
@@ -15,23 +18,23 @@ import com.example.restuarant.ui.cashier.CashierHistoryAdapter
  */
 
 class CookerCheckAdapter : RecyclerView.Adapter<CookerCheckAdapter.HistoryViewHolder>() {
-    val list = ArrayList<OrderGetData>()
+    val list = ArrayList<CookerCheckData>()
 
-    fun submitList(ls: OrderGetData) {
+    fun submitList(ls: List<CookerCheckData>) {
         list.clear()
-        list.add(ls)
+        list.addAll(ls)
         notifyDataSetChanged()
     }
 
-    var listener: SingleBlock<OrderGetData>? = null
+    var listener: SingleBlock<CookerCheckData>? = null
 
-    fun setOnClickListener(block: SingleBlock<OrderGetData>) {
+    fun setOnClickListener(block: SingleBlock<CookerCheckData>) {
         listener = block
     }
 
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) = HistoryViewHolder(
-        ItemHistoryChashierBinding.inflate(
+        ItemCookerOrderBinding.inflate(
             LayoutInflater.from(parent.context), parent, false
         )
     )
@@ -40,7 +43,7 @@ class CookerCheckAdapter : RecyclerView.Adapter<CookerCheckAdapter.HistoryViewHo
 
     override fun getItemCount() = list.size
 
-    inner class HistoryViewHolder(val binding: ItemHistoryChashierBinding) :
+    inner class HistoryViewHolder(val binding: ItemCookerOrderBinding) :
         RecyclerView.ViewHolder(binding.root) {
 
         init {
@@ -50,13 +53,10 @@ class CookerCheckAdapter : RecyclerView.Adapter<CookerCheckAdapter.HistoryViewHo
         }
 
         fun bind() = bindItem {
-
             val d = list[adapterPosition]
             binding.apply {
-                numberTable.text = d.id.toString()
-                orderPrice.text = d.orderPrice.toString()
-                payType.text = d.orderType
-//                cashBack.text = d.cashBack
+              mealName.text = d.name
+              plusMinus.text = d.latest
             }
         }
     }
