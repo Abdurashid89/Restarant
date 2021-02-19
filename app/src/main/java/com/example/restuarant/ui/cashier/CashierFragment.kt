@@ -62,7 +62,7 @@ class CashierFragment : BaseFragment(), CashierView, SwipeRefreshLayout.OnRefres
     fun providePresenter(): CashierPresenter = scope.getInstance(CashierPresenter::class.java)
 
     @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
-    @SuppressLint("ResourceAsColor")
+    @SuppressLint("ResourceAsColor", "TimberArgCount")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         _bn = FragmentCashierBinding.bind(view)
@@ -179,6 +179,7 @@ class CashierFragment : BaseFragment(), CashierView, SwipeRefreshLayout.OnRefres
 
         bn.tablesLayout.btnSendPay.setOnClickListener {
             if (orderId != -1) {
+                Timber.d("$orderId")
                 presenter.sendPay(orderId.toLong(), check!!.html)
                 bn.tablesLayout.btnSendPay.isEnabled = false
             }
