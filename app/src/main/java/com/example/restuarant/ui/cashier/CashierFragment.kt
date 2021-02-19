@@ -84,7 +84,7 @@ class CashierFragment : BaseFragment(), CashierView, SwipeRefreshLayout.OnRefres
         loadTables()
         loadButtons()
 
-//        bn.togoLayout.orderRv.addItemDecoration(DividerItemDecoration(requireContext(),DividerItemDecoration.VERTICAL))
+        bn.togoLayout.orderRv.addItemDecoration(DividerItemDecoration(requireContext(),DividerItemDecoration.VERTICAL))
         val swipeHelper = object :SwipeToDeleteCallback(requireContext()){
             override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
                 val swipeAdapter = bn.togoLayout.orderRv.adapter as OrderAdapter
@@ -140,9 +140,14 @@ class CashierFragment : BaseFragment(), CashierView, SwipeRefreshLayout.OnRefres
         }
 
         tableAdapter3.setOnClickListener {
-            bn.togoLayout.togoOrderConstraint.visibility = View.VISIBLE
-            bn.togoLayout.tableListRv.visibility = View.GONE
-            bn.togoLayout.tableNumber.text = it.name.toString()
+            if (it.active){
+                bn.togoLayout.togoOrderConstraint.visibility = View.VISIBLE
+                bn.togoLayout.tableListRv.visibility = View.GONE
+                bn.togoLayout.tableNumber.text = it.name.toString()
+            }else{
+                
+            }
+
 
         }
 
