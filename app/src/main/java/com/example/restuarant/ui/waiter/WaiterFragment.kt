@@ -65,8 +65,7 @@ class WaiterFragment : BaseFragment(), WaiterView {
         _bn = FragmentWaiterBinding.bind(view)
         shimmer.setRepeatCount(4)
             .setDuration(1000)
-            .setStartDelay(1000)
-            .setDirection(Shimmer.ANIMATION_DIRECTION_LTR)
+            .setStartDelay(1000).direction = Shimmer.ANIMATION_DIRECTION_LTR
         shimmer.start(bn.waiterName)
 
         // ## adapters ##
@@ -327,8 +326,7 @@ class WaiterFragment : BaseFragment(), WaiterView {
         getData.menuSelection.forEach {
             orderAdapter.addProduct(
                 WaiterOrderData(
-                    it.menu.id, it.menu.name, it.menu.price,
-                    it.count, it.menu.price * it.count
+                    it.menu.id, it.menu.name, it.menu.price, it.count, it.menu.price * it.count
                 )
             )
         }
