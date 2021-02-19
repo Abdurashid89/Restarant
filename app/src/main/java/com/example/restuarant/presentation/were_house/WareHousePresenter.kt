@@ -26,7 +26,7 @@ class WareHousePresenter @Inject constructor(
         super.onFirstViewAttach()
         getAllProduct()
     }
-
+//
     fun onBackPressed() {
         router.exit()
     }
