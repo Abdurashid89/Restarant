@@ -7,6 +7,7 @@ import com.example.restuarant.ui.main.MainFlowFragment
 import com.example.restuarant.ui.signup.SignUpFragment
 import com.example.restuarant.ui.waiter.WaiterFragment
 import com.example.restuarant.ui.wareHouse.WareHouseFragment
+import com.example.restuarant.ui.wareHouse.history.ProductHistoryFragment
 import ru.terrakok.cicerone.android.support.SupportAppScreen
 
 /**
@@ -41,5 +42,10 @@ object Screens {
     object WarePage : SupportAppScreen() {
         override fun getFragment() = WareHouseFragment()
     }
+
+    object History : SupportAppScreen() {
+        override fun getFragment() = ProductHistoryFragment()
+    }
+
 
 }

@@ -26,8 +26,16 @@ class AddProductInteractor @Inject constructor(
             .doOnError { }
     }
 
-    fun productPurchase(data: ReqPurchaseData): Single<MessageData> {
-        return api.productPurchase(data).map {
+    fun inputProduct(data: ProductInData): Single<MessageData> {
+        return api.inputProduct(data).map {
+            it
+        }.subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .doOnError { }
+    }
+
+  fun outputProduct(data: ProductInData): Single<MessageData> {
+        return api.outputProduct(data).map {
             it
         }.subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())

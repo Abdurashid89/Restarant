@@ -327,8 +327,11 @@ class WaiterFragment : BaseFragment(), WaiterView {
         getData.menuSelection.forEach {
             orderAdapter.addProduct(
                 WaiterOrderData(
-                    it.menu.id, it.menu.name, it.menu.price,
-                    it.count, it.menu.price * it.count
+                    it.menu.id,
+                    it.menu.name,
+                    it.menu.price,
+                    it.count,
+                    it.menu.price * it.count
                 )
             )
         }

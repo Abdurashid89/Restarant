@@ -9,12 +9,14 @@ data class GetResponseData<T>(
 )
 
 data class ProductInData(
-    var productId: Int = 0,
+    var productId: Int,
+    var type: String,
+    var sold: Boolean,
     var name: String,
     var incomePrice: Double,
     var sellPrice: Double,
-    var count: Int,
-    var minCount: Int,
+    var presentCount: Double,
+    var minCount: Double,
 ) {
     companion object {
         val ITEM_CALLBACK = object : DiffUtil.ItemCallback<ProductInData>() {

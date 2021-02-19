@@ -37,7 +37,7 @@ class WareHouseAdapter :
             binding.apply {
                 productId.text = d.productId.toString()
                 productName.text = d.name
-                productWeight.text = d.count.toString()
+                productWeight.text = d.presentCount.toString()
             }
         }
     }

@@ -1,12 +1,7 @@
 package com.example.restuarant.ui.wareHouse
 
-import android.app.AlertDialog
-import android.graphics.Color
-import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
-import android.view.Gravity
 import android.view.View
-import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.example.restuarant.R
@@ -14,7 +9,6 @@ import com.example.restuarant.databinding.FragmentWareHouseBinding
 import com.example.restuarant.extentions.showSnackMessage
 //import com.example.restuarant.model.entities.CategoryInProductData
 import com.example.restuarant.model.entities.ProductInData
-import com.example.restuarant.model.system.pull.FlowRouter
 import com.example.restuarant.presentation.were_house.WareHousePresenter
 import com.example.restuarant.presentation.were_house.WareHouseView
 import com.example.restuarant.ui.global.BaseFragment
@@ -25,7 +19,6 @@ import java.lang.NullPointerException
 class WareHouseFragment() : BaseFragment(), WareHouseView, SwipeRefreshLayout.OnRefreshListener {
     override val layoutRes: Int = R.layout.fragment_ware_house
     private var _bn: FragmentWareHouseBinding? = null
-   
     private val binding get() = _bn ?: throw  NullPointerException("error")
     private lateinit var layoutManager: LinearLayoutManager
     private lateinit var itemList: ArrayList<ProductInData>
@@ -52,7 +45,11 @@ class WareHouseFragment() : BaseFragment(), WareHouseView, SwipeRefreshLayout.On
         }
 
         binding.btnEnter.setOnClickListener {
-            enterProduct()
+            inputOrOutputProduct(true)
+        }
+
+        binding.btnRasxod.setOnClickListener {
+            inputOrOutputProduct(false)
         }
 
 
@@ -60,18 +57,18 @@ class WareHouseFragment() : BaseFragment(), WareHouseView, SwipeRefreshLayout.On
             addProduct()
         }
         binding.btnHistory.setOnClickListener {
-
+            presenter.openHistoryScreen()
         }
 
 
     }
 
-    private fun enterProduct() {
-        EnterProductDialog().show(childFragmentManager, "tag")
+    private fun inputOrOutputProduct(type:Boolean) {
+        EnterProductDialog(type).show(childFragmentManager, "tag")
     }
 
     private fun addProduct() {
-        WareHouseDialogFragment().show(childFragmentManager, "tag")
+        CreateProductDialogFragment().show(childFragmentManager, "tag")
     }
 
 
@@ -90,7 +87,7 @@ class WareHouseFragment() : BaseFragment(), WareHouseView, SwipeRefreshLayout.On
 //        itemList.add(ProductInData(10, "aaaaa", 100.0, 100.0, 100, "guruch"))
 //        itemList.add(ProductInData(11, "aaaaa", 100.0, 100.0, 100, "loviya"))
 //        itemList.add(ProductInData(12, "aaaaa", 100.0, 100.0, 100, "tovuq go'shti"))
-
+//
     }
 
     override fun showMessage(message: String) {

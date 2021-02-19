@@ -27,8 +27,8 @@ class EnterProductPresenter @Inject constructor(
     }
 
     @SuppressLint("CheckResult")
-    fun purchaseProduct(data: ReqPurchaseData) {
-        interactor.productPurchase(data)
+    fun inputProduct(data: ProductInData) {
+        interactor.inputProduct(data)
             .doOnSubscribe {
                 viewState.makeLoadingVisible(true)
             }
@@ -42,6 +42,31 @@ class EnterProductPresenter @Inject constructor(
             }).connect()
     }
 
+
+    @SuppressLint("CheckResult")
+    fun outputProduct(data: ProductInData) {
+        interactor.outputProduct(data)
+            .doOnSubscribe {
+                viewState.makeLoadingVisible(true)
+            }
+            .doAfterTerminate {
+                viewState.makeLoadingVisible(false)
+            }.subscribe({
+                viewState.showMessage("Product Successfully minus")
+                viewState.clearAllOldData()
+            }, {
+                viewState.showMessage(it.errorResponse())
+            }).connect()
+    }
+
+    fun inputOrOutput(inputOrOutput: Boolean, data: ProductInData) {
+        if (inputOrOutput) {
+            inputProduct(data)
+        } else {
+            outputProduct(data)
+        }
+    }
+
     fun getProduct() {
         interactor.getAllProduct()
             .doOnSubscribe {
@@ -52,8 +77,7 @@ class EnterProductPresenter @Inject constructor(
                 viewState.listProducts(it.objectDate)
                 viewState.showMessage(it.objectDate.size.toString())
             }, {
-                viewState.showMessage(it.errorResponse())
+                viewState.showMessage(it.toString())
             }).connect()
     }
-
 }
