@@ -145,7 +145,7 @@ class CashierFragment : BaseFragment(), CashierView, SwipeRefreshLayout.OnRefres
                 bn.togoLayout.tableListRv.visibility = View.GONE
                 bn.togoLayout.tableNumber.text = it.name.toString()
             }else{
-                
+                presenter.loadOrderByTableId(it.id)
             }
 
 
