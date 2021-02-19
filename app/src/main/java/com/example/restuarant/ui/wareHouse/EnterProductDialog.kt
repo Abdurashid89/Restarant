@@ -54,6 +54,7 @@ class EnterProductDialog(var inputOrOutput: Boolean) : MvpAppCompatDialogFragmen
 //        presenterNew.inputProduct(data)
 //        loadAdapter()
 //        adapter.submitList(itemList)
+        //
         binding.tv.text = if (inputOrOutput) "Input Product" else "Output Product"
         binding.productRv.adapter = adapter
 
