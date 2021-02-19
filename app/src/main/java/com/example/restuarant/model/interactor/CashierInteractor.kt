@@ -1,6 +1,6 @@
 package com.example.restuarant.model.interactor
 
-import com.example.restuarant.model.entities.CheckData
+import com.example.restuarant.model.entities.check.CheckData
 import com.example.restuarant.model.entities.OrderGetData
 import com.example.restuarant.model.entities.ResData
 import com.example.restuarant.model.entities.TableData

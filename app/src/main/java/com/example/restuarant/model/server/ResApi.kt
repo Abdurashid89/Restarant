@@ -1,6 +1,7 @@
 package com.example.restuarant.model.server
 
 import com.example.restuarant.model.entities.*
+import com.example.restuarant.model.entities.check.CheckData
 import io.reactivex.Single
 import retrofit2.http.Body
 import retrofit2.http.GET
