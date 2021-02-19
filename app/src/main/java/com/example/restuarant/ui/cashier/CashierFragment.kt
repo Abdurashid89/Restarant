@@ -184,7 +184,7 @@ class CashierFragment : BaseFragment(), CashierView, SwipeRefreshLayout.OnRefres
                 bn.tablesLayout.btnSendPay.isEnabled = false
             }
         }
-//
+
         bn.tablesLayout.btnWithCash.setOnClickListener {
             bn.tablesLayout.priceOnCash.setText(totalPrice)
         }
