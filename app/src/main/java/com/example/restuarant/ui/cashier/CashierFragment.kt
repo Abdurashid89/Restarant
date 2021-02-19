@@ -49,9 +49,7 @@ class CashierFragment : BaseFragment(), CashierView, SwipeRefreshLayout.OnRefres
     private val tableAdapter = CashierTableAdapter()
     private val orderAdapter = CashierOrderAdapter()
     private val historyAdapter = CashierHistoryAdapter()
-    private val orderList = ArrayList<CashierOrderData>()
     private val orderList2 = ArrayList<MenuSelect>()
-    private val historyList = ArrayList<OrderGetData>()
     private val categoryAdapter = CategoryAdapter()
     private val goodsCategoryAdapter = CategoryItemAdapter()
     private val orderAdapter2 = OrderAdapter()
@@ -103,7 +101,7 @@ class CashierFragment : BaseFragment(), CashierView, SwipeRefreshLayout.OnRefres
         bn.historyLayout.historySearch.setTokenizer(MultiAutoCompleteTextView.CommaTokenizer())
         bn.historyLayout.historySearch.threshold = 2
 
-//        loadHistory()
+        loadHistory()
         loadTables()
         loadButtons()
 
@@ -113,7 +111,7 @@ class CashierFragment : BaseFragment(), CashierView, SwipeRefreshLayout.OnRefres
                 orderList.clear()
                 showSnackMessage("This table is empty!!!")
             } else {
-                presenter.loadOrderByTableId(tab.id,1)
+                presenter.loadOrderByTableId(tab.id, 1)
                 bn.tablesLayout.tableNumber.text = tab.id.toString()
             }
         }
@@ -176,16 +174,16 @@ class CashierFragment : BaseFragment(), CashierView, SwipeRefreshLayout.OnRefres
         }
 
         tableAdapter3.setOnClickListener {
-            if (it.active){
+            if (it.active) {
                 isFirst = true
                 tableId = it.id
                 clearList(false)
                 bn.togoLayout.togoOrderConstraint.visibility = View.VISIBLE
                 bn.togoLayout.tableListRv.visibility = View.GONE
                 bn.togoLayout.tableNumber.text = it.name.toString()
-            }else{
+            } else {
                 tableId = it.id
-                presenter.loadOrderByTableId(it.id,2)
+                presenter.loadOrderByTableId(it.id, 2)
                 orderAdapter2.clear()
                 bn.togoLayout.togoOrderConstraint.visibility = View.VISIBLE
                 bn.togoLayout.tableListRv.visibility = View.GONE
@@ -322,8 +320,6 @@ class CashierFragment : BaseFragment(), CashierView, SwipeRefreshLayout.OnRefres
         bn.historyLayout.tvEndDay.setOnClickListener { }
 
         historyAdapter.setOnClickListener {
-
-
             val dialog = CheckDialog(requireContext(), it.cheque, textHtml, utf)
             Timber.d(check!!.html)
             dialog.setOnClickListener {
@@ -340,10 +336,15 @@ class CashierFragment : BaseFragment(), CashierView, SwipeRefreshLayout.OnRefres
     }
 
     private fun loadHistory() {
-        /* for (i in 0 until 10) {
-             historyList.add(CashierHistoryData(i, "50 000", "Card", "0", "more"))
-             historyList.add(CashierHistoryData(i, "45 000", "Cash", "100", "more"))
-         }*/
+        for (i in 0 until 10) {
+            /*historyList.add(
+                OrderGetData(
+                    i.toLong(), Table(1), 0,
+                    "0", "more", check!!.html, "created att",
+                    100.0, 200.0, "Date Time", "NAQD", 10.0, "PAID", listOf(), "update att"
+                )
+            )*/
+        }
         Timber.d("loadedHistoryListSize:${historyList.size}")
     }
 
@@ -499,7 +500,7 @@ class CashierFragment : BaseFragment(), CashierView, SwipeRefreshLayout.OnRefres
         }
         tableAdapter.setOnClickListener { tab ->
             if (!tab.active) {
-                presenter.loadOrderByTableId(tab.id,1)
+                presenter.loadOrderByTableId(tab.id, 1)
                 bn.tablesLayout.tableNumber.text = tab.name.toString()
             } else {
                 showSnackMessage("Ma'lumot yo'q")
@@ -531,7 +532,7 @@ class CashierFragment : BaseFragment(), CashierView, SwipeRefreshLayout.OnRefres
         tableOrderId = objectData.id
         orderAdapter.clear()
         isFirst = false
-        if (type==1) {
+        if (type == 1) {
             totalPrice = objectData.orderPrice.formatDouble()
             Timber.d("${objectData.orderPrice.formatDouble()}")
 
@@ -556,7 +557,7 @@ class CashierFragment : BaseFragment(), CashierView, SwipeRefreshLayout.OnRefres
             }
             orderAdapter.submitList(orderList)
             orderList.clear()
-        }else if (type==2){
+        } else if (type == 2) {
 //            tableOrderId = getData.id
 //            isFirst = false
 //            tableOrderSize = getData.menuSelection.size
@@ -572,10 +573,10 @@ class CashierFragment : BaseFragment(), CashierView, SwipeRefreshLayout.OnRefres
         }
     }
 
-    override fun showProgress(isShow: Boolean,type:Int) {
-        if (type==1) {
+    override fun showProgress(isShow: Boolean, type: Int) {
+        if (type == 1) {
             bn.tablesLayout.progressBarLoadOrder.visible(isShow)
-        }else if (type==2){
+        } else if (type == 2) {
             bn.togoLayout.togoOrderProgress.visible(isShow)
         }
     }
