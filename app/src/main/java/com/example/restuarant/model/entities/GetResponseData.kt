@@ -9,7 +9,7 @@ data class GetResponseData<T>(
 )
 
 data class ProductInData(
-    var productId: Int,
+    var id: Int,
     var type: String,
     var sold: Boolean,
     var name: String,
@@ -21,7 +21,7 @@ data class ProductInData(
     companion object {
         val ITEM_CALLBACK = object : DiffUtil.ItemCallback<ProductInData>() {
             override fun areItemsTheSame(oldItem: ProductInData, newItem: ProductInData): Boolean =
-                oldItem.productId == newItem.productId
+                oldItem.id == newItem.id
 
             override fun areContentsTheSame(
                 oldItem: ProductInData,

@@ -28,7 +28,7 @@ class LoginPresenter @Inject constructor(
 
     override fun onFirstViewAttach() {
         super.onFirstViewAttach()
-        login(LoginData("+998909013285","321"))
+        login(LoginData("+998909476154","123"))
     }
 
     fun onBackPressed() {

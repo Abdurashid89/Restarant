@@ -4,14 +4,12 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.animation.AnimationUtils
 import com.example.restuarant.R
 import com.example.restuarant.databinding.ItemProductBinding
 import com.example.restuarant.di.DI
 import com.example.restuarant.extentions.*
 import com.example.restuarant.model.entities.ProductData
 import com.example.restuarant.model.entities.ProductInData
-import com.example.restuarant.model.entities.ReqPurchaseData
 import com.example.restuarant.presentation.were_house.add_product.EnterProductPresenter
 import com.example.restuarant.presentation.were_house.add_product.EnterProductView
 import com.example.restuarant.ui.global.BaseWatcher
@@ -63,21 +61,26 @@ class EnterProductDialog(var inputOrOutput: Boolean) : MvpAppCompatDialogFragmen
             binding.inputProductName.setText(it.name)
             binding.productRv.visibility = View.GONE
             adapter.submitList(null)
-            productId = it.productId
-            if (it.type == Constants.kg) {
-                binding.productType.text = Constants.kg
-            } else
-                if (it.type == Constants.piece) {
-                    binding.productType.text = Constants.piece
-                } else {
-                    binding.productType.text = Constants.liter
-                }
+            productId = it.id
 
             if (it.sold) {
-                binding.sellPrice.visibility = View.VISIBLE
+                binding.inputProductSellPrice.visibility = View.VISIBLE
             } else {
-                binding.sellPrice.visibility = View.GONE
+                binding.inputProductSellPrice.visibility = View.GONE
             }
+
+            when (it.type) {
+                Constants.kg -> {
+                    binding.productType.text = Constants.kg
+                }
+                Constants.piece -> {
+                    binding.productType.text = Constants.piece
+                }
+                else -> {
+                    binding.productType.text = Constants.liter
+                }
+            }
+
         }
 
 
@@ -102,72 +105,84 @@ class EnterProductDialog(var inputOrOutput: Boolean) : MvpAppCompatDialogFragmen
         binding.btnAdd.setOnClickListener {
 //            showSnackMessage("clicked")
             val name = binding.inputProductName.text.toString().trim()
-            val weight = binding.inputProductWeight.text.toString()
-            val inComePrice = binding.inputProductInComePrice.text.toString()
+            val weight = binding.inputProductWeight.text.toString().trim()
+            val inComePrice = binding.inputProductInComePrice.text.toString().trim()
             val sellPrice = binding.inputProductSellPrice.text.toString()
-
-            showSnackMessage("send")
-            when {
-                name.isEmpty() -> {
-                    binding.inputProductName.startAnimation(
-                        AnimationUtils.loadAnimation(
-                            requireContext(),
-                            R.anim.shake
-                        )
-                    )
-                    vibrate(requireContext())
-                    return@setOnClickListener
-                }
-                weight.isEmpty() -> {
-                    binding.inputProductWeight.startAnimation(
-                        AnimationUtils.loadAnimation(
-                            requireContext(),
-                            R.anim.shake
-                        )
-                    )
-                    vibrate(requireContext())
-                    return@setOnClickListener
-                }
-
-                inComePrice.isEmpty() -> {
-                    binding.inputProductInComePrice.startAnimation(
-                        AnimationUtils.loadAnimation(
-                            requireContext(),
-                            R.anim.shake
-                        )
-                    )
-                    vibrate(requireContext())
-                    return@setOnClickListener
-                }
-
-                sellPrice.isEmpty() -> {
-                    binding.inputProductSellPrice.startAnimation(
-                        AnimationUtils.loadAnimation(
-                            requireContext(),
-                            R.anim.shake
-                        )
-                    )
-                    vibrate(requireContext())
-                    return@setOnClickListener
-                }
-                else -> {
-                    presenterNew.inputOrOutput(
-                        inputOrOutput,
-                        ProductInData(
-                            productId,
-                            "KG",
-                            false,
-                            name,
-                            inComePrice.toDouble(),
-                            sellPrice.toDouble(),
-                            weight.toDouble(),
-                            100.0
-                        )
-                    )
-                    showSnackMessage("send")
-                }
-
-            }
+            presenterNew.inputOrOutput(
+                inputOrOutput,
+                ProductInData(
+                    productId,
+                    "KG",
+                    false,
+                    name,
+                    inComePrice.toDouble(),
+                    sellPrice.toDouble(),
+                    weight.toDouble(),
+                    10.0
+                )
+            )
+//            showSnackMessage("send")
+//            when {
+//                name.isEmpty() -> {
+//                    binding.inputProductName.startAnimation(
+//                        AnimationUtils.loadAnimation(
+//                            requireContext(),
+//                            R.anim.shake
+//                        )
+//                    )
+//                    vibrate(requireContext())
+//                    return@setOnClickListener
+//                }
+//                weight.isEmpty() -> {
+//                    binding.inputProductWeight.startAnimation(
+//                        AnimationUtils.loadAnimation(
+//                            requireContext(),
+//                            R.anim.shake
+//                        )
+//                    )
+//                    vibrate(requireContext())
+//                    return@setOnClickListener
+//                }
+//
+//                inComePrice.isEmpty() -> {
+//                    binding.inputProductInComePrice.startAnimation(
+//                        AnimationUtils.loadAnimation(
+//                            requireContext(),
+//                            R.anim.shake
+//                        )
+//                    )
+//                    vibrate(requireContext())
+//                    return@setOnClickListener
+//                }
+//
+//                sellPrice.isEmpty() -> {
+//                    binding.inputProductSellPrice.startAnimation(
+//                        AnimationUtils.loadAnimation(
+//                            requireContext(),
+//                            R.anim.shake
+//                        )
+//                    )
+//                    vibrate(requireContext())
+//                    return@setOnClickListener
+//                }
+//                else -> {
+//                    presenterNew.inputOrOutput(
+//                        inputOrOutput,
+//                        ProductInData(
+//                            productId,
+//                            "KG",
+//                            false,
+//                            name,
+//                            inComePrice.toDouble(),
+//                            sellPrice.toDouble(),
+//                            weight.toDouble(),
+//                            100.0
+//                        )
+//                    )
+//                    showSnackMessage("send")
+//                }
+//
+//            }
         }
 
         binding.btnDismiss.setOnClickListener {
@@ -248,7 +263,7 @@ class EnterProductDialog(var inputOrOutput: Boolean) : MvpAppCompatDialogFragmen
                 )
                 binding.inputProductName.setText(it.name)
                 binding.productType.text = it.type
-                productId = it.productId
+                productId = it.id
                 binding.productRv.visibility = View.GONE
             }
 

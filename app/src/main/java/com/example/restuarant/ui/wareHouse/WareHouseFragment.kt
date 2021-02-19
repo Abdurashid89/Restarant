@@ -37,7 +37,7 @@ class WareHouseFragment() : BaseFragment(), WareHouseView, SwipeRefreshLayout.On
         _bn = FragmentWareHouseBinding.bind(view)
         layoutManager = LinearLayoutManager(requireContext())
         loadAdapter()
-        adapter.submitList(itemList)
+        binding.productRv.layoutManager = layoutManager
         binding.productRv.adapter = adapter
 
         binding.btnLogOut.setOnClickListener {
@@ -63,7 +63,7 @@ class WareHouseFragment() : BaseFragment(), WareHouseView, SwipeRefreshLayout.On
 
     }
 
-    private fun inputOrOutputProduct(type:Boolean) {
+    private fun inputOrOutputProduct(type: Boolean) {
         EnterProductDialog(type).show(childFragmentManager, "tag")
     }
 
@@ -73,6 +73,7 @@ class WareHouseFragment() : BaseFragment(), WareHouseView, SwipeRefreshLayout.On
 
 
     private fun loadAdapter() {
+
         itemList = ArrayList()
 //        itemList.add(ProductInData(0, "aaaaa", 100.0, 100.0, 100, "go'sht"))
 //        itemList.add(ProductInData(1, "aaaaa", 100.0, 100.0, 100, "saryog'"))
@@ -100,6 +101,10 @@ class WareHouseFragment() : BaseFragment(), WareHouseView, SwipeRefreshLayout.On
 
     override fun openErrorDialog(message: String, status: Boolean) {
 
+    }
+
+    override fun listProducts(list: List<ProductInData>) {
+        adapter.submitList(list)
     }
 
     override fun onBackPressed() {

@@ -5,7 +5,6 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.example.restuarant.databinding.ItemProductHistoryBinding
-import com.example.restuarant.databinding.ItemWareHouseBinding
 import com.example.restuarant.extentions.SingleBlock
 import com.example.restuarant.extentions.bindItem
 import com.example.restuarant.model.entities.ProductInData
@@ -33,7 +32,7 @@ class HistoryAdapter :
         fun bind() = bindItem {
             val d = currentList[adapterPosition]
             binding.apply {
-                productId.text = d.productId.toString()
+                productId.text = d.id.toString()
                 productName.text = d.name
 
             }
