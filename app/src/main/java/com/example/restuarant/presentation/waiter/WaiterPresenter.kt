@@ -3,7 +3,9 @@ package com.example.restuarant.presentation.waiter
 import android.annotation.SuppressLint
 import com.example.restuarant.di.DI
 import com.example.restuarant.extentions.errorResponse
+import com.example.restuarant.model.entities.OrderGetData
 import com.example.restuarant.model.entities.OrderSendData
+import com.example.restuarant.model.entities.OrderUpdateData
 import com.example.restuarant.model.interactor.WaiterInteractor
 import com.example.restuarant.model.storage.Prefs
 import com.example.restuarant.model.system.pull.FlowRouter
@@ -72,8 +74,10 @@ class WaiterPresenter @Inject constructor(
             .subscribe({
                  viewState.getTables(it.objectData)
             },{
-                viewState.openErrorDialog(it.errorResponse(),false)
+//                viewState.openErrorDialog(it.errorResponse(),false)
+                viewState.showMessage(it.toString())
             }).connect()
+
     }
 
     @SuppressLint("CheckResult")
@@ -93,19 +97,58 @@ class WaiterPresenter @Inject constructor(
     }
 
     @SuppressLint("CheckResult")
+    fun orderUpdate(data:OrderUpdateData){
+        interactor.orderUpdate(data)
+            .doOnSubscribe {
+                viewState.showProgress(DI.ORDER_PROGRESS,true)
+            }
+            .doAfterTerminate {
+                viewState.showProgress(DI.ORDER_PROGRESS,false)
+            }
+            .subscribe({
+                viewState.clearList(true)
+                viewState.showMessage("Order Updated")
+            },{
+//                viewState.openErrorDialog(it.errorResponse(),false)
+                viewState.showMessage(it.errorResponse())
+            })
+    }
+
+    @SuppressLint("CheckResult")
     fun orderGetData(tableId:Int) {
         interactor.getOrder(tableId)
             .doOnSubscribe {
-
+                viewState.showProgress(DI.ORDER_PROGRESS,true)
             }
             .doAfterTerminate {
-
+                viewState.showProgress(DI.ORDER_PROGRESS,false)
             }
             .subscribe({
-                       viewState.getOrderInfo(it.objectData)
+                viewState.getOrderInfo(it.objectData)
             },{
-                viewState.openErrorDialog(it.errorResponse(),false)
+//                viewState.openErrorDialog(it.errorResponse(),false)
+                viewState.showMessage(it.toString())
             })
+
+    }
+
+
+    @SuppressLint("CheckResult")
+    fun getAllUnPaidOrders(tableId:Int) {
+        interactor.getOrder(tableId)
+            .doOnSubscribe {
+//                viewState.showProgress(DI.ORDER_PROGRESS,true)
+            }
+            .doAfterTerminate {
+//                viewState.showProgress(DI.ORDER_PROGRESS,false)
+            }
+            .subscribe({
+//                viewState.getOrderInfo(it.objectData)
+            },{
+//                viewState.openErrorDialog(it.errorResponse(),false)
+                viewState.showMessage(it.toString())
+            })
+
     }
 
     fun showTables(){
@@ -122,10 +165,6 @@ class WaiterPresenter @Inject constructor(
 
     fun totalSum(){
         viewState.totalSum()
-    }
-
-    fun showProgress(){
-
     }
 
 }

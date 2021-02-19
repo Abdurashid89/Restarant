@@ -10,9 +10,9 @@ import com.example.restuarant.model.entities.WaiterOrderData
 /**
  * */
 
-class OrderAdapter:RecyclerView.Adapter<OrderAdapter.Vh>() {
+class OrderAdapter : RecyclerView.Adapter<OrderAdapter.Vh>() {
 
-    var list = ArrayList<WaiterOrderData>()
+    private var list = ArrayList<WaiterOrderData>()
 
     private var plusListener: SingleBlock<Int>? = null
     private var minusListener: SingleBlock<Int>? = null
@@ -39,7 +39,7 @@ class OrderAdapter:RecyclerView.Adapter<OrderAdapter.Vh>() {
     }
 
 
-    inner class Vh(val view:OrderItemBinding):RecyclerView.ViewHolder(view.root){
+    inner class Vh(val view: OrderItemBinding) : RecyclerView.ViewHolder(view.root) {
 
         init {
             itemView.setOnClickListener {
@@ -67,7 +67,7 @@ class OrderAdapter:RecyclerView.Adapter<OrderAdapter.Vh>() {
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): Vh {
-        return Vh(OrderItemBinding.inflate(LayoutInflater.from(parent.context),parent,false))
+        return Vh(OrderItemBinding.inflate(LayoutInflater.from(parent.context), parent, false))
     }
 
     override fun onBindViewHolder(holder: Vh, position: Int) = holder.onBind()
@@ -101,9 +101,15 @@ class OrderAdapter:RecyclerView.Adapter<OrderAdapter.Vh>() {
         notifyItemInserted(list.size)
     }
 
-    fun removeAt(position: Int){
+    fun removeAt(position: Int) {
         list.removeAt(position)
         notifyItemRemoved(position)
+    }
+
+    fun getAllOrder() = list
+
+    fun clear() {
+        list.clear()
     }
 
 

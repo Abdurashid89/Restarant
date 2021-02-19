@@ -19,6 +19,9 @@
             android:id="@+id/logo_constrait"
             android:layout_width="match_parent"
             android:layout_height="0dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginLeft="10dp"
+            android:background="@color/green"
             app:layout_constraintHeight_percent="0.1"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintTop_toTopOf="parent">
@@ -34,12 +37,15 @@
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintWidth_percent="0.3" />
 
-            <TextView
+            <com.romainpiel.shimmer.ShimmerTextView
                 android:id="@+id/waiter_name"
                 android:layout_width="0dp"
                 android:layout_height="0dp"
-                android:gravity="center"
-                android:maxLines="3"
+                android:gravity="center|end"
+                android:textColor="@color/white"
+                android:maxLines="2"
+                android:layout_marginEnd="32dp"
+                app:reflectionColor="@color/green"
                 android:text="Donald Trump"
                 android:textSize="24sp"
                 app:layout_constraintBottom_toBottomOf="parent"
@@ -59,6 +65,7 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintHeight_percent="0.85"
             app:layout_constraintTop_toBottomOf="@id/logo_constrait"
             app:layout_constraintWidth_percent="0.9">
 
@@ -217,7 +224,6 @@
                     android:textSize="16sp" />
             </LinearLayout>
 
-
         </androidx.constraintlayout.widget.ConstraintLayout>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
@@ -236,6 +242,9 @@
             app:layout_constraintTop_toTopOf="parent">
 
             <Button
+                android:textAllCaps="false"
+                android:textStyle="italic"
+                android:textSize="24sp"
                 android:id="@+id/tables_btn"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
@@ -247,9 +256,12 @@
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toLeftOf="@id/order_btn"
                 app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintWidth_percent="0.2" />
+                app:layout_constraintWidth_percent="0.225" />
 
             <Button
+                android:textAllCaps="false"
+                android:textStyle="italic"
+                android:textSize="24sp"
                 android:textColor="@color/white"
                 android:id="@+id/order_btn"
                 android:layout_width="0dp"
@@ -261,9 +273,12 @@
                 app:layout_constraintLeft_toRightOf="@id/tables_btn"
                 app:layout_constraintRight_toLeftOf="@id/dashboard_btn"
                 app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintWidth_percent="0.2" />
+                app:layout_constraintWidth_percent="0.225" />
 
             <Button
+                android:textAllCaps="false"
+                android:textStyle="italic"
+                android:textSize="24sp"
                 android:textColor="@color/white"
                 android:id="@+id/dashboard_btn"
                 android:layout_width="0dp"
@@ -275,9 +290,12 @@
                 app:layout_constraintLeft_toRightOf="@id/order_btn"
                 app:layout_constraintRight_toLeftOf="@id/exit_btn"
                 app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintWidth_percent="0.2" />
+                app:layout_constraintWidth_percent="0.25" />
 
             <Button
+                android:textAllCaps="false"
+                android:textStyle="italic"
+                android:textSize="24sp"
                 android:textColor="@color/white"
                 android:id="@+id/exit_btn"
                 android:layout_width="0dp"
@@ -289,7 +307,7 @@
                 app:layout_constraintLeft_toRightOf="@id/dashboard_btn"
                 app:layout_constraintRight_toRightOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintWidth_percent="0.2" />
+                app:layout_constraintWidth_percent="0.225" />
 
 
         </androidx.constraintlayout.widget.ConstraintLayout>

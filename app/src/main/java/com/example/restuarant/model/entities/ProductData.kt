@@ -1,10 +1,8 @@
 package com.example.restuarant.model.entities
 
-import java.util.*
-
 data class ProductData(
-    val id: Long,
+    val id: Int,
     val name: String,
-    val weight: Double,
-    val price: Double
+    val type: String,
+    val sold: Boolean
 )

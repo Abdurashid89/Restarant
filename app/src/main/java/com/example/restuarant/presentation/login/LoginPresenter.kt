@@ -1,10 +1,14 @@
 package com.example.restuarant.presentation.login
 
+import android.os.Handler
 import com.example.restuarant.Screens
 import com.example.restuarant.extentions.errorResponse
+import com.example.restuarant.extentions.runOnWorkerThread
 import com.example.restuarant.model.entities.LoginData
+import com.example.restuarant.model.entities.UnPaidData
 import com.example.restuarant.model.interactor.LoginInteractor
 import com.example.restuarant.model.storage.Prefs
+import com.example.restuarant.model.storage.dao.UnPaidDao
 import com.example.restuarant.model.system.pull.FlowRouter
 import com.example.restuarant.presentation.global.BasePresenter
 import kotlinx.coroutines.Dispatchers
@@ -13,6 +17,7 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import moxy.InjectViewState
 import ru.terrakok.cicerone.Router
+import java.util.concurrent.Executors
 import javax.inject.Inject
 
 /**
@@ -22,28 +27,31 @@ import javax.inject.Inject
 class LoginPresenter @Inject constructor(
     private val router: FlowRouter,
     private val interactor: LoginInteractor,
-    private val prefs: Prefs
+    private val prefs: Prefs,
+    private val dao: UnPaidDao
 ) : BasePresenter<LoginView>() {
-
+    val list = ArrayList<UnPaidData>()
 
     override fun onFirstViewAttach() {
         super.onFirstViewAttach()
-        login(LoginData("+123456789","123"))
+        login(LoginData("+998909013285", "321"))
+        getAllUnPaidOrders()
     }
 
     fun onBackPressed() {
         router.exit()
     }
+    
+    fun openScreen(string: String) {
 
-    fun openScreen(string: String){
-
-        when(string){
-            "1111" ->router.newChain(Screens.Waiter)
-            "2222" ->router.newChain(Screens.CookerPage)
-            "3333" ->router.newChain(Screens.CashierPage)
-            "4444" ->router.newChain(Screens.WarePage)
+        when (string) {
+            "1111" -> router.newChain(Screens.Waiter)
+            "2222" -> router.newChain(Screens.CookerPage)
+            "3333" -> router.newChain(Screens.CashierPage)
+            "4444" -> router.newChain(Screens.WarePage)
         }
     }
+
     fun signUpPage() {
         router.newChain(Screens.Signup)
     }
@@ -63,40 +71,28 @@ class LoginPresenter @Inject constructor(
 
 
     }
-//
-//    private fun getUserMe() {
-//        intercepter.getUserMe()
-//            .doOnSubscribe {
-//                viewState.makeLoadingVisible(true)
-//            }
-//            .doAfterTerminate {
-//                viewState.makeLoadingVisible(false)
-//            }
-//            .subscribe({
-//                val ls = it.objectData.roles
-//                prefs.fullName = "${it.objectData.firstName} ${it.objectData.lastName}"
-//                prefs.phoneNUmber = it.objectData.phoneNumber
-//                if (ls.size > 1) {
-//                    prefs.directorOrNot = true
-//                    router.newRootScreen(Screens.MainDirector)
-//                } else {
-//                    when (ls[0].id) {
-//                        1 -> {
-//                            prefs.directorOrNot = false
-//                            router.newRootScreen(Screens.AdminPage)
-//                        }
-//                        3 -> {
-//                            router.newRootScreen(Screens.SellerPage)
-//                        }
-//                        4 -> {
-//                            router.newRootScreen(Screens.WareHousePage)
-//                        }
-//                    }
-//                }
-//            }, {
-//                viewState.openErrorDialog(errorResponse(it),false)
-//            }).connect()
-//
-//    }
 
+    private fun getAllUnPaidOrders() {
+        val handler = Handler()
+        val runnable = object : Runnable{
+            override fun run() {
+                handler.postDelayed(this,10000)
+
+                interactor.unPaid()
+                    .doOnSubscribe {
+
+                    }.doAfterTerminate {
+
+                    }.subscribe({
+                        viewState.ordersFromServer(it.objectData)
+                    }, {
+                        viewState.showMessage(it.errorResponse())
+                    })
+                    .connect()
+            }
+        }
+        handler.post(runnable)
+
+
+    }
 }

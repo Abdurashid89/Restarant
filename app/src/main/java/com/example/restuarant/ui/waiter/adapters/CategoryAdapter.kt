@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.restuarant.databinding.CategoryItem2Binding
 import com.example.restuarant.extentions.SingleBlock
 import com.example.restuarant.model.entities.CategoryData
+import com.squareup.picasso.Picasso
 
 class CategoryAdapter : ListAdapter<CategoryData, CategoryAdapter.Vh>(CategoryData.ITEM_CALLBACK) {
 
@@ -26,8 +27,10 @@ class CategoryAdapter : ListAdapter<CategoryData, CategoryAdapter.Vh>(CategoryDa
         }
 
         fun onBind() {
-            view.productName.text = currentList[adapterPosition].name
+            val categoryData = currentList[adapterPosition]
+            view.productName.text = categoryData.name
             view.productName.isSelected = true
+            Picasso.get().load(categoryData.photoURL).into(view.productPhoto)
         }
     }
 

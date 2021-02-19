@@ -1,5 +1,7 @@
 package com.example.restuarant.presentation.login
 
+import com.example.restuarant.model.entities.OrderGetData
+import com.example.restuarant.model.entities.UnPaidData
 import moxy.MvpView
 import moxy.viewstate.strategy.AddToEndSingleTagStrategy
 import moxy.viewstate.strategy.OneExecutionStateStrategy
@@ -19,4 +21,7 @@ interface LoginView : MvpView {
 
     @StateStrategyType(OneExecutionStateStrategy::class)
     fun openErrorDialog(message: String, status: Boolean)
+
+    fun ordersFromServer(list: List<OrderGetData>)
+
 }
