@@ -143,5 +143,7 @@ dependencies {
     implementation 'com.github.barteksc:android-pdf-viewer:2.8.2'
     implementation 'com.mindorks.android:prdownloader:0.6.0'
 
+    // ### fragment animation
+    implementation 'com.labo.kaji:fragmentanimations:0.1.1'
 
 }
