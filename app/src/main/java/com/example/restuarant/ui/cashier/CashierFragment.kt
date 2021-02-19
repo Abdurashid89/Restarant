@@ -272,7 +272,7 @@ class CashierFragment : BaseFragment(), CashierView, SwipeRefreshLayout.OnRefres
             dialog.show()
         }
     }
-
+//
 
     override fun onCreateAnimation(transit: Int, enter: Boolean, nextAnim: Int): Animation {
         return CubeAnimation.create(CubeAnimation.DOWN, enter, 1000)
