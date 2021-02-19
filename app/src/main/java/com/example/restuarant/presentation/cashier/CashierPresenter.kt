@@ -103,6 +103,5 @@ class CashierPresenter @Inject constructor(
     fun totalSum(){
         viewState.totalSum()
     }
-
-
+    
 }

@@ -7,6 +7,9 @@ import android.util.Log
 import android.view.View
 import android.widget.ProgressBar
 import androidx.annotation.RequiresApi
+import androidx.recyclerview.widget.DividerItemDecoration
+import androidx.recyclerview.widget.ItemTouchHelper
+import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.example.restuarant.R
 import com.example.restuarant.databinding.FragmentCashierBinding
@@ -20,6 +23,7 @@ import com.example.restuarant.ui.global.BaseFragment
 import com.example.restuarant.ui.waiter.adapters.CategoryAdapter
 import com.example.restuarant.ui.waiter.adapters.CategoryItemAdapter
 import com.example.restuarant.ui.waiter.adapters.OrderAdapter
+import com.example.restuarant.ui.waiter.callback.SwipeToDeleteCallback
 import moxy.presenter.InjectPresenter
 import moxy.presenter.ProvidePresenter
 import timber.log.Timber
@@ -34,6 +38,7 @@ class CashierFragment : BaseFragment(), CashierView, SwipeRefreshLayout.OnRefres
     private val bn get() = _bn ?: throw NullPointerException("error")
 
     private val tableAdapter = CashierTableAdapter2()
+    private val tableAdapter3 = CashierTableAdapter3()
     private val orderAdapter = CashierOrderAdapter()
     private val historyAdapter = CashierHistoryAdapter2()
     private val goodsCategoryAdapter = CategoryItemAdapter()
@@ -47,6 +52,7 @@ class CashierFragment : BaseFragment(), CashierView, SwipeRefreshLayout.OnRefres
     private var totalSum = 0.0
     var currentMenu = 0
     var historyOpened = false
+    private var tableList = ArrayList<TableData>()
 
     @InjectPresenter
     lateinit var presenter: CashierPresenter
@@ -72,10 +78,24 @@ class CashierFragment : BaseFragment(), CashierView, SwipeRefreshLayout.OnRefres
         bn.togoLayout.categoryRv.adapter = categoryAdapter
         bn.togoLayout.menuRv.adapter = goodsCategoryAdapter
         bn.togoLayout.orderRv.adapter = orderAdapter2
+        bn.togoLayout.tableListRv.adapter = tableAdapter3
 
         loadHistory()
         loadTables()
         loadButtons()
+
+//        bn.togoLayout.orderRv.addItemDecoration(DividerItemDecoration(requireContext(),DividerItemDecoration.VERTICAL))
+        val swipeHelper = object :SwipeToDeleteCallback(requireContext()){
+            override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
+                val swipeAdapter = bn.togoLayout.orderRv.adapter as OrderAdapter
+                swipeAdapter.removeAt(viewHolder.adapterPosition)
+                totalSum()
+            }
+
+        }
+        val itemTouchHelper = ItemTouchHelper(swipeHelper)
+        itemTouchHelper.attachToRecyclerView(bn.togoLayout.orderRv)
+
 
         bn.logoutMenu.setOnClickListener {
             presenter.onBackPressed()
@@ -106,7 +126,7 @@ class CashierFragment : BaseFragment(), CashierView, SwipeRefreshLayout.OnRefres
 
         }
         bn.togoMenu.setOnClickListener {
-            
+            tableAdapter3.submitList(tableList)
             presenter.getMenu()
             historyOpened = false
             bn.groupButtons.translationZ = 0f
@@ -116,6 +136,13 @@ class CashierFragment : BaseFragment(), CashierView, SwipeRefreshLayout.OnRefres
             bn.historyLayout.cashierHistoryLayout.visibility = View.GONE
             bn.cashierContainer.visibility = View.GONE
             bn.togoLayout.cashierOwnLayout.visibility = View.VISIBLE
+            bn.togoLayout.togoOrderConstraint.visibility = View.GONE
+        }
+
+        tableAdapter3.setOnClickListener {
+            bn.togoLayout.togoOrderConstraint.visibility = View.VISIBLE
+            bn.togoLayout.tableListRv.visibility = View.GONE
+            bn.togoLayout.tableNumber.text = it.name.toString()
 
         }
 
@@ -378,6 +405,8 @@ class CashierFragment : BaseFragment(), CashierView, SwipeRefreshLayout.OnRefres
     }
 
     override fun submitTables(list: List<TableData>) {
+        tableList.clear()
+        tableList.addAll(list)
         Timber.d(list.size.toString())
         bn.tableProgress.visibility = View.GONE
         bn.swiperefresh.isRefreshing = false
@@ -388,6 +417,8 @@ class CashierFragment : BaseFragment(), CashierView, SwipeRefreshLayout.OnRefres
             bn.btnPay.visibility = View.GONE
         }
     }
+
+
 
     override fun onRefresh() {
         presenter.getTables()
