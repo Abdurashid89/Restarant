@@ -39,6 +39,7 @@ class CashierFragment : BaseFragment(), CashierView, SwipeRefreshLayout.OnRefres
     private val orderAdapter = CashierOrderAdapter()
     private val historyAdapter = CashierHistoryAdapter()
     private val orderList = ArrayList<CashierOrderData>()
+    private val orderList2 = ArrayList<MenuSelect>()
     private val historyList = ArrayList<OrderGetData>()
     private val categoryAdapter = CategoryAdapter()
     private val goodsCategoryAdapter = CategoryItemAdapter()
@@ -46,6 +47,9 @@ class CashierFragment : BaseFragment(), CashierView, SwipeRefreshLayout.OnRefres
     private val tableAdapter3 = CashierTableAdapter3()
 
     private lateinit var progressBar: ProgressBar
+    private var tableId = -1
+    private var isFirst = true
+    private var tableOrderId = -1L
     private var currentText = ""
     private var totalSum = 0.0
     var currentMenu = 0
@@ -57,6 +61,7 @@ class CashierFragment : BaseFragment(), CashierView, SwipeRefreshLayout.OnRefres
 
     @InjectPresenter
     lateinit var presenter: CashierPresenter
+
 
     @ProvidePresenter
     fun providePresenter(): CashierPresenter = scope.getInstance(CashierPresenter::class.java)
@@ -91,7 +96,7 @@ class CashierFragment : BaseFragment(), CashierView, SwipeRefreshLayout.OnRefres
                 orderList.clear()
                 showSnackMessage("This table is empty!!!")
             } else {
-                presenter.loadOrderByTableId(tab.id)
+                presenter.loadOrderByTableId(tab.id,1)
                 bn.tablesLayout.tableNumber.text = tab.id.toString()
             }
         }
@@ -152,15 +157,24 @@ class CashierFragment : BaseFragment(), CashierView, SwipeRefreshLayout.OnRefres
             bn.cashierContainer.visibility = View.GONE
             bn.togoLayout.cashierOwnLayout.visibility = View.VISIBLE
             bn.togoLayout.togoOrderConstraint.visibility = View.GONE
+            bn.togoLayout.tableListRv.visibility = View.VISIBLE
         }
 
         tableAdapter3.setOnClickListener {
             if (it.active){
+                isFirst = true
+                tableId = it.id
+                clearList(false)
                 bn.togoLayout.togoOrderConstraint.visibility = View.VISIBLE
                 bn.togoLayout.tableListRv.visibility = View.GONE
                 bn.togoLayout.tableNumber.text = it.name.toString()
             }else{
-                presenter.loadOrderByTableId(it.id)
+                tableId = it.id
+                presenter.loadOrderByTableId(it.id,2)
+                orderAdapter2.clear()
+                bn.togoLayout.togoOrderConstraint.visibility = View.VISIBLE
+                bn.togoLayout.tableListRv.visibility = View.GONE
+                bn.togoLayout.tableNumber.text = it.name.toString()
             }
 
 
@@ -226,6 +240,51 @@ class CashierFragment : BaseFragment(), CashierView, SwipeRefreshLayout.OnRefres
         orderAdapter2.setOnMinusClickListener {
             orderAdapter2.minus(it)
             presenter.totalSum()
+        }
+
+        bn.togoLayout.btnPrint.setOnClickListener {
+            if (isFirst) {
+                if (orderAdapter2.getAllOrder().isNotEmpty()) {
+                    orderAdapter2.getAllOrder().forEach {
+                        orderList2.add(MenuSelect(it.productCount, it.id))
+                    }
+                    presenter.sendOrder(
+                        OrderSendData(
+                            "Toshkent",
+                            "ON_THE_WAY",
+                            totalSum,
+                            "DELIVERY",
+                            "UN PAID",
+                            tableId,
+                            null,
+                            orderList2,
+                            1
+                        )
+                    )
+                } else {
+                    showSnackMessage("Avval mahsulot tanlang!")
+                }
+            } else {
+                orderList2.clear()
+                if (orderAdapter2.getAllOrder().isNotEmpty()) {
+                    orderAdapter2.getAllOrder().forEach {
+                        orderList2.add(MenuSelect(it.productCount, it.id))
+                    }
+                }
+                presenter.orderUpdate(
+                    OrderUpdateData(
+                        tableOrderId, "Toshkent",
+                        "ON_THE_WAY",
+                        totalSum,
+                        "DELIVERY",
+                        "UN PAID",
+                        tableId,
+                        null,
+                        orderList2,
+                        1
+                    )
+                )
+            }
         }
 
     }
@@ -388,7 +447,7 @@ class CashierFragment : BaseFragment(), CashierView, SwipeRefreshLayout.OnRefres
         }
         tableAdapter.setOnClickListener { tab ->
             if (!tab.active) {
-                presenter.loadOrderByTableId(tab.id)
+                presenter.loadOrderByTableId(tab.id,1)
                 bn.tablesLayout.tableNumber.text = tab.name.toString()
             } else {
                 showSnackMessage("Ma'lumot yo'q")
@@ -416,39 +475,57 @@ class CashierFragment : BaseFragment(), CashierView, SwipeRefreshLayout.OnRefres
     }
 
     @SuppressLint("LogNotTimber")
-    override fun addTableOrder(objectData: OrderGetData) {
-        totalPrice = objectData.orderPrice.formatDouble()
-        Timber.d("${objectData.orderPrice.formatDouble()}")
+    override fun addTableOrder(objectData: OrderGetData, type: Int) {
+        tableOrderId = objectData.id
+        orderAdapter.clear()
+        isFirst = false
+        if (type==1) {
+            totalPrice = objectData.orderPrice.formatDouble()
+            Timber.d("${objectData.orderPrice.formatDouble()}")
 
-        Log.d("OrderByTableId", "$objectData")
+            Log.d("OrderByTableId", "$objectData")
 //        bn.tablesLayout.tableNumber.text = tab.id.toString()
-        bn.tablesLayout.priceCashBack.setText("0")
-        bn.tablesLayout.priceOnCash.setText("0")
-        currentText = ""
-        bn.tablesLayout.totalPrice.text = objectData.orderPrice.formatDouble()
-        orderList.clear()
+            bn.tablesLayout.priceCashBack.setText("0")
+            bn.tablesLayout.priceOnCash.setText("0")
+            currentText = ""
+            bn.tablesLayout.totalPrice.text = objectData.orderPrice.formatDouble()
+            orderList.clear()
 
-        objectData.menuSelection.forEach {
-            orderList.add(
-                CashierOrderData(
-                    it.id,
-                    it.menu.name,
-                    it.count.toDouble(),
-                    it.menu.price.formatDouble(),
-                    (it.count * it.menu.price).formatDouble()
+            objectData.menuSelection.forEach {
+                orderList.add(
+                    CashierOrderData(
+                        it.id,
+                        it.menu.name,
+                        it.count.toDouble(),
+                        it.menu.price.formatDouble(),
+                        (it.count * it.menu.price).formatDouble()
+                    )
                 )
-            )
+            }
+            orderAdapter.submitList(orderList)
+            orderList.clear()
+        }else if (type==2){
+//            tableOrderId = getData.id
+//            isFirst = false
+//            tableOrderSize = getData.menuSelection.size
+            objectData.menuSelection.forEach {
+                orderAdapter2.addProduct(
+                    WaiterOrderData(
+                        it.menu.id, it.menu.name, it.menu.price,
+                        it.count, it.menu.price * it.count
+                    )
+                )
+            }
+            totalSum()
         }
-        orderAdapter.submitList(orderList)
-
-
-
-        orderAdapter.submitList(orderList)
-        orderList.clear()
     }
 
-    override fun showProgress(isShow: Boolean) {
-        bn.tablesLayout.progressBarLoadOrder.visible(isShow)
+    override fun showProgress(isShow: Boolean,type:Int) {
+        if (type==1) {
+            bn.tablesLayout.progressBarLoadOrder.visible(isShow)
+        }else if (type==2){
+            bn.togoLayout.togoOrderProgress.visible(isShow)
+        }
     }
 
     override fun getItemsById(list: List<CategoryItemData>) {
@@ -458,6 +535,16 @@ class CashierFragment : BaseFragment(), CashierView, SwipeRefreshLayout.OnRefres
     override fun getMenu(list: ResData<List<CategoryData>>) {
 //        menuList = list.objectData as ArrayList<CategoryData>
         categoryAdapter.submitList(list.objectData)
+    }
+
+    override fun clearList(type: Boolean) {
+        bn.togoLayout.totalSumTv.text = "0.0"
+        bn.togoLayout.tableNumber.text = "0"
+        orderAdapter2.clear()
+        tableAdapter.notifyDataSetChanged()
+        if (type) {
+            showSnackMessage("Success")
+        }
     }
 
     override fun totalSum() {

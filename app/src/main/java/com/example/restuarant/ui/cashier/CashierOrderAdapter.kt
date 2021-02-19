@@ -60,4 +60,8 @@ class CashierOrderAdapter :
     }
 
     override fun getItemCount() = list.size
+    fun clear() {
+        list.clear()
+        notifyDataSetChanged()
+    }
 }
