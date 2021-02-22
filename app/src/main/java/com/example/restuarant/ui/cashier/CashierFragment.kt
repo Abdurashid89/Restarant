@@ -76,7 +76,7 @@ class CashierFragment : BaseFragment(), CashierView, SwipeRefreshLayout.OnRefres
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         _bn = FragmentCashierBinding.bind(view)
-
+        bn.togoLayout.cashierOwnLayout.visibility = View.GONE
         progressBar = bn.tableProgress
 
         bn.swiperefresh.setOnRefreshListener(this)
@@ -257,6 +257,14 @@ class CashierFragment : BaseFragment(), CashierView, SwipeRefreshLayout.OnRefres
         orderAdapter2.setOnMinusClickListener {
             orderAdapter2.minus(it)
             presenter.totalSum()
+        }
+
+        bn.togoLayout.btnBack.setOnClickListener {
+            if (bn.togoLayout.tableListRv.visibility != View.VISIBLE &&
+                    bn.togoLayout.togoOrderConstraint.visibility != View.GONE) {
+                bn.togoLayout.tableListRv.visibility = View.VISIBLE
+                bn.togoLayout.togoOrderConstraint.visibility = View.GONE
+            }
         }
 
         bn.togoLayout.btnPrint.setOnClickListener {
@@ -592,6 +600,17 @@ class CashierFragment : BaseFragment(), CashierView, SwipeRefreshLayout.OnRefres
 
     override fun allHistory(orderGetData: List<OrderGetData>) {
         historyAdapter.submitList(orderGetData)
+    }
+
+    override fun showTables() {
+        setColorMenu()
+        bn.historyLayout.cashierHistoryLayout.visibility = View.GONE
+        bn.togoLayout.cashierOwnLayout.visibility = View.GONE
+        bn.cashierContainer.visibility = View.VISIBLE
+        currentMenu = 1
+        bn.tableMenu.setBackgroundResource(R.color.teal_1000)
+        presenter.getTables()
+
     }
 
 

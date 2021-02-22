@@ -10,20 +10,4 @@ data class OrderSendData(
     var roomsId: Int?,
     var menuSelectionList: List<MenuSelect>,
     var restaurantId:Int
-
-//    "address":"Toshkent",
-//"orderStatus":"ON_THE_WAY",
-//"orderPrice":550.0,
-//"orderType":"DELIVERY",
-//"PAID":"PAID",
-//"tableId":null,
-//"roomsId":null,
-//"menuSelection":[{
-//    "count":5,
-//    "menu":9
-//}],
-//"restaurantId":1
-) {
-
-
-}
+)

@@ -3,7 +3,6 @@ package com.example.restuarant.di.provider
 import android.content.Context
 import com.example.restuarant.BuildConfig
 import com.example.restuarant.model.storage.Prefs
-import com.google.android.gms.common.ConnectionResult.TIMEOUT
 import com.readystatesoftware.chuck.ChuckInterceptor
 import okhttp3.Cache
 import okhttp3.OkHttpClient
