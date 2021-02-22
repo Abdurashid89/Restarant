@@ -343,3 +343,4 @@ fun Fragment.customDialog(message: String, status: Boolean) {
     dialog.show()
 
 }
+

@@ -8,7 +8,7 @@ plugins {
 android {
     compileSdkVersion 30
     buildToolsVersion "30.0.3"
-    
+
 
     defaultConfig {
         applicationId "com.example.restuarant"
@@ -145,4 +145,9 @@ dependencies {
     // ### fragment animation
     implementation 'com.labo.kaji:fragmentanimations:0.1.1'
 
+    implementation "androidx.swiperefreshlayout:swiperefreshlayout:1.1.0"
+    implementation 'com.google.android.material:material:1.3.0'
+
+    // ### datePicker
+    implementation 'com.wdullaer:materialdatetimepicker:4.2.3'
 }

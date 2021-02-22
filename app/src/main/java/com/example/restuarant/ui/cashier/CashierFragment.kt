@@ -27,15 +27,20 @@ import com.example.restuarant.ui.waiter.adapters.CategoryItemAdapter
 import com.example.restuarant.ui.waiter.adapters.OrderAdapter
 import com.example.restuarant.ui.waiter.callback.SwipeToDeleteCallback
 import com.labo.kaji.fragmentanimations.CubeAnimation
+import com.wdullaer.materialdatetimepicker.date.DatePickerDialog
 import moxy.presenter.InjectPresenter
 import moxy.presenter.ProvidePresenter
 import timber.log.Timber
+import java.util.*
+import kotlin.collections.ArrayList
 
 /**
  * Created by shohboz on 18,Январь,2021
  */
 class CashierFragment : BaseFragment(), CashierView, SwipeRefreshLayout.OnRefreshListener {
     override val layoutRes: Int = R.layout.fragment_cashier
+    var timeMillisecond: Long = 0
+    var firstMillisecond: Long = 0
 
     private var _bn: FragmentCashierBinding? = null
     private val bn get() = _bn ?: throw NullPointerException("error")
@@ -83,7 +88,8 @@ class CashierFragment : BaseFragment(), CashierView, SwipeRefreshLayout.OnRefres
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         _bn = FragmentCashierBinding.bind(view)
-
+//        firstMillisecond = convertDateToLong(Date().time.toString())
+        Log.d("AAA", "${Date().time}")
         progressBar = bn.tableProgress
 
         bn.swiperefresh.setOnRefreshListener(this)
@@ -142,6 +148,16 @@ class CashierFragment : BaseFragment(), CashierView, SwipeRefreshLayout.OnRefres
             else showSnackMessage(getString(R.string.choose_table))
         }
         bn.historyMenu.setOnClickListener {
+            timeMillisecond = Date().time
+            Log.d("CashierFragment", "$timeMillisecond")
+
+            historyAdapter.list.forEach {
+                if (it.orderDateTime.toLong() in firstMillisecond..timeMillisecond) {
+                    historyList.add(it)
+                    Log.d("CashierFragment", it.orderDateTime)
+                }
+            }
+
             //all history loaded
             presenter.loadHistory()
             bn.groupButtons.translationZ = 0f
@@ -310,8 +326,7 @@ class CashierFragment : BaseFragment(), CashierView, SwipeRefreshLayout.OnRefres
             }
         }
 
-
-        bn.historyLayout.tvDay.setOnClickListener {
+        bn.historyLayout.tvToday.setOnClickListener {
             presenter.loadHistory()
         }
 
@@ -319,6 +334,8 @@ class CashierFragment : BaseFragment(), CashierView, SwipeRefreshLayout.OnRefres
 
         }
         bn.historyLayout.tvEndDay.setOnClickListener { }
+        bn.historyLayout.calendar.setOnClickListener { selectDatePicker() }
+
 
         historyAdapter.setOnClickListener {
             Log.d("OrderDetail", "$it")
@@ -331,11 +348,23 @@ class CashierFragment : BaseFragment(), CashierView, SwipeRefreshLayout.OnRefres
             dialog.show()
         }
     }
-//
+//----------------------------------------------------------------------------------------------------------------------------------------------------
+
+
+    private fun selectDatePicker() {
+
+        lateinit var times: Times
+        val dialog = DatePickerDialog.newInstance { _, year, monthOfYear, dayOfMonth ->
+            times = Times("$year", "$monthOfYear", "$dayOfMonth")
+            bn.historyLayout.tvEndDay.text = times.toPattern().toString()
+        }
+        fragmentManager?.let { dialog.show(it, "") }
+    }
 
     override fun onCreateAnimation(transit: Int, enter: Boolean, nextAnim: Int): Animation {
         return CubeAnimation.create(CubeAnimation.DOWN, enter, 1000)
     }
+
 
     private fun loadHistory() {
         for (i in 0 until 10) {
@@ -537,7 +566,7 @@ class CashierFragment : BaseFragment(), CashierView, SwipeRefreshLayout.OnRefres
         isFirst = false
         if (type == 1) {
             totalPrice = objectData.orderPrice.formatDouble()
-            Timber.d("${objectData.orderPrice.formatDouble()}")
+//            Timber.d("${objectData.orderPrice.formatDouble()}")
 
             Log.d("OrderByTableId", "$objectData")
 //        bn.tablesLayout.tableNumber.text = tab.id.toString()
