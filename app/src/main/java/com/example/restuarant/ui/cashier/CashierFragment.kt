@@ -212,7 +212,7 @@ class CashierFragment : BaseFragment(), CashierView, SwipeRefreshLayout.OnRefres
                     Timber.d("$orderId")
                     presenter.sendPay(
                         PaidCheck(
-                            orderId.toLong(),
+                            tableOrderId,
                             paidPrice,
                             cash,
                             "NAQD",
@@ -511,6 +511,7 @@ class CashierFragment : BaseFragment(), CashierView, SwipeRefreshLayout.OnRefres
 
     @SuppressLint("LogNotTimber")
     override fun addTableOrder(objectData: OrderGetData, type: Int) {
+        showMessage("id: ${objectData.id}")
         tableOrderId = objectData.id
         orderAdapter.clear()
         isFirst = false

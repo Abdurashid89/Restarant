@@ -28,7 +28,7 @@ class LoginPresenter @Inject constructor(
     override fun onFirstViewAttach() {
         super.onFirstViewAttach()
         login(LoginData("+998909476154", "123"))
-//        getAllUnPaidOrders()
+        getAllUnPaidOrders()
     }
 
     fun onBackPressed() {
@@ -39,7 +39,7 @@ class LoginPresenter @Inject constructor(
 
         when (string) {
             "1111" -> router.newChain(Screens.Waiter)
-            "2222" -> router.newChain(Screens.CookerPage)
+//            "2222" -> router.newChain(Screens.CookerPage)
             "3333" -> router.newChain(Screens.CashierPage)
             "4444" -> router.newChain(Screens.WarePage)
         }
@@ -64,7 +64,7 @@ class LoginPresenter @Inject constructor(
         val handler = Handler()
         val runnable = object : Runnable {
             override fun run() {
-                handler.postDelayed(this, 100000)
+                handler.postDelayed(this, 10000)
 
                 interactor.unPaid()
                     .subscribe({
