@@ -3,7 +3,6 @@ package com.example.restuarant.presentation.login
 import android.os.Handler
 import com.example.restuarant.Screens
 import com.example.restuarant.extentions.errorResponse
-import com.example.restuarant.extentions.runOnWorkerThread
 import com.example.restuarant.model.entities.LoginData
 import com.example.restuarant.model.entities.UnPaidData
 import com.example.restuarant.model.interactor.LoginInteractor
@@ -11,13 +10,7 @@ import com.example.restuarant.model.storage.Prefs
 import com.example.restuarant.model.storage.dao.UnPaidDao
 import com.example.restuarant.model.system.pull.FlowRouter
 import com.example.restuarant.presentation.global.BasePresenter
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 import moxy.InjectViewState
-import ru.terrakok.cicerone.Router
-import java.util.concurrent.Executors
 import javax.inject.Inject
 
 /**
@@ -34,14 +27,14 @@ class LoginPresenter @Inject constructor(
 
     override fun onFirstViewAttach() {
         super.onFirstViewAttach()
-        login(LoginData("+998909013285", "321"))
-        getAllUnPaidOrders()
+        login(LoginData("+998909476154", "123"))
+//        getAllUnPaidOrders()
     }
 
     fun onBackPressed() {
         router.exit()
     }
-    
+
     fun openScreen(string: String) {
 
         when (string) {
@@ -51,11 +44,6 @@ class LoginPresenter @Inject constructor(
             "4444" -> router.newChain(Screens.WarePage)
         }
     }
-
-    fun signUpPage() {
-        router.newChain(Screens.Signup)
-    }
-
 
     fun login(data: LoginData) {
 //        viewState.makeLoadingVisible(true)
@@ -74,16 +62,13 @@ class LoginPresenter @Inject constructor(
 
     private fun getAllUnPaidOrders() {
         val handler = Handler()
-        val runnable = object : Runnable{
+        val runnable = object : Runnable {
             override fun run() {
-                handler.postDelayed(this,10000)
+                handler.postDelayed(this, 100000)
 
                 interactor.unPaid()
-                    .doOnSubscribe {
-
-                    }.doAfterTerminate {
-
-                    }.subscribe({
+                    .subscribe({
+                        viewState.showMessage("Success unpiad")
                         viewState.ordersFromServer(it.objectData)
                     }, {
                         viewState.showMessage(it.errorResponse())
