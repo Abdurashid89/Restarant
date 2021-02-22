@@ -88,7 +88,7 @@ class CashierFragment : BaseFragment(), CashierView, SwipeRefreshLayout.OnRefres
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         _bn = FragmentCashierBinding.bind(view)
-//        firstMillisecond = convertDateToLong(Date().time.toString())
+        firstMillisecond = convertDateToLong(Date().time.toString())
         Log.d("AAA", "${Date().time}")
         progressBar = bn.tableProgress
 
