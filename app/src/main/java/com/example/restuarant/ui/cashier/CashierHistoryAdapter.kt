@@ -55,10 +55,11 @@ class CashierHistoryAdapter : RecyclerView.Adapter<CashierHistoryAdapter.History
 
             val d = list[adapterPosition]
             binding.apply {
-                numberTable.text = d.id.toString()
+                tvTransaction.text = d.id.toString()
+                numberTable.text = d.table.id.toString()
                 orderPrice.text = d.orderPrice.toString()
                 payType.text = d.orderType
-//                cashBack.text = d.cashBack
+                cashBack.text = d.cashBack.toString()
             }
         }
     }

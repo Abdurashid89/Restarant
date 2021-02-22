@@ -315,10 +315,13 @@ class CashierFragment : BaseFragment(), CashierView, SwipeRefreshLayout.OnRefres
             presenter.loadHistory()
         }
 
-        bn.historyLayout.tvStartDay.setOnClickListener { }
+        bn.historyLayout.tvStartDay.setOnClickListener {
+
+        }
         bn.historyLayout.tvEndDay.setOnClickListener { }
 
         historyAdapter.setOnClickListener {
+            Log.d("OrderDetail", "$it")
             val dialog = CheckDialog(requireContext(), it.cheque, textHtml, utf)
             Timber.d(check!!.html)
             dialog.setOnClickListener {
@@ -589,7 +592,8 @@ class CashierFragment : BaseFragment(), CashierView, SwipeRefreshLayout.OnRefres
 //        menuList = list.objectData as ArrayList<CategoryData>
         categoryAdapter.submitList(list.objectData)
     }
-//
+
+    //
     override fun clearList(type: Boolean) {
         bn.togoLayout.totalSumTv.text = "0.0"
         bn.togoLayout.tableNumber.text = "0"
