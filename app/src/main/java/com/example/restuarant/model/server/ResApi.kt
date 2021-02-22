@@ -75,7 +75,7 @@ interface ResApi {
         @Body data: PaidCheck
     ): Single<CheckData>
 
-    @GET("/api/unPayOrder")
+    @GET("/api/order/unPayOrder/UNPAID")
     fun getOrderUnPaid(): Single<ResData<List<OrderGetData>>>
 
 

@@ -5,7 +5,7 @@ package com.example.restuarant.model.entities
  */
 data class OrderGetData(
     var id:Long,
-    var tableData: Table,
+    var table: Table,
     var feedBackStatus:Int,
     var orderStatus:String,
     var orderType:String,
