@@ -1,30 +1,27 @@
 package com.example.restuarant.ui.cashier
 
-import android.annotation.SuppressLint
-import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.example.restuarant.R
-import com.example.restuarant.databinding.ItemCookerOrderBinding
 import com.example.restuarant.databinding.ItemHistoryChashierBinding
 import com.example.restuarant.extentions.SingleBlock
 import com.example.restuarant.extentions.bindItem
 import com.example.restuarant.model.entities.OrderGetData
-import com.example.restuarant.ui.cashier.check.CookerCheckData
 
 /**
  * Created by Abdurashid on 08,Февраль,2021
  */
 
 class CashierHistoryAdapter : RecyclerView.Adapter<CashierHistoryAdapter.HistoryViewHolder>() {
-    val list = ArrayList<OrderGetData>()
+    private val list = ArrayList<OrderGetData>()
 
     fun submitList(ls: List<OrderGetData>) {
         list.clear()
         list.addAll(ls)
         notifyDataSetChanged()
     }
+
+    fun getAllHistory() = list
 
     var listener: SingleBlock<OrderGetData>? = null
 
@@ -58,7 +55,7 @@ class CashierHistoryAdapter : RecyclerView.Adapter<CashierHistoryAdapter.History
                 tvTransaction.text = d.id.toString()
                 numberTable.text = d.table.id.toString()
                 orderPrice.text = d.orderPrice.toString()
-                payType.text = d.orderType
+                payType.text = d.payType
                 cashBack.text = d.cashBack.toString()
             }
         }

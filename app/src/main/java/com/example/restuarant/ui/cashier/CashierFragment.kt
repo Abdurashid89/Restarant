@@ -6,7 +6,6 @@ import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.view.animation.Animation
-import android.widget.MultiAutoCompleteTextView
 import android.widget.ProgressBar
 import androidx.annotation.RequiresApi
 import androidx.recyclerview.widget.ItemTouchHelper
@@ -40,7 +39,9 @@ import kotlin.collections.ArrayList
 class CashierFragment : BaseFragment(), CashierView, SwipeRefreshLayout.OnRefreshListener {
     override val layoutRes: Int = R.layout.fragment_cashier
     var timeMillisecond: Long = 0
-    var firstMillisecond: Long = 0
+    val calendar = Calendar.getInstance()
+
+    val firstMillisecond: Long = Date().time
 
     private var _bn: FragmentCashierBinding? = null
     private val bn get() = _bn ?: throw NullPointerException("error")
@@ -48,6 +49,7 @@ class CashierFragment : BaseFragment(), CashierView, SwipeRefreshLayout.OnRefres
     // lists
     private val orderList = ArrayList<CashierOrderData>()
     private val historyList = ArrayList<OrderGetData>()
+    private val filterList = ArrayList<OrderGetData>()
     private var tableList = ArrayList<TableData>()
 
     // adapters
@@ -87,9 +89,13 @@ class CashierFragment : BaseFragment(), CashierView, SwipeRefreshLayout.OnRefres
     @SuppressLint("ResourceAsColor", "TimberArgCount")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
         _bn = FragmentCashierBinding.bind(view)
 //        firstMillisecond = convertDateToLong(Date().time.toString())
-        Log.d("AAA", "${Date().time}")
+
+        bn.historyLayout.tvEndDay.text = formatDate()
+        bn.historyLayout.tvStartDay.text = formatDate()
+
         progressBar = bn.tableProgress
 
         bn.swiperefresh.setOnRefreshListener(this)
@@ -104,8 +110,7 @@ class CashierFragment : BaseFragment(), CashierView, SwipeRefreshLayout.OnRefres
         bn.togoLayout.orderRv.adapter = orderAdapter2
         bn.togoLayout.tableListRv.adapter = tableAdapter3
 
-        bn.historyLayout.historySearch.setTokenizer(MultiAutoCompleteTextView.CommaTokenizer())
-        bn.historyLayout.historySearch.threshold = 2
+
 
         loadHistory()
         loadTables()
@@ -148,14 +153,13 @@ class CashierFragment : BaseFragment(), CashierView, SwipeRefreshLayout.OnRefres
             else showSnackMessage(getString(R.string.choose_table))
         }
         bn.historyMenu.setOnClickListener {
-            timeMillisecond = Date().time
-            Log.d("CashierFragment", "$timeMillisecond")
+            historyAdapter.getAllHistory().forEach {
+                historyList.add(it)
 
-            historyAdapter.list.forEach {
-                if (it.orderDateTime.toLong() in firstMillisecond..timeMillisecond) {
+                /*if (it.orderDateTime.toLong() in firstMillisecond..timeMillisecond) {
                     historyList.add(it)
                     Log.d("CashierFragment", it.orderDateTime)
-                }
+                }*/
             }
 
             //all history loaded
@@ -171,7 +175,7 @@ class CashierFragment : BaseFragment(), CashierView, SwipeRefreshLayout.OnRefres
             bn.togoLayout.cashierOwnLayout.visibility = View.GONE
             Timber.d("historyListSize:${historyList.size}")
             Timber.d("historyAdapterListSize:${historyAdapter.itemCount}")
-
+            filterList.clear()
         }
         bn.togoMenu.setOnClickListener {
             tableAdapter3.submitList(tableList)
@@ -333,14 +337,56 @@ class CashierFragment : BaseFragment(), CashierView, SwipeRefreshLayout.OnRefres
         bn.historyLayout.tvStartDay.setOnClickListener {
 
         }
-        bn.historyLayout.tvEndDay.setOnClickListener { }
+/*        bn.historyLayout.historySearch.addTextChangedListener(CustomWatcher(object : ITextWatcher {
+            override fun onTextChanged(text: String) {
+                Log.d("search", text)
+
+                for (i in 0 until historyList.size) {
+
+                    if (text.contains(historyAdapter.getAllHistory()[i].table.id.toString())) {
+                        filterList.add(historyAdapter.getAllHistory()[i])
+                    } else {
+                        Log.d("search", "no equals ids -> $text ${historyList[i].table.id}")
+                    }
+                }
+
+                historyAdapter.submitList(filterList)
+                bn.historyLayout.listHistoryCashier.adapter = historyAdapter
+            }
+        }))*/
+
+        bn.historyLayout.historySearch.addTextChangedListener(CustomWatcher(object : ITextWatcher {
+            override fun onTextChanged(text: String) {
+                Log.d("BBB", historyList.size.toString())
+
+                if (text.isNotEmpty()) {
+                    historyList.forEach {
+                        if (text.contains(it.table.id.toString())) {
+                            filterList.add(it)
+                            Log.d("BBB", "$text ${it.table.id}")
+                        }
+                    }
+
+                } else {
+                    filterList.clear()
+                    presenter.loadHistory()
+//                    historyAdapter.submitList(historyList)
+                }
+                historyAdapter.submitList(filterList)
+            }
+        }))
+
+        bn.historyLayout.tvEndDay.setOnClickListener {  }
         bn.historyLayout.calendar.setOnClickListener { selectDatePicker() }
+
+        bn.historyLayout.tvStartDay.text = "${calendar.get(Calendar.YEAR)}"
+        bn.historyLayout.tvEndDay.text = convertLongToTime(Date().time)
+
 
 
         historyAdapter.setOnClickListener {
             Log.d("OrderDetail", "$it")
             val dialog = CheckDialog(requireContext(), it.cheque, textHtml, utf)
-            Timber.d(check!!.html)
             dialog.setOnClickListener {
                 dialog._bn = null
                 dialog.dismiss()
@@ -641,6 +687,7 @@ class CashierFragment : BaseFragment(), CashierView, SwipeRefreshLayout.OnRefres
     }
 
     override fun allHistory(orderGetData: List<OrderGetData>) {
+        historyList.addAll(orderGetData)
         historyAdapter.submitList(orderGetData)
     }
 

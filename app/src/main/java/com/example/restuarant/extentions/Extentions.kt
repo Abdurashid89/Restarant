@@ -139,7 +139,7 @@ fun String.toEditable(): Editable = Editable.Factory.getInstance().newEditable(t
 
 fun convertLongToTime(time: Long): String {
     val date = Date(time)
-    val format = SimpleDateFormat("yyyy.MM.dd")
+    val format = SimpleDateFormat("yyyy.MM.dd  hh:mm")
     return format.format(date)
 }
 
@@ -342,5 +342,19 @@ fun Fragment.customDialog(message: String, status: Boolean) {
     val dialog = ResponseStatusDialog(requireContext(), message, status)
     dialog.show()
 
+}
+
+fun getCurrentDateTime(): Date {
+    return Calendar.getInstance().time
+}
+
+fun formatDate(): String {
+    return getCurrentDateTime().toString("yyyy-MM-dd")
+}
+
+
+fun Date.toString(format: String, locale: Locale = Locale.US): String {
+    val formatter = SimpleDateFormat(format, locale)
+    return formatter.format(this)
 }
 
