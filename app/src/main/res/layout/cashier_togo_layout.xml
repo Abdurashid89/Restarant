@@ -22,7 +22,7 @@
             android:layout_marginBottom="5dp"
             android:background="@drawable/black_line"
             android:padding="5dp"
-            android:visibility="gone"
+            android:visibility="visible"
             app:layout_constraintWidth_percent="0.9">
 
             <LinearLayout
@@ -167,18 +167,37 @@
                         android:textStyle="bold" />
                 </LinearLayout>
 
-                <Button
-                    android:id="@+id/btn_print"
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="60dp"
-                    android:layout_marginTop="10dp"
-                    android:layout_marginRight="60dp"
-                    android:layout_marginBottom="12dp"
-                    android:background="@drawable/cashier_btn_bgn"
-                    android:text="Print"
-                    android:textColor="@color/white"
-                    android:textSize="16sp" />
+                    android:gravity="center"
+                    android:orientation="horizontal"
+                    android:padding="20dp">
+
+                    <Button
+                        android:id="@+id/btn_back"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="10dp"
+                        android:layout_weight="1"
+                        android:background="@drawable/cashier_btn_bgn"
+                        android:text="Back"
+                        android:textColor="@color/white"
+                        android:textSize="16sp" />
+
+                    <Button
+                        android:id="@+id/btn_print"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="10dp"
+                        android:layout_weight="1"
+                        android:background="@drawable/cashier_btn_bgn"
+                        android:text="Send"
+                        android:textColor="@color/white"
+                        android:textSize="16sp" />
+
+                </LinearLayout>
+
             </LinearLayout>
 
         </androidx.constraintlayout.widget.ConstraintLayout>
@@ -188,6 +207,7 @@
             android:id="@+id/table_list_rv"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:visibility="gone"
             app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
             app:spanCount="4"
             tools:listitem="@layout/desk_item" />

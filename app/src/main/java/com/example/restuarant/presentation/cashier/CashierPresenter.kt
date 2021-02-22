@@ -144,6 +144,7 @@ class CashierPresenter @Inject constructor(
             }
             .subscribe({
                 viewState.clearList(true)
+                viewState.showTables()
             },{
                 viewState.openErrorDialog(it.errorResponse(),false)
             })
@@ -160,6 +161,7 @@ class CashierPresenter @Inject constructor(
             }
             .subscribe({
                 viewState.clearList(true)
+                viewState.showTables()
                 viewState.showMessage("Order Updated")
             },{
 //                viewState.openErrorDialog(it.errorResponse(),false)

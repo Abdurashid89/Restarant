@@ -51,7 +51,7 @@ class CashierTableAdapter3: RecyclerView.Adapter<CashierTableAdapter3.CashierTab
         @SuppressLint("Range", "ResourceAsColor")
         fun bind() = bindItem {
             val d = tableList[adapterPosition]
-            binding.tableText.text = tableList[adapterPosition].id.toString()
+            binding.tableText.text = tableList[adapterPosition].name.toString()
             binding.linearTable.setBackgroundResource(if (!d.active) R.color.red else R.color.green)
         }
     }
