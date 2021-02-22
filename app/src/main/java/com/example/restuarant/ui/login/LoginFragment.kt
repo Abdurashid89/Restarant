@@ -25,7 +25,6 @@ class LoginFragment : BaseFragment(), LoginView {
     private val bn get() = _bn ?: throw NullPointerException("error")
 
 
-    private val unPaidList = ArrayList<OrderGetData>()
     private val unPaidListOld = ArrayList<OrderGetData>()
 
     @InjectPresenter
@@ -119,7 +118,7 @@ class LoginFragment : BaseFragment(), LoginView {
     private fun createPdf(list: List<OrderGetData>) {
         var isNew = true
         if(unPaidListOld.isEmpty()){
-            unPaidList.addAll(list)
+            unPaidListOld.addAll(list)
             val ls = ArrayList<CookerCheckData>()
             list.forEach { order ->
                 customLog(order.menuSelection.size.toString())
@@ -136,6 +135,8 @@ class LoginFragment : BaseFragment(), LoginView {
                         isNew = false
                         if(it.updateAt != list[i].updateAt){
                             showMessage("updated: ${list[i]}")
+
+                            //logika
                         }
                     }
                 }
