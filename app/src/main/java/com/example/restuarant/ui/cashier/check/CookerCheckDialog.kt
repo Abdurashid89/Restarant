@@ -12,24 +12,23 @@ import timber.log.Timber
  * Created by Shohboz Qoraboyev on 19,Февраль,2021
  */
 
-class CookerCheckDialog(context: Context, uri:Uri) :
+class CookerCheckDialog(context: Context, tableId: Int, list:List<CookerCheckData>) :
     AlertDialog(context) {
 
     var _bn: ItemCookerBinding? = null
     private val bn get() = _bn ?: throw NullPointerException("error")
+    val adapter = CookerCheckAdapter()
 
 
     init {
         _bn = ItemCookerBinding.inflate(LayoutInflater.from(context), null, false)
         setView(_bn!!.root)
 
-        bn.pdfWiew.fromUri(uri).defaultPage(0)
-            .spacing(30)
-            .onRender { _, _, _ -> bn.pdfWiew.fitToWidth() }
-            .onLoad { bn.pdfWiew.zoomTo(bn.pdfWiew.width.toFloat()/bn.pdfWiew.optimalPageWidth)
-            bn.pdfWiew.moveTo(0f,0f)}
-            .load()
-        bn.uri.text = uri.toString()
+        bn.tableNumber.text = tableId.toString()
+        adapter.submitList(list)
+        bn.rv.adapter = adapter
+        bn.group.setOnClickListener { dismiss() }
+
 
     }
 

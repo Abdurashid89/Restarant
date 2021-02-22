@@ -35,7 +35,7 @@ class LoginPresenter @Inject constructor(
     override fun onFirstViewAttach() {
         super.onFirstViewAttach()
         login(LoginData("+998909013285", "321"))
-//        getAllUnPaidOrders()
+        getAllUnPaidOrders()
     }
 
     fun onBackPressed() {
@@ -76,7 +76,7 @@ class LoginPresenter @Inject constructor(
         val handler = Handler()
         val runnable = object : Runnable{
             override fun run() {
-                handler.postDelayed(this,5000)
+                handler.postDelayed(this,10000)
 
                 interactor.unPaid()
                     .doOnSubscribe {
