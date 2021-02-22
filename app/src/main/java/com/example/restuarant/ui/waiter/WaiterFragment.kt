@@ -3,6 +3,7 @@ package com.example.restuarant.ui.waiter
 import android.annotation.SuppressLint
 import android.app.AlertDialog
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import androidx.recyclerview.widget.DividerItemDecoration
@@ -51,7 +52,6 @@ class WaiterFragment : BaseFragment(), WaiterView {
     private var totalSum = 0.0
     private var btnId: Int = 1
     private var isFirst = true
-    private var tableOrderSize = -1
 
     @InjectPresenter
     lateinit var presenter: WaiterPresenter
@@ -154,6 +154,7 @@ class WaiterFragment : BaseFragment(), WaiterView {
 
         bn.btnPrint.setOnClickListener {
             if (isFirst) {
+                orderList.clear()
                 if (orderAdapter.getAllOrder().isNotEmpty()) {
                     orderAdapter.getAllOrder().forEach {
                         orderList.add(MenuSelect(it.productCount, it.id))
@@ -312,6 +313,7 @@ class WaiterFragment : BaseFragment(), WaiterView {
         bn.totalSumTv.text = "0.0"
         bn.tableNumber.text = "0"
         orderAdapter.clear()
+        orderList.clear()
         tableAdapter.notifyDataSetChanged()
         if (type) {
             showSnackMessage("Success")
@@ -320,9 +322,9 @@ class WaiterFragment : BaseFragment(), WaiterView {
     }
 
     override fun getOrderInfo(getData: OrderGetData) {
+        Log.e("SSS","${getData.menuSelection}")
         tableOrderId = getData.id
         isFirst = false
-        tableOrderSize = getData.menuSelection.size
         getData.menuSelection.forEach {
             orderAdapter.addProduct(
                 WaiterOrderData(

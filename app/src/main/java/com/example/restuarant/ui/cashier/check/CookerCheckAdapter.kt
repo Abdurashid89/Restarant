@@ -17,14 +17,7 @@ import com.example.restuarant.ui.cashier.CashierHistoryAdapter
  * Created by Shohboz Qoraboyev on 19,Февраль,2021
  */
 
-class CookerCheckAdapter : RecyclerView.Adapter<CookerCheckAdapter.HistoryViewHolder>() {
-    val list = ArrayList<CookerCheckData>()
-
-    fun submitList(ls: List<CookerCheckData>) {
-        list.clear()
-        list.addAll(ls)
-        notifyDataSetChanged()
-    }
+class CookerCheckAdapter : ListAdapter<CookerCheckData,CookerCheckAdapter.HistoryViewHolder>(CookerCheckData.ITEM_CALLBACK) {
 
     var listener: SingleBlock<CookerCheckData>? = null
 
@@ -41,19 +34,18 @@ class CookerCheckAdapter : RecyclerView.Adapter<CookerCheckAdapter.HistoryViewHo
 
     override fun onBindViewHolder(holder: HistoryViewHolder, position: Int) = holder.bind()
 
-    override fun getItemCount() = list.size
 
     inner class HistoryViewHolder(val binding: ItemCookerOrderBinding) :
         RecyclerView.ViewHolder(binding.root) {
 
         init {
             itemView.setOnClickListener {
-                listener?.invoke(list[adapterPosition])
+                listener?.invoke(getItem(adapterPosition))
             }
         }
 
         fun bind() = bindItem {
-            val d = list[adapterPosition]
+            val d = getItem(adapterPosition)
             binding.apply {
               mealName.text = d.name
               plusMinus.text = d.latest

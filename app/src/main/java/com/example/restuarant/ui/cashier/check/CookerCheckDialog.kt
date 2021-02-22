@@ -12,7 +12,7 @@ import timber.log.Timber
  * Created by Shohboz Qoraboyev on 19,Февраль,2021
  */
 
-class CookerCheckDialog(context: Context, tableId: Int, list:List<CookerCheckData>) :
+class CookerCheckDialog(context: Context, tableId: Long, list:List<CookerCheckData>) :
     AlertDialog(context) {
 
     var _bn: ItemCookerBinding? = null
@@ -24,11 +24,15 @@ class CookerCheckDialog(context: Context, tableId: Int, list:List<CookerCheckDat
         _bn = ItemCookerBinding.inflate(LayoutInflater.from(context), null, false)
         setView(_bn!!.root)
 
-        bn.tableNumber.text = tableId.toString()
-        adapter.submitList(list)
         bn.rv.adapter = adapter
-        bn.group.setOnClickListener { dismiss() }
+        adapter.submitList(list)
 
+        bn.tableNumber.text = tableId.toString()
+
+        bn.group.setOnClickListener {
+            dismiss()
+            _bn = null
+        }
 
     }
 
