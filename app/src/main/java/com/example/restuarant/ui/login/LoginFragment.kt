@@ -1,9 +1,12 @@
 package com.example.restuarant.ui.login
 
+import android.os.Build
 import android.os.Bundle
 import android.view.View
+import androidx.annotation.RequiresApi
 import com.example.restuarant.R
 import com.example.restuarant.databinding.PinLockViewBinding
+import com.example.restuarant.extentions.customLog
 import com.example.restuarant.extentions.showSnackMessage
 import com.example.restuarant.extentions.visible
 import com.example.restuarant.model.entities.OrderGetData
@@ -14,7 +17,6 @@ import com.example.restuarant.ui.cashier.check.CookerCheckDialog
 import com.example.restuarant.ui.global.BaseFragment
 import moxy.presenter.InjectPresenter
 import moxy.presenter.ProvidePresenter
-import kotlin.collections.ArrayList
 
 class LoginFragment : BaseFragment(), LoginView {
     override val layoutRes: Int = R.layout.pin_lock_view
@@ -106,32 +108,52 @@ class LoginFragment : BaseFragment(), LoginView {
 
 
         }
-        val ls = ArrayList<CookerCheckData>()
-        ls.add(CookerCheckData("palov", "+3"))
-        ls.add(CookerCheckData("somsa", "-3"))
-        ls.add(CookerCheckData("manti", "7"))
-        ls.add(CookerCheckData("cola", "1"))
-        CookerCheckDialog(requireContext(),5,ls).show()
-//        createPdf(ls)
     }
 
+    @RequiresApi(Build.VERSION_CODES.N)
     override fun ordersFromServer(list: List<OrderGetData>) {
-        if (unPaidListOld.isEmpty()) {
-            unPaidListOld.addAll(list)
-//            createPdf(list)
-        } else {
-
-        }
-        unPaidList.addAll(list)
+        createPdf(list)
     }
 
-    //    private fun createPdf(list: List<OrderGetData>) {
+    @RequiresApi(Build.VERSION_CODES.N)
+    private fun createPdf(list: List<OrderGetData>) {
+        var isNew = true
+        if(unPaidListOld.isEmpty()){
+            unPaidList.addAll(list)
+            val ls = ArrayList<CookerCheckData>()
+            list.forEach { order ->
+                customLog(order.menuSelection.size.toString())
+                ls.clear()
+                order.menuSelection.forEach { menu ->
+                    ls.add(CookerCheckData(menu.menu.name, menu.count.toString()))
+                }
+                createDialog(order.table.id, ls)
+        }
+        }else{
+            for(i in list.indices){
+                unPaidListOld.forEach {
+                    if(it.id == list[i].id){
+                        isNew = false
+                        if(it.updateAt != list[i].updateAt){
+                            showMessage("updated: ${list[i]}")
+                        }
+                    }
+                }
+                if(isNew){
+                    val ls = ArrayList<CookerCheckData>()
+                    list[i].menuSelection.forEach {
+                        ls.add(CookerCheckData(it.menu.name,it.count.toString()))
+                    }
+                    createDialog(list[i].table.id,ls)
+                }
+            }
+        }
 //        list.forEach {
 //            val mDoc = Document()
 //            val mFileName = SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault()).format(System.currentTimeMillis())
 //            val mFilePath = Environment.getExternalStorageDirectory().toString() + "/" + mFileName + ".pdf"
 //            try {
-//                PdfWriter.getInstance(mDoc,FileOutputStream(mFilePath))
+//                PdfWriter.getInstance(mDoc, FileOutputStream(mFilePath))
 //                mDoc.open()
 //                mDoc.addAuthor("Table No ${it.id}")
 //                it.menuSelection.forEach {menu->
@@ -143,9 +165,16 @@ class LoginFragment : BaseFragment(), LoginView {
 //                t.message?.let { it1 -> showSnackMessage(it1) }
 //            }
 //            val uri = File(mFilePath).toUri()
-//            CookerCheckDialog(requireContext(),uri).show()
+////            CookerCheckDialog(requireContext()).show()
 //        }
-//    }
+    }
+
+    private fun createDialog(id: Long, ls: ArrayList<CookerCheckData>){
+        val dialog = CookerCheckDialog(requireContext(),id,ls)
+        dialog.show()
+
+
+    }
 //    private fun createPdf(list: List<OrderGetData>) {
 ////        checkPermission(Manifest.permission.READ_EXTERNAL_STORAGE) {
 ////            checkPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE) {
