@@ -691,6 +691,10 @@ class CashierFragment : BaseFragment(), CashierView, SwipeRefreshLayout.OnRefres
         historyAdapter.submitList(orderGetData)
     }
 
+    override fun showTables() {
+
+    }
+
     override fun onBackPressed() {
         presenter.onBackPressed()
     }
