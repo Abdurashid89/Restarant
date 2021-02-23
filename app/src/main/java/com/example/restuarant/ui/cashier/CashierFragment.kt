@@ -92,7 +92,7 @@ class CashierFragment : BaseFragment(), CashierView, SwipeRefreshLayout.OnRefres
 
         _bn = FragmentCashierBinding.bind(view)
 //        firstMillisecond = convertDateToLong(Date().time.toString())
-
+//
         bn.historyLayout.tvEndDay.text = formatDate()
         bn.historyLayout.tvStartDay.text = formatDate()
 
