@@ -36,12 +36,13 @@ import kotlin.collections.ArrayList
 /**
  * Created by shohboz on 18,Январь,2021
  */
-class CashierFragment : BaseFragment(), CashierView, SwipeRefreshLayout.OnRefreshListener {
+class CashierFragment : BaseFragment(), CashierView, SwipeRefreshLayout.OnRefreshListener,
+    ITextWatcher {
     override val layoutRes: Int = R.layout.fragment_cashier
     var timeMillisecond: Long = 0
     val calendar = Calendar.getInstance()
 
-    val firstMillisecond: Long = Date().time
+    var firstMillisecond: Long = Date().time
 
     private var _bn: FragmentCashierBinding? = null
     private val bn get() = _bn ?: throw NullPointerException("error")
@@ -355,28 +356,9 @@ class CashierFragment : BaseFragment(), CashierView, SwipeRefreshLayout.OnRefres
             }
         }))*/
 
-        bn.historyLayout.historySearch.addTextChangedListener(CustomWatcher(object : ITextWatcher {
-            override fun onTextChanged(text: String) {
-                Log.d("BBB", historyList.size.toString())
+        bn.historyLayout.historySearch.addTextChangedListener(CustomWatcher(this))
 
-                if (text.isNotEmpty()) {
-                    historyList.forEach {
-                        if (text.contains(it.table.id.toString())) {
-                            filterList.add(it)
-                            Log.d("BBB", "$text ${it.table.id}")
-                        }
-                    }
-
-                } else {
-                    filterList.clear()
-                    presenter.loadHistory()
-//                    historyAdapter.submitList(historyList)
-                }
-                historyAdapter.submitList(filterList)
-            }
-        }))
-
-        bn.historyLayout.tvEndDay.setOnClickListener {  }
+        bn.historyLayout.tvEndDay.setOnClickListener { }
         bn.historyLayout.calendar.setOnClickListener { selectDatePicker() }
 
         bn.historyLayout.tvStartDay.text = "${calendar.get(Calendar.YEAR)}"
@@ -757,5 +739,9 @@ class CashierFragment : BaseFragment(), CashierView, SwipeRefreshLayout.OnRefres
         const val textHtml = "text/html"
         const val utf = "UTF-8"
 
+    }
+
+    override fun onTextChanged(text: String) {
+        historyAdapter.onSearch(text)
     }
 }
