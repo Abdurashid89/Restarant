@@ -6,6 +6,6 @@ data class ProductData(
     val sold: Boolean,
     val incomePrice: Double,
     val sellPrice: Double,
-    val presentCount: Int,
-    val minCount: Int
+    val presentCount: Double,
+    val minCount: Double
 )

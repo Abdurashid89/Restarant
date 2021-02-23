@@ -1,6 +1,7 @@
 package com.example.restuarant.model.entities
 
 import androidx.recyclerview.widget.DiffUtil
+import java.sql.Timestamp
 
 data class GetResponseData<T>(
     var objectDate: T,
@@ -16,7 +17,7 @@ data class ProductInData(
     var incomePrice: Double,
     var sellPrice: Double,
     var presentCount: Double,
-    var minCount: Double,
+    var minCount: Double
 ) {
     companion object {
         val ITEM_CALLBACK = object : DiffUtil.ItemCallback<ProductInData>() {

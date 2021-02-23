@@ -84,7 +84,7 @@ class CreateProductDialogFragment : MvpAppCompatDialogFragment(), AddProductView
 
             presenterNew.addNewProduct(
                 ProductData(
-                    name, type, sell, 0.0, 0.0, 0, 0
+                    name, type, sell, 0.0, 0.0, 0.0, 0.0
                 )
             )
 

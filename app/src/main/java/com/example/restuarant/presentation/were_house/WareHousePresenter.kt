@@ -52,7 +52,7 @@ class WareHousePresenter @Inject constructor(
     }
 
 
-    fun getAllProduct() {
+    private fun getAllProduct() {
         productInteractor.getAllProduct()
             .doOnSubscribe {
 

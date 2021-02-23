@@ -36,7 +36,6 @@ class WareHouseFragment() : BaseFragment(), WareHouseView, SwipeRefreshLayout.On
         super.onViewCreated(view, savedInstanceState)
         _bn = FragmentWareHouseBinding.bind(view)
         layoutManager = LinearLayoutManager(requireContext())
-        loadAdapter()
         binding.productRv.layoutManager = layoutManager
         binding.productRv.adapter = adapter
 
@@ -71,25 +70,6 @@ class WareHouseFragment() : BaseFragment(), WareHouseView, SwipeRefreshLayout.On
         CreateProductDialogFragment().show(childFragmentManager, "tag")
     }
 
-
-    private fun loadAdapter() {
-
-        itemList = ArrayList()
-//        itemList.add(ProductInData(0, "aaaaa", 100.0, 100.0, 100, "go'sht"))
-//        itemList.add(ProductInData(1, "aaaaa", 100.0, 100.0, 100, "saryog'"))
-//        itemList.add(ProductInData(2, "aaaaa", 100.0, 100.0, 100, "non"))
-//        itemList.add(ProductInData(3, "aaaaa", 100.0, 100.0, 100, "suv"))
-//        itemList.add(ProductInData(4, "aaaaa", 100.0, 100.0, 100, "kartoshka"))
-//        itemList.add(ProductInData(5, "aaaaa", 100.0, 100.0, 100, "sabzi"))
-//        itemList.add(ProductInData(6, "aaaaa", 100.0, 100.0, 100, "piyoz"))
-//        itemList.add(ProductInData(7, "aaaaa", 100.0, 100.0, 100, "sholg'om"))
-//        itemList.add(ProductInData(8, "aaaaa", 100.0, 100.0, 100, "gorox"))
-//        itemList.add(ProductInData(9, "aaaaa", 100.0, 100.0, 100, "mosh"))
-//        itemList.add(ProductInData(10, "aaaaa", 100.0, 100.0, 100, "guruch"))
-//        itemList.add(ProductInData(11, "aaaaa", 100.0, 100.0, 100, "loviya"))
-//        itemList.add(ProductInData(12, "aaaaa", 100.0, 100.0, 100, "tovuq go'shti"))
-//
-    }
 
     override fun showMessage(message: String) {
         showSnackMessage(message)

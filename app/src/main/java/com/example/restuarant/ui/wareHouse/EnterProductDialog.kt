@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.animation.AnimationUtils
 import com.example.restuarant.R
 import com.example.restuarant.databinding.ItemProductBinding
 import com.example.restuarant.di.DI
@@ -57,18 +58,11 @@ class EnterProductDialog(var inputOrOutput: Boolean) : MvpAppCompatDialogFragmen
         //
         binding.tv.text = if (inputOrOutput) "Input Product" else "Output Product"
         binding.productRv.adapter = adapter
-
+        binding.productRv.visibility = View.GONE
         adapter.setOnClickListener {
             binding.inputProductName.setText(it.name)
-            binding.productRv.visibility = View.GONE
             adapter.submitList(null)
             productId = it.id
-
-            if (it.sold) {
-                binding.inputProductSellPrice.visibility = View.VISIBLE
-            } else {
-                binding.inputProductSellPrice.visibility = View.GONE
-            }
 
             when (it.type) {
                 Constants.kg -> {
@@ -81,6 +75,12 @@ class EnterProductDialog(var inputOrOutput: Boolean) : MvpAppCompatDialogFragmen
                     binding.productType.text = Constants.liter
                 }
             }
+            if (it.sold) {
+                binding.inputProductSellPrice.visibility = View.VISIBLE
+            } else {
+                binding.inputProductSellPrice.visibility = View.GONE
+            }
+
 
         }
 
@@ -104,58 +104,44 @@ class EnterProductDialog(var inputOrOutput: Boolean) : MvpAppCompatDialogFragmen
         })
 
         binding.btnAdd.setOnClickListener {
-//            showSnackMessage("clicked")
             val name = binding.inputProductName.text.toString().trim()
             val weight = binding.inputProductWeight.text.toString().trim()
             val inComePrice = binding.inputProductInComePrice.text.toString().trim()
             val sellPrice = binding.inputProductSellPrice.text.toString()
-            presenterNew.inputOrOutput(
-                inputOrOutput,
-                ProductInData(
-                    productId,
-                    "KG",
-                    false,
-                    name,
-                    inComePrice.toDouble(),
-                    sellPrice.toDouble(),
-                    weight.toDouble(),
-                    10.0
-                )
-            )
-//            showSnackMessage("send")
-//            when {
-//                name.isEmpty() -> {
-//                    binding.inputProductName.startAnimation(
-//                        AnimationUtils.loadAnimation(
-//                            requireContext(),
-//                            R.anim.shake
-//                        )
-//                    )
-//                    vibrate(requireContext())
-//                    return@setOnClickListener
-//                }
-//                weight.isEmpty() -> {
-//                    binding.inputProductWeight.startAnimation(
-//                        AnimationUtils.loadAnimation(
-//                            requireContext(),
-//                            R.anim.shake
-//                        )
-//                    )
-//                    vibrate(requireContext())
-//                    return@setOnClickListener
-//                }
-//
-//                inComePrice.isEmpty() -> {
-//                    binding.inputProductInComePrice.startAnimation(
-//                        AnimationUtils.loadAnimation(
-//                            requireContext(),
-//                            R.anim.shake
-//                        )
-//                    )
-//                    vibrate(requireContext())
-//                    return@setOnClickListener
-//                }
-//
+
+            when {
+                name.isEmpty() -> {
+                    binding.inputProductName.startAnimation(
+                        AnimationUtils.loadAnimation(
+                            requireContext(),
+                            R.anim.shake
+                        )
+                    )
+                    vibrate(requireContext())
+                    return@setOnClickListener
+                }
+                weight.isEmpty() -> {
+                    binding.inputProductWeight.startAnimation(
+                        AnimationUtils.loadAnimation(
+                            requireContext(),
+                            R.anim.shake
+                        )
+                    )
+                    vibrate(requireContext())
+                    return@setOnClickListener
+                }
+
+                inComePrice.isEmpty() -> {
+                    binding.inputProductInComePrice.startAnimation(
+                        AnimationUtils.loadAnimation(
+                            requireContext(),
+                            R.anim.shake
+                        )
+                    )
+                    vibrate(requireContext())
+                    return@setOnClickListener
+                }
+
 //                sellPrice.isEmpty() -> {
 //                    binding.inputProductSellPrice.startAnimation(
 //                        AnimationUtils.loadAnimation(
@@ -166,24 +152,24 @@ class EnterProductDialog(var inputOrOutput: Boolean) : MvpAppCompatDialogFragmen
 //                    vibrate(requireContext())
 //                    return@setOnClickListener
 //                }
-//                else -> {
-//                    presenterNew.inputOrOutput(
-//                        inputOrOutput,
-//                        ProductInData(
-//                            productId,
-//                            "KG",
-//                            false,
-//                            name,
-//                            inComePrice.toDouble(),
-//                            sellPrice.toDouble(),
-//                            weight.toDouble(),
-//                            100.0
-//                        )
-//                    )
-//                    showSnackMessage("send")
-//                }
-//
-//            }
+                else -> {
+                    presenterNew.inputOrOutput(
+                        inputOrOutput,
+                        ProductInData(
+                            productId,
+                            "KG",
+                            false,
+                            name,
+                            inComePrice.toDouble(),
+                            sellPrice.toDouble(),
+                            weight.toDouble(),
+                            10.0
+                        )
+                    )
+                    showSnackMessage("send")
+                }
+
+            }
         }
 
         binding.btnDismiss.setOnClickListener {
