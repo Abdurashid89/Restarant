@@ -1,11 +1,10 @@
 package com.example.restuarant.presentation.cashier
 
 import android.annotation.SuppressLint
-import com.example.restuarant.di.DI
 import com.example.restuarant.extentions.errorResponse
-import com.example.restuarant.model.entities.check.PaidCheck
 import com.example.restuarant.model.entities.OrderSendData
 import com.example.restuarant.model.entities.OrderUpdateData
+import com.example.restuarant.model.entities.check.PaidCheck
 import com.example.restuarant.model.interactor.CashierInteractor
 import com.example.restuarant.model.interactor.WaiterInteractor
 import com.example.restuarant.model.storage.Prefs
@@ -60,7 +59,7 @@ class CashierPresenter @Inject constructor(
         router.exit()
     }
 
-    fun loadOrderByTableId(id: Int,type:Int) {
+    fun loadOrderByTableId(id: Int, type: Int) {
         interactor.loadOrderById(id)
             .doOnSubscribe {
                 viewState.showProgress(true, type)
@@ -69,7 +68,7 @@ class CashierPresenter @Inject constructor(
                 viewState.showProgress(false, type)
             }
             .subscribe({
-                viewState.addTableOrder(it.objectData,type)
+                viewState.addTableOrder(it.objectData, type)
             }, {
                 viewState.openErrorDialog(it.errorResponse(), false)
             }).connect()
@@ -117,6 +116,7 @@ class CashierPresenter @Inject constructor(
                 viewState.showProgress(false, 1)
             }.subscribe({
                 viewState.showMessage(it.message)
+                getTables()
             }, {
                 viewState.showMessage(it.errorResponse())
             }).connect()
@@ -134,36 +134,36 @@ class CashierPresenter @Inject constructor(
     }
 
     @SuppressLint("CheckResult")
-    fun sendOrder(data: OrderSendData){
+    fun sendOrder(data: OrderSendData) {
         interactorWaiter.sendOrder(data)
             .doOnSubscribe {
-                viewState.showProgress(true,2)
+                viewState.showProgress(true, 2)
             }
             .doAfterTerminate {
-                viewState.showProgress(false,2)
+                viewState.showProgress(false, 2)
             }
             .subscribe({
                 viewState.clearList(true)
                 viewState.showTables()
-            },{
-                viewState.openErrorDialog(it.errorResponse(),false)
+            }, {
+                viewState.openErrorDialog(it.errorResponse(), false)
             })
     }
 
     @SuppressLint("CheckResult")
-    fun orderUpdate(data: OrderUpdateData){
+    fun orderUpdate(data: OrderUpdateData) {
         interactorWaiter.orderUpdate(data)
             .doOnSubscribe {
-                viewState.showProgress(true,2)
+                viewState.showProgress(true, 2)
             }
             .doAfterTerminate {
-                viewState.showProgress(false,2)
+                viewState.showProgress(false, 2)
             }
             .subscribe({
                 viewState.clearList(true)
                 viewState.showTables()
                 viewState.showMessage("Order Updated")
-            },{
+            }, {
 //                viewState.openErrorDialog(it.errorResponse(),false)
                 viewState.showMessage(it.errorResponse())
             })

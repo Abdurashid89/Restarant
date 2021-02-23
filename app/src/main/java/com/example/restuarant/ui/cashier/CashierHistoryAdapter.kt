@@ -20,13 +20,15 @@ class CashierHistoryAdapter : RecyclerView.Adapter<CashierHistoryAdapter.History
     private val list = ArrayList<OrderGetData>()
     var search: ITextWatcher
 
-    init{
+    init {
         search = Search(this, list)
     }
 
     fun submitList(ls: List<OrderGetData>) {
         list.clear()
         list.addAll(ls)
+        search = Search(this, list)
+
         notifyDataSetChanged()
     }
 
@@ -53,12 +55,13 @@ class CashierHistoryAdapter : RecyclerView.Adapter<CashierHistoryAdapter.History
 
     override fun getItemCount() = list.size
 
-    fun updateUsers(searchedUser: ArrayList<OrderGetData>) {
+    fun updateOrders(searchedUser: ArrayList<OrderGetData>) {
         val callBack = OrderCallBack(searchedUser, list)
         val result = DiffUtil.calculateDiff(callBack)
         list.clear()
         list.addAll(searchedUser)
         result.dispatchUpdatesTo(this)
+        notifyDataSetChanged()
     }
 
     inner class HistoryViewHolder(val binding: ItemHistoryChashierBinding) :

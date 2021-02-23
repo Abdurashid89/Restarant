@@ -11,7 +11,7 @@ class Search(
 ) : ITextWatcher {
     private var contents: ArrayList<OrderGetData> = ArrayList()
     private fun publishData(searchedUser: ArrayList<OrderGetData>) {
-        adapter.updateUsers(searchedUser)
+        adapter.updateOrders(searchedUser)
     }
 
     override fun onTextChanged(text: String) {
@@ -20,7 +20,7 @@ class Search(
         } else {
             val searchedUser = ArrayList<OrderGetData>()
             for (data in contents) {
-                if (data.table.id.toString().contains(text)) {
+                if (data.table.id.toString().contains(text) || data.id.toString().contains(text)) {
                     searchedUser.add(data)
                 }
             }

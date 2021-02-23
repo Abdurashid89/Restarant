@@ -27,6 +27,7 @@ import com.example.restuarant.ui.waiter.adapters.OrderAdapter
 import com.example.restuarant.ui.waiter.callback.SwipeToDeleteCallback
 import com.labo.kaji.fragmentanimations.CubeAnimation
 import com.wdullaer.materialdatetimepicker.date.DatePickerDialog
+import com.wdullaer.materialdatetimepicker.time.TimePickerDialog
 import moxy.presenter.InjectPresenter
 import moxy.presenter.ProvidePresenter
 import timber.log.Timber
@@ -39,10 +40,11 @@ import kotlin.collections.ArrayList
 class CashierFragment : BaseFragment(), CashierView, SwipeRefreshLayout.OnRefreshListener,
     ITextWatcher {
     override val layoutRes: Int = R.layout.fragment_cashier
-    var timeMillisecond: Long = 0
     val calendar = Calendar.getInstance()
 
-    var firstMillisecond: Long = Date().time
+    //    lateinit var times: Times
+    var firstMillisecond: Long = 0
+    var lastTimeMillisecond: Long = 0
 
     private var _bn: FragmentCashierBinding? = null
     private val bn get() = _bn ?: throw NullPointerException("error")
@@ -111,9 +113,8 @@ class CashierFragment : BaseFragment(), CashierView, SwipeRefreshLayout.OnRefres
         bn.togoLayout.orderRv.adapter = orderAdapter2
         bn.togoLayout.tableListRv.adapter = tableAdapter3
 
+        Log.d("millisecond", firstTimeMillisecond.toString())
 
-
-        loadHistory()
         loadTables()
         loadButtons()
         tableAdapter.setOnClickListener { tab ->
@@ -154,13 +155,10 @@ class CashierFragment : BaseFragment(), CashierView, SwipeRefreshLayout.OnRefres
             else showSnackMessage(getString(R.string.choose_table))
         }
         bn.historyMenu.setOnClickListener {
+            bn.historyLayout.tvEndDay.text = convertLongToTime(Date().time)
             historyAdapter.getAllHistory().forEach {
                 historyList.add(it)
 
-                /*if (it.orderDateTime.toLong() in firstMillisecond..timeMillisecond) {
-                    historyList.add(it)
-                    Log.d("CashierFragment", it.orderDateTime)
-                }*/
             }
 
             //all history loaded
@@ -176,8 +174,9 @@ class CashierFragment : BaseFragment(), CashierView, SwipeRefreshLayout.OnRefres
             bn.togoLayout.cashierOwnLayout.visibility = View.GONE
             Timber.d("historyListSize:${historyList.size}")
             Timber.d("historyAdapterListSize:${historyAdapter.itemCount}")
-            filterList.clear()
+//            filterList.clear()
         }
+
         bn.togoMenu.setOnClickListener {
             tableAdapter3.submitList(tableList)
             presenter.getMenu()
@@ -246,6 +245,8 @@ class CashierFragment : BaseFragment(), CashierView, SwipeRefreshLayout.OnRefres
                             createCheck()
                         )
                     )
+                    bn.tablesLayout.totalPrice.text = ""
+                    bn.tablesLayout.priceOnCash.setText("")
                 }
             }
 
@@ -335,33 +336,15 @@ class CashierFragment : BaseFragment(), CashierView, SwipeRefreshLayout.OnRefres
             presenter.loadHistory()
         }
 
-        bn.historyLayout.tvStartDay.setOnClickListener {
-
-        }
-/*        bn.historyLayout.historySearch.addTextChangedListener(CustomWatcher(object : ITextWatcher {
-            override fun onTextChanged(text: String) {
-                Log.d("search", text)
-
-                for (i in 0 until historyList.size) {
-
-                    if (text.contains(historyAdapter.getAllHistory()[i].table.id.toString())) {
-                        filterList.add(historyAdapter.getAllHistory()[i])
-                    } else {
-                        Log.d("search", "no equals ids -> $text ${historyList[i].table.id}")
-                    }
-                }
-
-                historyAdapter.submitList(filterList)
-                bn.historyLayout.listHistoryCashier.adapter = historyAdapter
-            }
-        }))*/
+        bn.historyLayout.tvStartDay.text = convertLongToTime(firstTimeMillisecond)
+//        bn.historyLayout.tvEndDay.text = "${times.toPattern()}"
 
         bn.historyLayout.historySearch.addTextChangedListener(CustomWatcher(this))
 
-        bn.historyLayout.tvEndDay.setOnClickListener { }
-        bn.historyLayout.calendar.setOnClickListener { selectDatePicker() }
+        bn.historyLayout.calendar.setOnClickListener { openEndDateDialog() }
 
-        bn.historyLayout.tvStartDay.text = "${calendar.get(Calendar.YEAR)}"
+        bn.historyLayout.tvStartDay.text = "${convertLongToTime(firstTimeMillisecond)}"
+        bn.historyLayout.tvStartDay.setOnClickListener { openStartDateDialog() }
         bn.historyLayout.tvEndDay.text = convertLongToTime(Date().time)
 
 
@@ -378,34 +361,89 @@ class CashierFragment : BaseFragment(), CashierView, SwipeRefreshLayout.OnRefres
     }
 //----------------------------------------------------------------------------------------------------------------------------------------------------
 
+    fun getFilterableOrder(firstTime: Long, lastTime: Long) {
 
-    private fun selectDatePicker() {
 
-        lateinit var times: Times
-        val dialog = DatePickerDialog.newInstance { _, year, monthOfYear, dayOfMonth ->
-            times = Times("$year", "$monthOfYear", "$dayOfMonth")
-            bn.historyLayout.tvEndDay.text = times.toPattern().toString()
+        if (firstTime > 0 && lastTime > 0) {
+            historyList.forEach {
+                val date =
+                    it.createdAt.replace("T", ".").replace("-", ".").substring(0, 16)
+                Log.d("CashierFragment -> ", "$date")
+                Log.d("CashierFragment --> ", "${convertDateToLong(date)}")
+                val createdOrderTime = convertDateToLong(date)
+                if (createdOrderTime in firstTime..lastTime) {
+                    filterList.add(it)
+                    Log.d("CashierFragment", "${historyList.size}")
+                    historyAdapter.updateOrders(filterList)
+                }
+            }
+
+            firstMillisecond = 0
+            lastTimeMillisecond = 0
         }
-        fragmentManager?.let { dialog.show(it, "") }
+        Log.d("CashierFragment", "${historyList.size}")
     }
+
+    fun openStartDateDialog() {
+        val dialog = DatePickerDialog.newInstance { view, year, monthOfYear, dayOfMonth ->
+            fragmentManager?.let {
+                TimePickerDialog.newInstance({ view, hourOfDay, minute, second ->
+                    val time = Times(
+                        "$year",
+                        "$monthOfYear",
+                        "$dayOfMonth",
+                        "$hourOfDay",
+                        "$minute",
+                        "$second"
+                    )
+                    bn.historyLayout.tvStartDay.text = time.toPattern().toString()
+                    calendar.set(time.year.toInt(), time.month.toInt(), time.day.toInt())
+
+                    getFilterableOrder(convertDateToLong(time.toPattern().toString()), lastTime = 0)
+                }, true)
+
+                    .show(it, "tag")
+            }
+
+        }
+        dialog.maxDate = Calendar.getInstance()
+        fragmentManager?.let { dialog.show(it, "date") }
+
+    }
+
+
+    fun openEndDateDialog() {
+        val dialog = DatePickerDialog.newInstance { view, year, monthOfYear, dayOfMonth ->
+            fragmentManager?.let {
+                TimePickerDialog.newInstance({ view, hourOfDay, minute, second ->
+                    val time = Times(
+                        "$year",
+                        "$monthOfYear",
+                        "$dayOfMonth",
+                        "$hourOfDay",
+                        "$minute",
+                        "$second"
+                    )
+                    bn.historyLayout.tvEndDay.text = time.toPattern().toString()
+
+                    calendar.set(time.year.toInt(), time.month.toInt(), time.day.toInt())
+                    getFilterableOrder(firstTime = 0, convertDateToLong(time.toPattern().toString()))
+
+                                             }, true)
+
+                    .show(it, "tag")
+            }
+
+        }
+        dialog.maxDate = Calendar.getInstance()
+        fragmentManager?.let { dialog.show(it, "date") }
+    }
+
 
     override fun onCreateAnimation(transit: Int, enter: Boolean, nextAnim: Int): Animation {
         return CubeAnimation.create(CubeAnimation.DOWN, enter, 1000)
     }
 
-
-    private fun loadHistory() {
-        for (i in 0 until 10) {
-            /*historyList.add(
-                OrderGetData(
-                    i.toLong(), Table(1), 0,
-                    "0", "more", check!!.html, "created att",
-                    100.0, 200.0, "Date Time", "NAQD", 10.0, "PAID", listOf(), "update att"
-                )
-            )*/
-        }
-        Timber.d("loadedHistoryListSize:${historyList.size}")
-    }
 
     private fun setColorMenu() {
         when (currentMenu) {
@@ -671,6 +709,11 @@ class CashierFragment : BaseFragment(), CashierView, SwipeRefreshLayout.OnRefres
     override fun allHistory(orderGetData: List<OrderGetData>) {
         historyList.addAll(orderGetData)
         historyAdapter.submitList(orderGetData)
+        orderGetData.forEach {
+
+        }
+
+
     }
 
     override fun showTables() {
@@ -738,10 +781,12 @@ class CashierFragment : BaseFragment(), CashierView, SwipeRefreshLayout.OnRefres
     companion object {
         const val textHtml = "text/html"
         const val utf = "UTF-8"
+        val firstTimeMillisecond: Long = currentTimeToLong()
 
     }
 
     override fun onTextChanged(text: String) {
         historyAdapter.onSearch(text)
+        Log.d("onTextChanged", text)
     }
 }

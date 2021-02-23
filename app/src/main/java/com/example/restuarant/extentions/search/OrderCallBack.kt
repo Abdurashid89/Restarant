@@ -15,7 +15,7 @@ class OrderCallBack(
     override fun areItemsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
         val (_, table) = oldList[oldItemPosition]
         val (_, table1) = newList[newItemPosition]
-        return table.id == table1.id
+        return table.id  == table1.id
     }
 
     override fun areContentsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {

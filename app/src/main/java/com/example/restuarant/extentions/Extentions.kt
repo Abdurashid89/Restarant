@@ -55,12 +55,12 @@ import java.util.*
 import java.util.concurrent.Executors
 
 fun ArrayList<TableData>.sortTable(): ArrayList<TableData> {
-    for (i in 0 until this.size) {
+    for (i in 0 until this.size - 1) {
         for (j in i + 1 until this.size - 1) {
-            if (this[j].id < this[i].id) {
-                val temp = this[i]
-                this[i] = this[j]
-                this[j] = temp
+            if (this[j].name < this[i].name) {
+                val temp = this[j]
+                this[j] = this[i]
+                this[i] = temp
             }
         }
     }
@@ -148,7 +148,7 @@ fun currentTimeToLong(): Long {
 }
 
 fun convertDateToLong(date: String): Long {
-    val df = SimpleDateFormat("yyyy.MM.dd")
+    val df = SimpleDateFormat("yyyy.MM.dd.hh:mm")
     return df.parse(date).time
 }
 
