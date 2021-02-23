@@ -35,7 +35,7 @@ class WaiterFragment : BaseFragment(), WaiterView {
     private var _bn: FragmentWaiterBinding? = null
     private val bn get() = _bn ?: throw NullPointerException("error")
 
-    // ## list ##
+    // ## lists ##
     private var menuList = ArrayList<CategoryData>()
     private var orderList = ArrayList<MenuSelect>()
 
@@ -45,7 +45,7 @@ class WaiterFragment : BaseFragment(), WaiterView {
     private var tableAdapter = TableAdapter()
     private var orderAdapter = OrderAdapter()
 
-    // ## variable ##
+    // ## variables ##
     private var shimmer = Shimmer()
     private var tableOrderId = -1L
     private var tableId = -1
@@ -322,7 +322,7 @@ class WaiterFragment : BaseFragment(), WaiterView {
     }
 
     override fun getOrderInfo(getData: OrderGetData) {
-        Log.e("SSS","${getData.menuSelection}")
+        Log.e("SSS", "${getData.menuSelection}")
         tableOrderId = getData.id
         isFirst = false
         getData.menuSelection.forEach {
