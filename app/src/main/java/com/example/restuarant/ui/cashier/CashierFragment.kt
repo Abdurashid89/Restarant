@@ -101,7 +101,7 @@ class CashierFragment : BaseFragment(), CashierView, SwipeRefreshLayout.OnRefres
         bn.historyLayout.tvStartDay.text = formatDate()
 
         progressBar = bn.tableProgress
-
+//
         bn.swiperefresh.setOnRefreshListener(this)
 
         bn.tableMenu.setBackgroundResource(R.color.teal_1000)
