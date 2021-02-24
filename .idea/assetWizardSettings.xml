@@ -11,12 +11,26 @@
                   <entry key="vectorAssetStep">
                     <value>
                       <PersistentState>
+                        <option name="children">
+                          <map>
+                            <entry key="clipartAsset">
+                              <value>
+                                <PersistentState>
+                                  <option name="values">
+                                    <map>
+                                      <entry key="url" value="file:/$USER_HOME$/AppData/Local/Android/Sdk/icons/material/materialicons/delete/baseline_delete_24.xml" />
+                                    </map>
+                                  </option>
+                                </PersistentState>
+                              </value>
+                            </entry>
+                          </map>
+                        </option>
                         <option name="values">
                           <map>
-                            <entry key="assetSourceType" value="FILE" />
-                            <entry key="color" value="030303" />
-                            <entry key="outputName" value="ic_dish" />
-                            <entry key="sourceFile" value="$USER_HOME$/Загрузки/dish.svg" />
+                            <entry key="color" value="ffffff" />
+                            <entry key="outputName" value="ic_baseline_delete_24" />
+                            <entry key="sourceFile" value="C:\Users\Elyor\AndroidStudioProjects\Restuarant" />
                           </map>
                         </option>
                       </PersistentState>

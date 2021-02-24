@@ -312,6 +312,9 @@ fun Throwable.errorResponse(): String {
                 401 -> {
                     "Foydalanuvchi ro'yhatdan o'tmagan"
                 }
+                405 -> {
+                    "Server umuman ishlamayapti"
+                }
                 in 500..600 -> {
                     "Server error"
                 }

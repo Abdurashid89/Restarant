@@ -23,37 +23,61 @@ class EnterProductPresenter @Inject constructor(
 
     override fun onFirstViewAttach() {
         super.onFirstViewAttach()
-//        getProduct()
+        getProduct()
     }
 
-//    @SuppressLint("CheckResult")
-//    fun purchaseProduct(data: ReqPurchaseData) {
-//        interactor.productPurchase(data)
-//            .doOnSubscribe {
-//                viewState.makeLoadingVisible(true)
-//            }
-//            .doAfterTerminate {
-//                viewState.makeLoadingVisible(false)
-//            }.subscribe({
-//                viewState.showMessage("Product Successfully added")
-//                viewState.clearAllOldData()
-//            }, {
-//                viewState.showMessage(it.errorResponse())
-//            }).connect()
-//    }
-//
-//    fun getProduct() {
-//        interactor.getAllProduct()
-//            .doOnSubscribe {
-//
-//            }.doAfterTerminate {
-//
-//            }.subscribe({
-//                viewState.listProducts(it.objectDate)
-//                viewState.showMessage(it.objectDate.size.toString())
-//            }, {
-//                viewState.showMessage(it.errorResponse())
-//            }).connect()
-//    }
+    @SuppressLint("CheckResult")
+    fun inputProduct(data: ProductInData) {
+        interactor.inputProduct(data)
+            .doOnSubscribe {
+                viewState.makeLoadingVisible(true)
+            }
+            .doAfterTerminate {
+                viewState.makeLoadingVisible(false)
+            }.subscribe({
+                viewState.showMessage("Product Successfully added")
+                viewState.clearAllOldData()
+            }, {
+                viewState.showMessage(it.errorResponse())
+            }).connect()
+    }
 
+
+    @SuppressLint("CheckResult")
+    fun outputProduct(data: ProductInData) {
+        interactor.outputProduct(data)
+            .doOnSubscribe {
+                viewState.makeLoadingVisible(true)
+            }
+            .doAfterTerminate {
+                viewState.makeLoadingVisible(false)
+            }.subscribe({
+                viewState.showMessage("Product Successfully minus")
+                viewState.clearAllOldData()
+            }, {
+                viewState.showMessage(it.errorResponse())
+            }).connect()
+    }
+
+    fun inputOrOutput(inputOrOutput: Boolean, data: ProductInData) {
+        if (inputOrOutput) {
+            inputProduct(data)
+        } else {
+            outputProduct(data)
+        }
+    }
+
+    fun getProduct() {
+        interactor.getAllProduct()
+            .doOnSubscribe {
+
+            }.doAfterTerminate {
+
+            }.subscribe({
+                viewState.listProducts(it.objectDate)
+                viewState.showMessage(it.objectDate.size.toString())
+            }, {
+                viewState.showMessage(it.toString())
+            }).connect()
+    }
 }

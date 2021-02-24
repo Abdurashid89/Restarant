@@ -16,36 +16,30 @@ interface ResApi {
     @POST("/api/auth/login")
     fun login(@Body data: LoginData): Single<LoginResData>
 
-
     @POST("/api/auth/register")
     fun register(@Body data: RegisterData): Single<LoginResData>
 
     @POST("/api/product")
     fun addProduct(@Body data: ProductData): Single<MessageData>
 
+    @POST("/api/product")
+    fun inputProduct(@Body data: ProductInData): Single<MessageData>
+
+    @POST("/api/product/output")
+    fun outputProduct(@Body data: ProductInData): Single<MessageData>
+
     @GET("/api/product/productName")
     fun productExistOrNot(@Query("name") name: String): Single<MessageDataWithoutMessageType>
-
-//    @GET("/api/category")
-//    fun getAllCategory(
-//        @Query("page") page: Int,
-//        @Query("size") size: Int,
-//        @Query("search") search: String
-//    ): Single<GetResponseData<List<CategoryInData>>>
-//
-//    @GET("/api/categoryProduct/getAll")
-//    fun getCategorySearch(
-//        @Query("name") name: String
-//    ): Single<List<CategoryInData>>
-//
-//    @GET("/api/brand/getAll")
-//    fun getBrandSearch(
-//        @Query("name") name: String
-//    ): Single<List<BrandInData>>
 
     @GET("/api/product/search")
     fun getAllProduct(
     ): Single<GetResponseData<List<ProductInData>>>
+
+    @GET("/api/product/inputHistory")
+    fun productInputHistory(): Single<List<ProductData>>
+
+    @GET("/api/product/outputHistory")
+    fun productOutputHistory(): Single<List<ProductData>>
 
     @GET("/api/table")
     fun getAllTable(): Single<ResData<List<TableData>>>

@@ -14,24 +14,36 @@ import com.example.restuarant.model.entities.ProductInData
  * Created by Davronbek on 10,Февраль,2021
  */
 class EnterProductAdapter :
-    ListAdapter<ProductInData, EnterProductAdapter.VH>(ProductInData.ITEM_CALLBACK) {
-    var listener: SingleBlock<ProductInData>? = null
-
+    RecyclerView.Adapter<EnterProductAdapter.VH>() {
+    private var listener: SingleBlock<ProductInData>? = null
+    private var list = ArrayList<ProductInData>()
     fun setOnClickListener(block: SingleBlock<ProductInData>) {
         listener = block
+    }
+
+    fun clear() {
+        list.clear()
+        notifyDataSetChanged()
+    }
+
+    fun submitList(ls: List<ProductInData>) {
+        list.clear()
+        list.addAll(ls)
+        notifyDataSetChanged()
     }
 
     inner class VH(val binding: ItemEnterProductBinding) : RecyclerView.ViewHolder(binding.root) {
         init {
             itemView.setOnClickListener {
-                listener?.invoke(currentList[adapterPosition])
+                listener?.invoke(list[adapterPosition])
             }
         }
 
         fun bind() = bindItem {
-            val d = currentList[adapterPosition]
+            val d = list[adapterPosition]
             binding.apply {
                 productName.text = d.name
+
             }
         }
     }
@@ -43,4 +55,6 @@ class EnterProductAdapter :
     )
 
     override fun onBindViewHolder(holder: VH, position: Int) = holder.bind()
+
+    override fun getItemCount(): Int = list.size
 }

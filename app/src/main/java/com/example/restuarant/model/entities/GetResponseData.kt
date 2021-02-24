@@ -1,6 +1,7 @@
 package com.example.restuarant.model.entities
 
 import androidx.recyclerview.widget.DiffUtil
+import java.sql.Timestamp
 
 data class GetResponseData<T>(
     var objectDate: T,
@@ -9,17 +10,19 @@ data class GetResponseData<T>(
 )
 
 data class ProductInData(
-    var productId: Int = 0,
+    var id: Int,
+    var type: String,
+    var sold: Boolean,
     var name: String,
     var incomePrice: Double,
     var sellPrice: Double,
-    var count: Int,
-    var minCount: Int,
+    var presentCount: Double,
+    var minCount: Double
 ) {
     companion object {
         val ITEM_CALLBACK = object : DiffUtil.ItemCallback<ProductInData>() {
             override fun areItemsTheSame(oldItem: ProductInData, newItem: ProductInData): Boolean =
-                oldItem.productId == newItem.productId
+                oldItem.id == newItem.id
 
             override fun areContentsTheSame(
                 oldItem: ProductInData,
