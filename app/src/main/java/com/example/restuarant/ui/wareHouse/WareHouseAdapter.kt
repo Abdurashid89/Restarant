@@ -7,7 +7,6 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.restuarant.databinding.ItemWareHouseBinding
 import com.example.restuarant.extentions.SingleBlock
 import com.example.restuarant.extentions.bindItem
-import com.example.restuarant.model.entities.ProductData
 import com.example.restuarant.model.entities.ProductInData
 
 class WareHouseAdapter :
@@ -35,9 +34,10 @@ class WareHouseAdapter :
         fun bind() = bindItem {
             val d = currentList[adapterPosition]
             binding.apply {
-                productId.text = d.productId.toString()
+                productId.text = d.id.toString()
                 productName.text = d.name
-                productWeight.text = d.count.toString()
+                productWeight.text = d.presentCount.toString()
+                productUnit.text = d.type
             }
         }
     }

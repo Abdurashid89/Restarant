@@ -23,7 +23,7 @@ import moxy.presenter.ProvidePresenter
 import toothpick.Toothpick
 import java.lang.NullPointerException
 
-class WareHouseDialogFragment : MvpAppCompatDialogFragment(), AddProductView {
+class CreateProductDialogFragment : MvpAppCompatDialogFragment(), AddProductView {
     private var _bn: AddNewProductBinding? = null
     private val bn get() = _bn ?: throw NullPointerException("error")
     private var listener: SingleBlock<ProductData>? = null
@@ -84,7 +84,7 @@ class WareHouseDialogFragment : MvpAppCompatDialogFragment(), AddProductView {
 
             presenterNew.addNewProduct(
                 ProductData(
-                   id, name, type, sell
+                    name, type, sell, 0.0, 0.0, 0.0, 0.0
                 )
             )
 
@@ -119,10 +119,6 @@ class WareHouseDialogFragment : MvpAppCompatDialogFragment(), AddProductView {
 
     override fun openDialog(message: String, status: Boolean) {
         bn.inputProductName.setText("")
-//        bn.inputProductWeight.setText("")
-//        bn.inputProductInComePrice.setText("")
-//        bn.inputProductSellPrice.setText("")
-//        bn.tvTotalPrice.text = ""
     }
 
     override fun errorOrNull(str: String) {
