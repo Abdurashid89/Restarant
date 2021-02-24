@@ -135,8 +135,16 @@ class LoginFragment : BaseFragment(), LoginView {
                         isNew = false
                         if(it.updateAt != list[i].updateAt){
                             showMessage("updated: ${list[i]}")
+                            if (list[i].menuSelection.isEmpty()){
+                                val ls2 = ArrayList<CookerCheckData>()
+                                it.menuSelection.forEach {
+                                    ls2.add(CookerCheckData(it.menu.name,"-${it.count}"))
+                                }
+                            }else if (it.menuSelection.size>list[i].menuSelection.size){
 
-                            //logika
+                            }else if (it.menuSelection.size<list[i].menuSelection.size){
+
+                            }
                         }
                     }
                 }

@@ -3,7 +3,6 @@ package com.example.restuarant.ui.waiter
 import android.annotation.SuppressLint
 import android.app.AlertDialog
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import androidx.recyclerview.widget.DividerItemDecoration
@@ -102,6 +101,7 @@ class WaiterFragment : BaseFragment(), WaiterView {
             presenter.changeColor()
             btnId = 1
             presenter.showTables()
+            bn.orderText.visibility = View.VISIBLE
             bn.tablesBtn.setBackgroundResource(R.color.teal_1000)
         }
 
@@ -140,6 +140,7 @@ class WaiterFragment : BaseFragment(), WaiterView {
                 bn.orderBtn.setBackgroundResource(R.color.teal_1000)
                 bn.tableNumber.text = it.name.toString()
             } else {
+                bn.orderText.visibility = View.GONE
                 orderAdapter.clear()
                 presenter.orderGetData(it.id)
                 presenter.showMenu()
@@ -213,6 +214,7 @@ class WaiterFragment : BaseFragment(), WaiterView {
         }
 
         goodsCategoryAdapter.setOnClickListener {
+            bn.orderText.visibility = View.GONE
             if (bn.tableNumber.text != "0") {
                 val waiterOrderData = WaiterOrderData(it.id, it.name, it.price, 1, it.price)
                 if (orderAdapter.getAllOrder().isEmpty()) {
@@ -298,6 +300,9 @@ class WaiterFragment : BaseFragment(), WaiterView {
         Timber.d(orderAdapter.itemCount.toString())
         orderAdapter.getAllOrder().forEach { totalSum += it.productTotalPrice }
         bn.totalSumTv.text = totalSum.formatDouble()
+        if (totalSum < 1) {
+            bn.orderText.visibility = View.VISIBLE
+        }
         totalSum = 0.0
     }
 
@@ -312,6 +317,7 @@ class WaiterFragment : BaseFragment(), WaiterView {
     override fun clearList(type: Boolean) {
         bn.totalSumTv.text = "0.0"
         bn.tableNumber.text = "0"
+        bn.orderText.visibility = View.VISIBLE
         orderAdapter.clear()
         orderList.clear()
         tableAdapter.notifyDataSetChanged()
@@ -322,7 +328,6 @@ class WaiterFragment : BaseFragment(), WaiterView {
     }
 
     override fun getOrderInfo(getData: OrderGetData) {
-        Log.e("SSS", "${getData.menuSelection}")
         tableOrderId = getData.id
         isFirst = false
         getData.menuSelection.forEach {
