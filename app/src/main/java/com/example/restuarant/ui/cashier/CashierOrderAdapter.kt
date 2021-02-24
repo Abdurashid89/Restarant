@@ -2,7 +2,6 @@ package com.example.restuarant.ui.cashier
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.example.restuarant.databinding.ItemOrderCashierBinding
 import com.example.restuarant.extentions.SingleBlock
@@ -13,12 +12,22 @@ import com.example.restuarant.model.entities.CashierOrderData
  * Created by shohboz on 21,Январь,2021
  */
 class CashierOrderAdapter :
-    ListAdapter<CashierOrderData, CashierOrderAdapter.VHolder>(CashierOrderData.ITEMCALLBACK) {
+    RecyclerView.Adapter<CashierOrderAdapter.VHolder>() {
+
+    private val list = ArrayList<CashierOrderData>()
+
+    val getOrderList get() = list
+
 
     var listener: SingleBlock<CashierOrderData>? = null
 
     fun setOnClickListener(block: SingleBlock<CashierOrderData>) {
         listener = block
+    }
+
+    fun submitList(orderList: ArrayList<CashierOrderData>) {
+        list.clear()
+        list.addAll(orderList)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) = VHolder(
@@ -34,13 +43,13 @@ class CashierOrderAdapter :
 
         init {
             itemView.setOnClickListener {
-                listener?.invoke(currentList[adapterPosition])
+                listener?.invoke(list[adapterPosition])
             }
         }
 
         fun bind() = bindItem {
 
-            val d = currentList[adapterPosition]
+            val d = list[adapterPosition]
             binding.apply {
                 mealName.text = d.mealName
                 mealPrice.text = d.price.toString()
@@ -48,5 +57,11 @@ class CashierOrderAdapter :
                 total.text = d.total
             }
         }
+    }
+
+    override fun getItemCount() = list.size
+    fun clear() {
+        list.clear()
+        notifyDataSetChanged()
     }
 }

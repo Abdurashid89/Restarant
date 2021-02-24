@@ -90,8 +90,6 @@ class OrderAdapter : RecyclerView.Adapter<OrderAdapter.Vh>() {
                 (d.productPrice * d.productCount)
             notifyItemChanged(index)
         } else {
-//            list.removeAt(index)
-//            notifyItemRemoved(index)
             removeAt(index)
         }
     }
@@ -110,6 +108,7 @@ class OrderAdapter : RecyclerView.Adapter<OrderAdapter.Vh>() {
 
     fun clear() {
         list.clear()
+        notifyDataSetChanged()
     }
 
 

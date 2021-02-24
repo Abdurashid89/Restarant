@@ -3,6 +3,7 @@ package com.example.restuarant.ui.waiter
 import android.annotation.SuppressLint
 import android.app.AlertDialog
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import androidx.recyclerview.widget.DividerItemDecoration
@@ -51,7 +52,6 @@ class WaiterFragment : BaseFragment(), WaiterView {
     private var totalSum = 0.0
     private var btnId: Int = 1
     private var isFirst = true
-    private var tableOrderSize = -1
 
     @InjectPresenter
     lateinit var presenter: WaiterPresenter
@@ -65,8 +65,7 @@ class WaiterFragment : BaseFragment(), WaiterView {
         _bn = FragmentWaiterBinding.bind(view)
         shimmer.setRepeatCount(4)
             .setDuration(1000)
-            .setStartDelay(1000)
-            .setDirection(Shimmer.ANIMATION_DIRECTION_LTR)
+            .setStartDelay(1000).direction = Shimmer.ANIMATION_DIRECTION_LTR
         shimmer.start(bn.waiterName)
 
         // ## adapters ##
@@ -95,7 +94,7 @@ class WaiterFragment : BaseFragment(), WaiterView {
         val itemTouchHelper = ItemTouchHelper(swipeHelper)
         itemTouchHelper.attachToRecyclerView(bn.orderRv)
 
-        bn.tablesBtn.setBackgroundResource(R.color.red)
+        bn.tablesBtn.setBackgroundResource(R.color.teal_1000)
 
         bn.tablesBtn.setOnClickListener {
             clearList(false)
@@ -103,7 +102,7 @@ class WaiterFragment : BaseFragment(), WaiterView {
             presenter.changeColor()
             btnId = 1
             presenter.showTables()
-            bn.tablesBtn.setBackgroundResource(R.color.red)
+            bn.tablesBtn.setBackgroundResource(R.color.teal_1000)
         }
 
         bn.orderBtn.setOnClickListener {
@@ -112,20 +111,20 @@ class WaiterFragment : BaseFragment(), WaiterView {
             categoryAdapter.submitList(menuList)
             presenter.showMenu()
             categoryAdapter.notifyDataSetChanged()
-            bn.orderBtn.setBackgroundResource(R.color.red)
+            bn.orderBtn.setBackgroundResource(R.color.teal_1000)
         }
 
         bn.dashboardBtn.setOnClickListener {
             presenter.changeColor()
             btnId = 3
-            bn.dashboardBtn.setBackgroundResource(R.color.red)
+            bn.dashboardBtn.setBackgroundResource(R.color.teal_1000)
         }
 
         bn.exitBtn.setOnClickListener {
             presenter.changeColor()
             btnId = 4
             presenter.onBackPressed()
-            bn.exitBtn.setBackgroundResource(R.color.red)
+            bn.exitBtn.setBackgroundResource(R.color.teal_1000)
         }
 
 //        val snapHelper1 = LinearSnapHelper()
@@ -138,7 +137,7 @@ class WaiterFragment : BaseFragment(), WaiterView {
                 presenter.changeColor()
                 btnId = 2
                 tableId = it.id
-                bn.orderBtn.setBackgroundResource(R.color.red)
+                bn.orderBtn.setBackgroundResource(R.color.teal_1000)
                 bn.tableNumber.text = it.name.toString()
             } else {
                 orderAdapter.clear()
@@ -147,7 +146,7 @@ class WaiterFragment : BaseFragment(), WaiterView {
                 presenter.changeColor()
                 btnId = 2
                 tableId = it.id
-                bn.orderBtn.setBackgroundResource(R.color.red)
+                bn.orderBtn.setBackgroundResource(R.color.teal_1000)
                 bn.tableNumber.text = it.name.toString()
 
             }
@@ -155,6 +154,7 @@ class WaiterFragment : BaseFragment(), WaiterView {
 
         bn.btnPrint.setOnClickListener {
             if (isFirst) {
+                orderList.clear()
                 if (orderAdapter.getAllOrder().isNotEmpty()) {
                     orderAdapter.getAllOrder().forEach {
                         orderList.add(MenuSelect(it.productCount, it.id))
@@ -313,6 +313,7 @@ class WaiterFragment : BaseFragment(), WaiterView {
         bn.totalSumTv.text = "0.0"
         bn.tableNumber.text = "0"
         orderAdapter.clear()
+        orderList.clear()
         tableAdapter.notifyDataSetChanged()
         if (type) {
             showSnackMessage("Success")
@@ -321,17 +322,13 @@ class WaiterFragment : BaseFragment(), WaiterView {
     }
 
     override fun getOrderInfo(getData: OrderGetData) {
+        Log.e("SSS","${getData.menuSelection}")
         tableOrderId = getData.id
         isFirst = false
-        tableOrderSize = getData.menuSelection.size
         getData.menuSelection.forEach {
             orderAdapter.addProduct(
                 WaiterOrderData(
-                    it.menu.id,
-                    it.menu.name,
-                    it.menu.price,
-                    it.count,
-                    it.menu.price * it.count
+                    it.menu.id, it.menu.name, it.menu.price, it.count, it.menu.price * it.count
                 )
             )
         }

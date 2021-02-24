@@ -1,6 +1,8 @@
 package com.example.restuarant.model.server
 
 import com.example.restuarant.model.entities.*
+import com.example.restuarant.model.entities.check.CheckData
+import com.example.restuarant.model.entities.check.PaidCheck
 import io.reactivex.Single
 import retrofit2.http.Body
 import retrofit2.http.GET
@@ -11,7 +13,6 @@ import retrofit2.http.Query
  * Created by shohboz on 11,Январь,2021
  */
 interface ResApi {
-
     @POST("/api/auth/login")
     fun login(@Body data: LoginData): Single<LoginResData>
 
@@ -63,5 +64,15 @@ interface ResApi {
     @GET("/api/order/byTable")
     fun getTableInfo(@Query("tableId") tableId: Int): Single<ResData<OrderGetData>>
 
+    @POST("/api/order/pay")
+    fun sendCheckByOrderId(
+        @Body data: PaidCheck
+    ): Single<CheckData>
 
+    @GET("/api/order/unPayOrder/UNPAID")
+    fun getOrderUnPaid(): Single<ResData<List<OrderGetData>>>
+
+
+    @GET("/api/order/unPayOrder/PAID")
+    fun getAllHistory(): Single<ResData<List<OrderGetData>>>
 }

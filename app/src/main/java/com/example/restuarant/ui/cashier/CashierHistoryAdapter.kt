@@ -1,52 +1,75 @@
 package com.example.restuarant.ui.cashier
 
+import android.annotation.SuppressLint
+import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import com.example.restuarant.R
+import com.example.restuarant.databinding.ItemCookerOrderBinding
 import com.example.restuarant.databinding.ItemHistoryChashierBinding
 import com.example.restuarant.extentions.SingleBlock
 import com.example.restuarant.extentions.bindItem
-import com.example.restuarant.model.entities.CashierHistoryData
+import com.example.restuarant.model.entities.OrderGetData
+import com.example.restuarant.ui.cashier.check.CookerCheckData
 
 /**
- * Created by shohboz on 02,Февраль,2021
+ * Created by Abdurashid on 08,Февраль,2021
  */
 
-class CashierHistoryAdapter :
-    ListAdapter<CashierHistoryData, CashierHistoryAdapter.VHolder>(CashierHistoryData.ITEMCALLBACK) {
+class CashierHistoryAdapter : RecyclerView.Adapter<CashierHistoryAdapter.HistoryViewHolder>() {
+    val list = ArrayList<OrderGetData>()
 
-    var listener: SingleBlock<CashierHistoryData>? = null
+    fun submitList(ls: List<OrderGetData>) {
+        list.clear()
+        list.addAll(ls)
+        notifyDataSetChanged()
+    }
 
-    fun setOnClickListener(block: SingleBlock<CashierHistoryData>) {
+    var listener: SingleBlock<OrderGetData>? = null
+
+    fun setOnClickListener(block: SingleBlock<OrderGetData>) {
         listener = block
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) = VHolder(
+
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) = HistoryViewHolder(
         ItemHistoryChashierBinding.inflate(
             LayoutInflater.from(parent.context), parent, false
         )
     )
 
-    override fun onBindViewHolder(holder: VHolder, position: Int) = holder.bind()
+    override fun onBindViewHolder(holder: HistoryViewHolder, position: Int) = holder.bind()
 
-    inner class VHolder(val binding: ItemHistoryChashierBinding) : RecyclerView.ViewHolder(binding.root) {
+    override fun getItemCount() = list.size
+
+    fun showCheckPosition(position: Int) {
+
+    }
+
+    inner class HistoryViewHolder(val binding: ItemHistoryChashierBinding) :
+        RecyclerView.ViewHolder(binding.root) {
 
         init {
             itemView.setOnClickListener {
-                listener?.invoke(currentList[adapterPosition])
+                listener?.invoke(list[adapterPosition])
             }
         }
 
         fun bind() = bindItem {
 
-            val d = currentList[adapterPosition]
+
+            val d = list[adapterPosition]
             binding.apply {
                 numberTable.text = d.id.toString()
-                orderPrice.text = d.orderPrice
+                orderPrice.text = d.orderPrice.toString()
                 payType.text = d.orderType
-                cashBack.text = d.cashBack
+//                cashBack.text = d.cashBack
+                orderDetail.setOnClickListener { listener!!.invoke(list[adapterPosition]) }
             }
         }
     }
 }
+
+
+

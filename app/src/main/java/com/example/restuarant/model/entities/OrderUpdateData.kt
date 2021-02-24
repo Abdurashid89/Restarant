@@ -14,5 +14,4 @@ data class OrderUpdateData(
     var roomsId: Int?,
     var menuSelectionList: List<MenuSelect>,
     var restaurantId:Int
-) {
-}
+)

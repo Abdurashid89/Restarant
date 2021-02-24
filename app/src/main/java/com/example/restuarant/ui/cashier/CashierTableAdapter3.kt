@@ -11,12 +11,11 @@ import com.example.restuarant.extentions.bindItem
 import com.example.restuarant.model.entities.TableData
 
 /**
- * Created by shohboz on 21,Январь,2021
+ * # Created by Elyor on 18,February,2021 #
  */
-class CashierTableAdapter2 : RecyclerView.Adapter<CashierTableAdapter2.CashierTableHolder>() {
+class CashierTableAdapter3: RecyclerView.Adapter<CashierTableAdapter3.CashierTableHolder>() {
     val tableList = ArrayList<TableData>()
 
-    var tableIndex = 0
     var listener: SingleBlock<TableData>? = null
 
     fun submitList(list: List<TableData>) {
@@ -35,7 +34,7 @@ class CashierTableAdapter2 : RecyclerView.Adapter<CashierTableAdapter2.CashierTa
         )
     )
 
-    override fun onBindViewHolder(holder: CashierTableAdapter2.CashierTableHolder, position: Int) =
+    override fun onBindViewHolder(holder: CashierTableAdapter3.CashierTableHolder, position: Int) =
         holder.bind()
 
     override fun getItemCount() = tableList.size
@@ -45,22 +44,15 @@ class CashierTableAdapter2 : RecyclerView.Adapter<CashierTableAdapter2.CashierTa
 
         init {
             itemView.setOnClickListener {
-                notifyItemChanged(tableIndex)
-                itemView.alpha = 0.5f
-                tableIndex = adapterPosition
                 listener?.invoke(tableList[adapterPosition])
-                tableIndex = adapterPosition
             }
         }
 
         @SuppressLint("Range", "ResourceAsColor")
         fun bind() = bindItem {
             val d = tableList[adapterPosition]
-            binding.tableText.text = tableList[adapterPosition].id.toString()
+            binding.tableText.text = tableList[adapterPosition].name.toString()
             binding.linearTable.setBackgroundResource(if (!d.active) R.color.red else R.color.green)
         }
     }
-
 }
-
-
