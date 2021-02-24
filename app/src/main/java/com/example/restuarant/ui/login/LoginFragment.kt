@@ -109,54 +109,97 @@ class LoginFragment : BaseFragment(), LoginView {
         }
     }
 
+    private fun createPdf2(list: List<OrderGetData>) {
+        if (unPaidListOld.isEmpty()) {
+            unPaidListOld.addAll(list)
+            var ls = ArrayList<CookerCheckData>()
+            unPaidListOld.forEach {
+                it.menuSelection.forEach { order ->
+                    if (order.menu.cooker) {
+                        ls.add(CookerCheckData(order.menu.name, order.count.toString()))
+
+                    }
+                }
+                Thread.sleep(1000)
+                createDialog(it.table.name, ls)
+                ls.clear()
+            }
+        } else {
+//            for (i in list.indices){
+//
+//            }
+        }
+    }
+
     @RequiresApi(Build.VERSION_CODES.N)
     override fun ordersFromServer(list: List<OrderGetData>) {
         createPdf(list)
+//        createPdf2(list)
     }
 
     @RequiresApi(Build.VERSION_CODES.N)
     private fun createPdf(list: List<OrderGetData>) {
         var isNew = true
-        if(unPaidListOld.isEmpty()){
+        if (unPaidListOld.isEmpty()) {
             unPaidListOld.addAll(list)
-            val ls = ArrayList<CookerCheckData>()
             list.forEach { order ->
+                val ls = ArrayList<CookerCheckData>()
                 customLog(order.menuSelection.size.toString())
                 ls.clear()
                 order.menuSelection.forEach { menu ->
-                    ls.add(CookerCheckData(menu.menu.name, menu.count.toString()))
+                    if (menu.menu.cooker) {
+                        ls.add(CookerCheckData(menu.menu.name, menu.count.toString()))
+                    }
                 }
-                createDialog(order.table.id, ls)
+                createDialog(order.table.name, ls)
+            }
         }
-        }else{
-            for(i in list.indices){
+        else {
+            for (i in list.indices) {
+
                 unPaidListOld.forEach {
-                    if(it.id == list[i].id){
+                    if (it.id == list[i].id) {
                         isNew = false
-                        if(it.updateAt != list[i].updateAt){
+                        if (it.updateAt != list[i].updateAt) {
                             showMessage("updated: ${list[i]}")
-                            if (list[i].menuSelection.isEmpty()){
-                                val ls2 = ArrayList<CookerCheckData>()
+                            if (list[i].menuSelection.isEmpty()) {
                                 it.menuSelection.forEach {
-                                    ls2.add(CookerCheckData(it.menu.name,"-${it.count}"))
+                                    val ls2 = ArrayList<CookerCheckData>()
+                                    if (it.menu.cooker) {
+                                        ls2.add(CookerCheckData(it.menu.name, "-${it.count}"))
+                                    }
                                 }
-                            }else if (it.menuSelection.size>list[i].menuSelection.size){
+                            }else{
 
-                            }else if (it.menuSelection.size<list[i].menuSelection.size){
+                                
+                                val lis = ArrayList<CookerCheckData>()
+                                it.menuSelection.forEach { old->
+                                    list[i].menuSelection.forEach { new->
+                                        if (old.menu.id==new.menu.id){
+                                            if (old.count>new.count)
+                                           lis.add(CookerCheckData(old.menu.name,"-${old.count-new.count}"))
 
+                                        }
+                                    }
+                                }
                             }
                         }
                     }
                 }
-                if(isNew){
+                if (isNew) {
                     val ls = ArrayList<CookerCheckData>()
                     list[i].menuSelection.forEach {
-                        ls.add(CookerCheckData(it.menu.name,it.count.toString()))
+                        if (it.menu.cooker) {
+                            ls.add(CookerCheckData(it.menu.name, it.count.toString()))
+                        }
                     }
-                    createDialog(list[i].table.id,ls)
+                    createDialog(list[i].table.name, ls)
                 }
             }
+            unPaidListOld.clear()
+            unPaidListOld.addAll(list)
         }
+
 //        list.forEach {
 //            val mDoc = Document()
 //            val mFileName = SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault()).format(System.currentTimeMillis())
@@ -178,10 +221,10 @@ class LoginFragment : BaseFragment(), LoginView {
 //        }
     }
 
-    private fun createDialog(id: Long, ls: ArrayList<CookerCheckData>){
-        val dialog = CookerCheckDialog(requireContext(),id,ls)
+    private fun createDialog(name: Int, ls: ArrayList<CookerCheckData>) {
+        customLog("Size--->${ls.size}")
+        val dialog = CookerCheckDialog(requireContext(), name, ls)
         dialog.show()
-
 
     }
 //    private fun createPdf(list: List<OrderGetData>) {

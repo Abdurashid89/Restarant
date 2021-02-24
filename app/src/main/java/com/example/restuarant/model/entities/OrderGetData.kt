@@ -22,5 +22,6 @@ data class OrderGetData(
 )
 
 data class Table(
+    var name:Int,
     var id:Long
 )
