@@ -1,5 +1,7 @@
 package com.example.restuarant.presentation.were_house.product_history
 
+import com.example.restuarant.model.entities.ProductData
+import com.example.restuarant.model.entities.ProductInData
 import moxy.MvpView
 import moxy.viewstate.strategy.AddToEndSingleTagStrategy
 import moxy.viewstate.strategy.OneExecutionStateStrategy
@@ -23,4 +25,5 @@ interface HistoryView : MvpView {
     fun errorOrNull(str: String)
 
     fun productYON(status: Boolean, message: String)
+    fun listProducts(list: List<ProductData>)
 }

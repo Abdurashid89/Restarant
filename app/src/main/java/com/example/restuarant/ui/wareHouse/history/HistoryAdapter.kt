@@ -7,17 +7,18 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.restuarant.databinding.ItemProductHistoryBinding
 import com.example.restuarant.extentions.SingleBlock
 import com.example.restuarant.extentions.bindItem
+import com.example.restuarant.model.entities.ProductData
 import com.example.restuarant.model.entities.ProductInData
 
 /**
  * Created by Davronbek on 17,Февраль,2021
  */
-class HistoryAdapter :
-    ListAdapter<ProductInData, HistoryAdapter.VH>(ProductInData.ITEM_CALLBACK) {
+class HistoryAdapter(val type: Boolean) :
+    ListAdapter<ProductData, HistoryAdapter.VH>(ProductData.ITEM_CALLBACK) {
 
-    var listener: SingleBlock<ProductInData>? = null
+    var listener: SingleBlock<ProductData>? = null
 
-    fun setOnClickListener(block: SingleBlock<ProductInData>) {
+    fun setOnClickListener(block: SingleBlock<ProductData>) {
         listener = block
     }
 
@@ -32,9 +33,21 @@ class HistoryAdapter :
         fun bind() = bindItem {
             val d = currentList[adapterPosition]
             binding.apply {
-                productId.text = d.id.toString()
+//                productId.text = d.id.toString()
                 productName.text = d.name
-
+                productCount.text = d.presentCount.toString()
+                if (type) {
+                    productOnePrice.text = d.incomePrice.toString()
+                    productAllSum.text = "${d.incomePrice * d.presentCount}"
+                } else {
+                    if (!d.sold) {
+                        productOnePrice.text = "----"
+                        productAllSum.text = "----"
+                    } else {
+                        productOnePrice.text = d.sellPrice.toString()
+                        productAllSum.text = "${d.sellPrice * d.presentCount}"
+                    }
+                }
             }
         }
     }

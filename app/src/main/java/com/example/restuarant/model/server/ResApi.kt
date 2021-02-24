@@ -34,6 +34,12 @@ interface ResApi {
     fun getAllProduct(
     ): Single<GetResponseData<List<ProductInData>>>
 
+    @GET("/api/product/inputHistory")
+    fun productInputHistory(): Single<List<ProductData>>
+
+    @GET("/api/product/outputHistory")
+    fun productOutputHistory(): Single<List<ProductData>>
+
     @GET("/api/table")
     fun getAllTable(): Single<ResData<List<TableData>>>
 

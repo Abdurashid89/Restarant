@@ -14,12 +14,45 @@ import javax.inject.Inject
 @InjectViewState
 class HistoryPresenter @Inject constructor(
     private val router: FlowRouter,
-    private val interactor: AddProductInteractor,
+    private val addProductInteractor: AddProductInteractor,
     private val prefs: Prefs
 ) : BasePresenter<HistoryView>() {
 
+    override fun onFirstViewAttach() {
+        super.onFirstViewAttach()
+        inputProductHistory()
+    }
+
     fun onBackPressed() {
         router.exit()
+    }
+
+    private fun inputProductHistory() {
+        addProductInteractor.inputProductHistory()
+            .doOnSubscribe {
+
+            }.doAfterTerminate {
+
+            }.subscribe({
+                viewState.listProducts(it)
+//                viewState.showMessage("")
+            }, {
+//                viewState.showMessage(it.toString())
+            }).connect()
+    }
+
+    private fun outputProductHistory() {
+        addProductInteractor.outputProductHistory()
+            .doOnSubscribe {
+
+            }.doAfterTerminate {
+
+            }.subscribe({
+                viewState.listProducts(it)
+//                viewState.showMessage("")
+            }, {
+//                viewState.showMessage(it.toString())
+            }).connect()
     }
 
 }

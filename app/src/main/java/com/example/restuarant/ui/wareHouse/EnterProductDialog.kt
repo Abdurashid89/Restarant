@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.animation.AnimationUtils
+import androidx.core.view.isVisible
 import com.example.restuarant.R
 import com.example.restuarant.databinding.ItemProductBinding
 import com.example.restuarant.di.DI
@@ -59,9 +60,14 @@ class EnterProductDialog(var inputOrOutput: Boolean) : MvpAppCompatDialogFragmen
         binding.tv.text = if (inputOrOutput) "Input Product" else "Output Product"
         binding.productRv.adapter = adapter
         binding.productRv.visibility = View.GONE
+        if (!inputOrOutput) {
+            binding.inputProductInComePrice.visibility = View.GONE
+            binding.inputProductSellPrice.isVisible = false
+        }
         adapter.setOnClickListener {
             binding.inputProductName.setText(it.name)
-            adapter.submitList(null)
+            adapter.clear()
+            binding.productRv.visibility = View.GONE
             productId = it.id
 
             when (it.type) {
@@ -75,11 +81,7 @@ class EnterProductDialog(var inputOrOutput: Boolean) : MvpAppCompatDialogFragmen
                     binding.productType.text = Constants.liter
                 }
             }
-            if (it.sold) {
-                binding.inputProductSellPrice.visibility = View.VISIBLE
-            } else {
-                binding.inputProductSellPrice.visibility = View.GONE
-            }
+//            binding.inputProductSellPrice.visible(true)
 
 
         }
@@ -97,7 +99,7 @@ class EnterProductDialog(var inputOrOutput: Boolean) : MvpAppCompatDialogFragmen
                     searchProduct(s.toString().toLowerCase())
                 } else {
                     binding.productRv.visibility = View.GONE
-                    adapter.submitList(null)
+                    adapter.clear()
                 }
 
             }
@@ -153,15 +155,18 @@ class EnterProductDialog(var inputOrOutput: Boolean) : MvpAppCompatDialogFragmen
 //                    return@setOnClickListener
 //                }
                 else -> {
+//                    val d = if (binding.inputProductSellPrice.visibility == View.VISIBLE) {
+//                        binding.inputProductSellPrice.text.toString().toInt().toDouble()
+//                    } else 0.0
                     presenterNew.inputOrOutput(
                         inputOrOutput,
                         ProductInData(
                             productId,
-                            "KG",
+                            binding.productType.text.toString(),
                             false,
                             name,
                             inComePrice.toDouble(),
-                            sellPrice.toDouble(),
+                            sellPrice.toInt().toDouble(),
                             weight.toDouble(),
                             10.0
                         )
@@ -266,7 +271,7 @@ class EnterProductDialog(var inputOrOutput: Boolean) : MvpAppCompatDialogFragmen
     }
 
     override fun clearAllOldData() {
-        adapter.submitList(null)
+        adapter.clear()
         binding.inputProductName.setText("")
         binding.inputProductWeight.setText("")
         binding.inputProductInComePrice.setText("")

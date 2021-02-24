@@ -34,7 +34,7 @@ class AddProductInteractor @Inject constructor(
             .doOnError { }
     }
 
-  fun outputProduct(data: ProductInData): Single<MessageData> {
+    fun outputProduct(data: ProductInData): Single<MessageData> {
         return api.outputProduct(data).map {
             it
         }.subscribeOn(Schedulers.io())
@@ -44,6 +44,20 @@ class AddProductInteractor @Inject constructor(
 
     fun getAllProduct(): Single<GetResponseData<List<ProductInData>>> {
         return api.getAllProduct().map {
+            it
+        }.subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+    }
+
+    fun inputProductHistory(): Single<List<ProductData>> {
+        return api.productInputHistory().map {
+            it
+        }.subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+    }
+
+    fun outputProductHistory(): Single<List<ProductData>> {
+        return api.productOutputHistory().map {
             it
         }.subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())

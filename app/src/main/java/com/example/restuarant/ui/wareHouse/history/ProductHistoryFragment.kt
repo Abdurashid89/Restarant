@@ -1,11 +1,13 @@
 package com.example.restuarant.ui.wareHouse.history
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import android.view.View
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.restuarant.R
 import com.example.restuarant.databinding.FragmentProductHistoryBinding
 import com.example.restuarant.extentions.showSnackMessage
+import com.example.restuarant.model.entities.ProductData
 import com.example.restuarant.model.entities.ProductInData
 import com.example.restuarant.presentation.were_house.product_history.HistoryView
 import com.example.restuarant.presentation.were_house.product_history.HistoryPresenter
@@ -19,8 +21,10 @@ class ProductHistoryFragment : BaseFragment(), HistoryView {
     private var _bn: FragmentProductHistoryBinding? = null
     private val binding get() = _bn ?: throw NullPointerException("error")
     private lateinit var layoutManager: LinearLayoutManager
-    private lateinit var itemList: ArrayList<ProductInData>
-    private var adapter = HistoryAdapter()
+
+    //    private var data = ProductData()
+    private lateinit var itemList: ArrayList<ProductData>
+    lateinit var adapter: HistoryAdapter
 
     @InjectPresenter
     lateinit var presenter: HistoryPresenter
@@ -28,18 +32,23 @@ class ProductHistoryFragment : BaseFragment(), HistoryView {
     @ProvidePresenter
     fun providePresenter(): HistoryPresenter = scope.getInstance(HistoryPresenter::class.java)
 
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         _bn = FragmentProductHistoryBinding.bind(view)
         layoutManager = LinearLayoutManager(requireContext())
-
+        binding.productHistoryRv.layoutManager = layoutManager
+        itemList = ArrayList()
         loadAdapter()
-        adapter.submitList(itemList)
-        binding.productHistoryRv.adapter = adapter
 
         binding.btnBack.setOnClickListener {
             presenter.onBackPressed()
+        }
+
+        binding.btnIncome.setOnClickListener {
+            inputOrOutput(true)
+        }
+        binding.btnSell.setOnClickListener {
+            inputOrOutput(false)
         }
 
     }
@@ -62,6 +71,30 @@ class ProductHistoryFragment : BaseFragment(), HistoryView {
 
     }
 
+    @SuppressLint("SetTextI18n")
+    private fun inputOrOutput(type: Boolean) {
+        adapter = HistoryAdapter(type)
+        adapter.submitList(itemList)
+        binding.productHistoryRv.adapter = adapter
+        if (type) {
+            binding.btnIncome.alpha = 0.5f
+            binding.btnSell.alpha = 1f
+//            binding.btnIncome.setBackgroundResource(R.color.green)
+//            binding.btnSell.setBackgroundResource(R.color.green)
+            binding.tvCount.text = "Input count"
+            binding.tvProductPrice.text = "Price"
+            binding.tvAllProductPrice.text = "All price"
+        } else {
+            binding.tvCount.text = "Output count"
+            binding.tvProductPrice.text = "Price"
+            binding.tvAllProductPrice.text = "All price"
+            binding.btnIncome.alpha = 1f
+            binding.btnSell.alpha = 0.5f
+//            binding.btnIncome.setBackgroundResource(R.color.white)
+//            binding.btnSell.setBackgroundResource(R.color.green)
+        }
+    }
+
     override fun showMessage(message: String) {
         showSnackMessage(message)
     }
@@ -80,6 +113,17 @@ class ProductHistoryFragment : BaseFragment(), HistoryView {
 
     override fun productYON(status: Boolean, message: String) {
         TODO("Not yet implemented")
+    }
+
+    override fun listProducts(list: List<ProductData>) {
+        if (list.isNotEmpty()) {
+            binding.productHistoryRv.visibility = View.VISIBLE
+            binding.productHistoryRv.adapter = adapter
+            itemList.clear()
+            itemList.addAll(list)
+        } else {
+
+        }
     }
 
 }
