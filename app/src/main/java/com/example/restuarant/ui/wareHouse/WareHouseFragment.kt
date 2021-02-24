@@ -43,6 +43,7 @@ class WareHouseFragment() : BaseFragment(), WareHouseView, SwipeRefreshLayout.On
             presenter.onBackPressed()
         }
 
+
         binding.btnEnter.setOnClickListener {
             inputOrOutputProduct(true)
         }
