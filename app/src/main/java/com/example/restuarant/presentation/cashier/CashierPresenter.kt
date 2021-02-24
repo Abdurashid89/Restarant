@@ -117,15 +117,16 @@ class CashierPresenter @Inject constructor(
             }.subscribe({
                 viewState.showMessage(it.message)
                 getTables()
+                viewState.clearAll()
             }, {
                 viewState.showMessage(it.errorResponse())
             }).connect()
     }
 
     fun loadHistory() {
-        interactor.loadHistory().doOnSubscribe { viewState.showProgress(true, 1) }
+        interactor.loadHistory().doOnSubscribe { viewState.showProgress(true, 3) }
             .doAfterTerminate {
-                viewState.showProgress(false, 1)
+                viewState.showProgress(false, 3)
             }.subscribe({
                 viewState.allHistory(it.objectData)
             }, {

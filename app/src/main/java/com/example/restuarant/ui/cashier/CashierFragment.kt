@@ -8,11 +8,13 @@ import android.view.View
 import android.view.animation.Animation
 import android.widget.ProgressBar
 import androidx.annotation.RequiresApi
+import androidx.core.view.isVisible
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.example.restuarant.R
 import com.example.restuarant.databinding.FragmentCashierBinding
+import com.example.restuarant.di.DI
 import com.example.restuarant.extentions.*
 import com.example.restuarant.model.entities.*
 import com.example.restuarant.model.entities.check.PaidCheck
@@ -42,9 +44,9 @@ class CashierFragment : BaseFragment(), CashierView, SwipeRefreshLayout.OnRefres
     override val layoutRes: Int = R.layout.fragment_cashier
     val calendar = Calendar.getInstance()
 
-    //    lateinit var times: Times
-    var firstMillisecond: Long = 0
-    var lastTimeMillisecond: Long = 0
+    //    lateinit var times
+    var startDay: Long = 0
+    var endDay: Long = 0
 
     private var _bn: FragmentCashierBinding? = null
     private val bn get() = _bn ?: throw NullPointerException("error")
@@ -95,7 +97,6 @@ class CashierFragment : BaseFragment(), CashierView, SwipeRefreshLayout.OnRefres
 
         _bn = FragmentCashierBinding.bind(view)
 //        firstMillisecond = convertDateToLong(Date().time.toString())
-//
         bn.historyLayout.tvEndDay.text = formatDate()
         bn.historyLayout.tvStartDay.text = formatDate()
 
@@ -113,7 +114,7 @@ class CashierFragment : BaseFragment(), CashierView, SwipeRefreshLayout.OnRefres
         bn.togoLayout.orderRv.adapter = orderAdapter2
         bn.togoLayout.tableListRv.adapter = tableAdapter3
 
-        Log.d("millisecond", firstTimeMillisecond.toString())
+        Log.d("millisecond", startDay.toString())
 
         loadTables()
         loadButtons()
@@ -127,6 +128,7 @@ class CashierFragment : BaseFragment(), CashierView, SwipeRefreshLayout.OnRefres
                 bn.tablesLayout.tableNumber.text = tab.id.toString()
             }
         }
+
 //
 //        bn.togoLayout.orderRv.addItemDecoration(DividerItemDecoration(requireContext(),DividerItemDecoration.VERTICAL))
         val swipeHelper = object : SwipeToDeleteCallback(requireContext()) {
@@ -192,6 +194,12 @@ class CashierFragment : BaseFragment(), CashierView, SwipeRefreshLayout.OnRefres
             bn.togoLayout.tableListRv.visibility = View.VISIBLE
         }
 
+        bn.tablesLayout.priceOnCash.setOnClickListener {
+            if (notNull())
+                bn.groupButtons.translationZ = 40f
+            else showMessage("Please choose table number")
+        }
+
         tableAdapter3.setOnClickListener {
             if (it.active) {
                 isFirst = true
@@ -213,6 +221,8 @@ class CashierFragment : BaseFragment(), CashierView, SwipeRefreshLayout.OnRefres
         }
 
         bn.tableMenu.setOnClickListener {
+            bn.tablesLayout.tvEmpty.visibility = View.VISIBLE
+            bn.tablesLayout.cashierOrderList.isVisible = false
             bn.groupButtons.translationZ = 0f
             historyOpened = false
             setColorMenu()
@@ -245,8 +255,6 @@ class CashierFragment : BaseFragment(), CashierView, SwipeRefreshLayout.OnRefres
                             createCheck()
                         )
                     )
-                    bn.tablesLayout.totalPrice.text = ""
-                    bn.tablesLayout.priceOnCash.setText("")
                 }
             }
 
@@ -333,19 +341,36 @@ class CashierFragment : BaseFragment(), CashierView, SwipeRefreshLayout.OnRefres
         }
 
         bn.historyLayout.tvToday.setOnClickListener {
-            presenter.loadHistory()
+            historyList.forEach {
+                val date =
+                    it.createdAt.replace("T", ".").replace("-", ".").substring(0, 16)
+                        .convertDateToLong()
+                if (date > DI.CURRENT_MILLISECOND) {
+                    filterList.add(it)
+                    Log.d("CashierFragment", "${date > DI.CURRENT_MILLISECOND}")
+                    Log.d("OrderData", "-> $it")
+                } else showSnackMessage("Buyurtma qabul qilinmagan")
+            }
+            historyAdapter.submitList(filterList)
+            if (filterList.isEmpty()) {
+                bn.historyLayout.tvEmptyHistory.visibility = View.VISIBLE
+                bn.historyLayout.listHistoryCashier.visibility = View.GONE
+
+            }
+            filterList.clear()
+            Log.d("CashierFragment", "${DI.CURRENT_MILLISECOND}")
         }
 
-        bn.historyLayout.tvStartDay.text = convertLongToTime(firstTimeMillisecond)
-//        bn.historyLayout.tvEndDay.text = "${times.toPattern()}"
 
         bn.historyLayout.historySearch.addTextChangedListener(CustomWatcher(this))
 
         bn.historyLayout.calendar.setOnClickListener { openEndDateDialog() }
-
-        bn.historyLayout.tvStartDay.text = "${convertLongToTime(firstTimeMillisecond)}"
         bn.historyLayout.tvStartDay.setOnClickListener { openStartDateDialog() }
+
+
+        bn.historyLayout.tvStartDay.text = "${convertLongToTime(firstMillisecond)}"
         bn.historyLayout.tvEndDay.text = convertLongToTime(Date().time)
+
 
 
 
@@ -361,27 +386,24 @@ class CashierFragment : BaseFragment(), CashierView, SwipeRefreshLayout.OnRefres
     }
 //----------------------------------------------------------------------------------------------------------------------------------------------------
 
-    fun getFilterableOrder(firstTime: Long, lastTime: Long) {
-
-
-        if (firstTime > 0 && lastTime > 0) {
+    fun getFilterableOrder() {
+        bn.historyLayout.listHistoryCashier.visibility = View.VISIBLE
+        Log.d("CashierFragmentTime", "${historyList.size}")
+        if (startDay > 0 && endDay > 0 && startDay < endDay) {
             historyList.forEach {
                 val date =
                     it.createdAt.replace("T", ".").replace("-", ".").substring(0, 16)
-                Log.d("CashierFragment -> ", "$date")
-                Log.d("CashierFragment --> ", "${convertDateToLong(date)}")
-                val createdOrderTime = convertDateToLong(date)
-                if (createdOrderTime in firstTime..lastTime) {
+                        .convertDateToLong()
+
+                if ((date > startDay) && (date < endDay)) {
                     filterList.add(it)
-                    Log.d("CashierFragment", "${historyList.size}")
-                    historyAdapter.updateOrders(filterList)
+                    Log.d("OrderData", "-> $it")
+                    bn.historyLayout.listHistoryCashier.visibility = View.VISIBLE
                 }
             }
-
-            firstMillisecond = 0
-            lastTimeMillisecond = 0
         }
-        Log.d("CashierFragment", "${historyList.size}")
+        historyAdapter.submitList(filterList)
+        filterList.clear()
     }
 
     fun openStartDateDialog() {
@@ -397,9 +419,11 @@ class CashierFragment : BaseFragment(), CashierView, SwipeRefreshLayout.OnRefres
                         "$second"
                     )
                     bn.historyLayout.tvStartDay.text = time.toPattern().toString()
-                    calendar.set(time.year.toInt(), time.month.toInt(), time.day.toInt())
+//                    calendar.set(time.year.toInt(), time.month.toInt(), time.day.toInt())
+                    startDay =
+                        bn.historyLayout.tvStartDay.text.toString().convertDateToLong()
 
-                    getFilterableOrder(convertDateToLong(time.toPattern().toString()), lastTime = 0)
+                    getFilterableOrder()
                 }, true)
 
                     .show(it, "tag")
@@ -427,9 +451,10 @@ class CashierFragment : BaseFragment(), CashierView, SwipeRefreshLayout.OnRefres
                     bn.historyLayout.tvEndDay.text = time.toPattern().toString()
 
                     calendar.set(time.year.toInt(), time.month.toInt(), time.day.toInt())
-                    getFilterableOrder(firstTime = 0, convertDateToLong(time.toPattern().toString()))
-
-                                             }, true)
+                    endDay =
+                        bn.historyLayout.tvEndDay.text.toString().convertDateToLong()
+                    getFilterableOrder()
+                }, true)
 
                     .show(it, "tag")
             }
@@ -441,7 +466,7 @@ class CashierFragment : BaseFragment(), CashierView, SwipeRefreshLayout.OnRefres
 
 
     override fun onCreateAnimation(transit: Int, enter: Boolean, nextAnim: Int): Animation {
-        return CubeAnimation.create(CubeAnimation.DOWN, enter, 1000)
+        return CubeAnimation.create(CubeAnimation.RIGHT, enter, 1000)
     }
 
 
@@ -584,7 +609,7 @@ class CashierFragment : BaseFragment(), CashierView, SwipeRefreshLayout.OnRefres
             price,
             totalPrice,
             bn.tablesLayout.priceCashBack.text.toString(),
-            bn.tablesLayout.priceOnCash.text.toString(), "SSD Intership",
+            bn.tablesLayout.priceOnCash.text.toString(), "YAPLIZ MCHJ",
             "NAQD"
         )
         return check!!.html
@@ -626,6 +651,8 @@ class CashierFragment : BaseFragment(), CashierView, SwipeRefreshLayout.OnRefres
 
     @SuppressLint("LogNotTimber")
     override fun addTableOrder(objectData: OrderGetData, type: Int) {
+        bn.tablesLayout.cashierOrderList.isVisible = true
+        bn.tablesLayout.tvEmpty.isVisible = false
         showMessage("id: ${objectData.id}")
         tableOrderId = objectData.id
         orderAdapter.clear()
@@ -676,6 +703,8 @@ class CashierFragment : BaseFragment(), CashierView, SwipeRefreshLayout.OnRefres
             bn.tablesLayout.progressBarLoadOrder.visible(isShow)
         } else if (type == 2) {
             bn.togoLayout.togoOrderProgress.visible(isShow)
+        } else if (type == 3){
+            bn.historyLayout.historyProgress.visible(isShow)
         }
     }
 
@@ -707,16 +736,23 @@ class CashierFragment : BaseFragment(), CashierView, SwipeRefreshLayout.OnRefres
     }
 
     override fun allHistory(orderGetData: List<OrderGetData>) {
+        bn.historyLayout.hintViewGroup.visibility = View.VISIBLE
+        bn.historyLayout.listHistoryCashier.visibility = View.VISIBLE
+        bn.historyLayout.tvEmptyHistory.visibility = View.GONE
         historyList.addAll(orderGetData)
+        historyAdapter.clear()
         historyAdapter.submitList(orderGetData)
-        orderGetData.forEach {
-
-        }
-
-
     }
 
     override fun showTables() {
+
+    }
+
+    override fun clearAll() {
+        bn.tablesLayout.totalPrice.text = "0"
+        bn.tablesLayout.priceOnCash.setText("0")
+        bn.tablesLayout.tableNumber.text = "0"
+        orderAdapter.clear()
 
     }
 
@@ -781,9 +817,9 @@ class CashierFragment : BaseFragment(), CashierView, SwipeRefreshLayout.OnRefres
     companion object {
         const val textHtml = "text/html"
         const val utf = "UTF-8"
-        val firstTimeMillisecond: Long = currentTimeToLong()
-
+        val firstMillisecond: Long = currentTimeToLong()
     }
+
 
     override fun onTextChanged(text: String) {
         historyAdapter.onSearch(text)

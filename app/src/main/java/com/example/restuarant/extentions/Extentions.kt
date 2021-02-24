@@ -32,7 +32,6 @@ import androidx.fragment.app.FragmentActivity
 import androidx.recyclerview.widget.RecyclerView
 import com.example.restuarant.model.entities.TableData
 import com.example.restuarant.presentation.responseDialog.ResponseStatusDialog
-import com.example.restuarant.ui.waiter.callback.SwipeToDeleteCallback
 import com.google.android.material.snackbar.Snackbar
 import com.google.gson.JsonSyntaxException
 import com.nabinbhandari.android.permissions.PermissionHandler
@@ -56,7 +55,7 @@ import java.util.concurrent.Executors
 
 fun ArrayList<TableData>.sortTable(): ArrayList<TableData> {
     for (i in 0 until this.size - 1) {
-        for (j in i + 1 until this.size - 1) {
+        for (j in i + 1 until this.size) {
             if (this[j].name < this[i].name) {
                 val temp = this[j]
                 this[j] = this[i]
@@ -147,9 +146,9 @@ fun currentTimeToLong(): Long {
     return System.currentTimeMillis()
 }
 
-fun convertDateToLong(date: String): Long {
+fun String.convertDateToLong(): Long {
     val df = SimpleDateFormat("yyyy.MM.dd.hh:mm")
-    return df.parse(date).time
+    return df.parse(this).time
 }
 
 fun PopupMenu.setForceShowIcon() {

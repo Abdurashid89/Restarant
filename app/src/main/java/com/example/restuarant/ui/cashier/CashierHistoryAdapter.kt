@@ -64,6 +64,11 @@ class CashierHistoryAdapter : RecyclerView.Adapter<CashierHistoryAdapter.History
         notifyDataSetChanged()
     }
 
+    fun clear() {
+        list.clear()
+        notifyDataSetChanged()
+    }
+
     inner class HistoryViewHolder(val binding: ItemHistoryChashierBinding) :
         RecyclerView.ViewHolder(binding.root) {
 
