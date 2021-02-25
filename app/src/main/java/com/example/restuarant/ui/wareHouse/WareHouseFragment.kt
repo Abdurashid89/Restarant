@@ -1,23 +1,25 @@
 package com.example.restuarant.ui.wareHouse
 
+//import com.example.restuarant.model.entities.CategoryInProductData
 import android.os.Bundle
 import android.view.View
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.example.restuarant.R
 import com.example.restuarant.databinding.FragmentWareHouseBinding
+import com.example.restuarant.extentions.CustomWatcher
+import com.example.restuarant.extentions.ITextWatcher
 import com.example.restuarant.extentions.showSnackMessage
 import com.example.restuarant.extentions.visible
-//import com.example.restuarant.model.entities.CategoryInProductData
 import com.example.restuarant.model.entities.ProductInData
 import com.example.restuarant.presentation.were_house.WareHousePresenter
 import com.example.restuarant.presentation.were_house.WareHouseView
 import com.example.restuarant.ui.global.BaseFragment
 import moxy.presenter.InjectPresenter
 import moxy.presenter.ProvidePresenter
-import java.lang.NullPointerException
 
-class WareHouseFragment() : BaseFragment(), WareHouseView, SwipeRefreshLayout.OnRefreshListener {
+class WareHouseFragment : BaseFragment(), WareHouseView, SwipeRefreshLayout.OnRefreshListener,
+    ITextWatcher {
     override val layoutRes: Int = R.layout.fragment_ware_house
     private var _bn: FragmentWareHouseBinding? = null
     private val binding get() = _bn ?: throw  NullPointerException("error")
@@ -62,6 +64,7 @@ class WareHouseFragment() : BaseFragment(), WareHouseView, SwipeRefreshLayout.On
             presenter.openHistoryScreen()
         }
 
+        binding.productSearch.addTextChangedListener(CustomWatcher(this))
 
     }
 
@@ -71,7 +74,7 @@ class WareHouseFragment() : BaseFragment(), WareHouseView, SwipeRefreshLayout.On
             presenter.getAllProduct()
             dialog.dismiss()
         }
-            dialog.show(childFragmentManager, "tag")
+        dialog.show(childFragmentManager, "tag")
     }
 
     private fun addProduct() {
@@ -80,7 +83,7 @@ class WareHouseFragment() : BaseFragment(), WareHouseView, SwipeRefreshLayout.On
             presenter.getAllProduct()
             dialog.dismiss()
         }
-            dialog.show(childFragmentManager, "tag")
+        dialog.show(childFragmentManager, "tag")
     }
 
 
@@ -98,8 +101,8 @@ class WareHouseFragment() : BaseFragment(), WareHouseView, SwipeRefreshLayout.On
 
     override fun listProducts(list: List<ProductInData>) {
         binding.swiperefresh.isRefreshing = false
-        if(list.isNotEmpty()){
-            adapter.submitList(null)
+        if (list.isNotEmpty()) {
+            adapter.clear()
             adapter.submitList(list)
             binding.notProduct.visible(false)
         }
@@ -111,6 +114,10 @@ class WareHouseFragment() : BaseFragment(), WareHouseView, SwipeRefreshLayout.On
 
     override fun onRefresh() {
         presenter.getAllProduct()
+    }
+
+    override fun onTextChanged(text: String) {
+        adapter.onSearch(text)
     }
 
 }

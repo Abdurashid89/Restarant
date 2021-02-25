@@ -80,7 +80,6 @@ class CashierFragment : BaseFragment(), CashierView, SwipeRefreshLayout.OnRefres
     private var totalPrice = ""
     private var orderPrice = 0.0
     var historyOpened = false
-    private var orderId = 0
     var check: Check? = null
 
     @InjectPresenter
@@ -240,22 +239,21 @@ class CashierFragment : BaseFragment(), CashierView, SwipeRefreshLayout.OnRefres
 
         bn.tablesLayout.btnSendPay.setOnClickListener {
             val paidPrice = bn.tablesLayout.priceOnCash.text.toString().replace(" ", "").toDouble()
+            val cashBack = bn.tablesLayout.priceCashBack.text.toString().replace(" ", "").toDouble()
             if (paidPrice < orderPrice) {
                 showSnackMessage("Iltimos yetarli mablag' kiriting!")
             } else {
-                val cash = paidPrice - orderPrice
-                if (orderId != -1) {
-                    Timber.d("$orderId")
-                    presenter.sendPay(
-                        PaidCheck(
-                            tableOrderId,
-                            paidPrice,
-                            cash,
-                            "NAQD",
-                            createCheck()
-                        )
+
+                presenter.sendPay(
+                    PaidCheck(
+                        tableOrderId,
+                        paidPrice,
+                        cashBack,
+                        "NAQD",
+                        createCheck()
                     )
-                }
+                )
+
             }
 
         }
@@ -358,6 +356,7 @@ class CashierFragment : BaseFragment(), CashierView, SwipeRefreshLayout.OnRefres
                 } else showSnackMessage("Buyurtma qabul qilinmagan")
             }
             historyAdapter.submitList(filterList)
+            bn.historyLayout.listHistoryCashier.fadeIn()
             if (filterList.isEmpty()) {
                 bn.historyLayout.tvEmptyHistory.visibility = View.VISIBLE
                 bn.historyLayout.listHistoryCashier.visibility = View.GONE
@@ -409,6 +408,7 @@ class CashierFragment : BaseFragment(), CashierView, SwipeRefreshLayout.OnRefres
             }
         }
         historyAdapter.submitList(filterList)
+        bn.historyLayout.listHistoryCashier.fadeIn()
         filterList.clear()
     }
 
@@ -470,10 +470,9 @@ class CashierFragment : BaseFragment(), CashierView, SwipeRefreshLayout.OnRefres
         fragmentManager?.let { dialog.show(it, "date") }
     }
 
-
-    override fun onCreateAnimation(transit: Int, enter: Boolean, nextAnim: Int): Animation {
+/*override fun onCreateAnimation(transit: Int, enter: Boolean, nextAnim: Int): Animation {
         return CubeAnimation.create(CubeAnimation.RIGHT, enter, 1000)
-    }
+    }*/
 
 
     private fun setColorMenu() {
@@ -709,7 +708,7 @@ class CashierFragment : BaseFragment(), CashierView, SwipeRefreshLayout.OnRefres
             bn.tablesLayout.progressBarLoadOrder.visible(isShow)
         } else if (type == 2) {
             bn.togoLayout.togoOrderProgress.visible(isShow)
-        } else if (type == 3){
+        } else if (type == 3) {
             bn.historyLayout.historyProgress.visible(isShow)
         }
     }
@@ -745,9 +744,16 @@ class CashierFragment : BaseFragment(), CashierView, SwipeRefreshLayout.OnRefres
         bn.historyLayout.hintViewGroup.visibility = View.VISIBLE
         bn.historyLayout.listHistoryCashier.visibility = View.VISIBLE
         bn.historyLayout.tvEmptyHistory.visibility = View.GONE
+
+
+
         historyList.addAll(orderGetData)
         historyAdapter.clear()
-        historyAdapter.submitList(orderGetData)
+        historyList.sortHistoryByDate()
+        historyAdapter.submitList(historyList)
+
+        bn.historyLayout.listHistoryCashier.fadeIn()
+
     }
 
     override fun showTables() {
@@ -774,6 +780,7 @@ class CashierFragment : BaseFragment(), CashierView, SwipeRefreshLayout.OnRefres
         bn.swiperefresh.isRefreshing = false
         if (list.isNotEmpty()) {
             tableAdapter.submitList(list as ArrayList<TableData>)
+            bn.tableList.fadeIn()
             bn.btnPay.visibility = View.VISIBLE
         } else {
             bn.btnPay.visibility = View.GONE
@@ -830,5 +837,6 @@ class CashierFragment : BaseFragment(), CashierView, SwipeRefreshLayout.OnRefres
     override fun onTextChanged(text: String) {
         historyAdapter.onSearch(text)
         Log.d("onTextChanged", text)
+        bn.historyLayout.listHistoryCashier.fadeIn()
     }
 }

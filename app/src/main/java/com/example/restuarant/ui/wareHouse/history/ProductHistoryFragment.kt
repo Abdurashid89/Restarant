@@ -6,17 +6,18 @@ import android.view.View
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.restuarant.R
 import com.example.restuarant.databinding.FragmentProductHistoryBinding
+import com.example.restuarant.extentions.CustomWatcher
+import com.example.restuarant.extentions.ITextWatcher
 import com.example.restuarant.extentions.showSnackMessage
-import com.example.restuarant.model.entities.ProductData
+import com.example.restuarant.extentions.visible
 import com.example.restuarant.model.entities.ProductHistoryData
-import com.example.restuarant.presentation.were_house.product_history.HistoryView
 import com.example.restuarant.presentation.were_house.product_history.HistoryPresenter
+import com.example.restuarant.presentation.were_house.product_history.HistoryView
 import com.example.restuarant.ui.global.BaseFragment
 import moxy.presenter.InjectPresenter
 import moxy.presenter.ProvidePresenter
-import java.lang.NullPointerException
 
-class ProductHistoryFragment : BaseFragment(), HistoryView {
+class ProductHistoryFragment : BaseFragment(), HistoryView, ITextWatcher {
     override val layoutRes: Int = R.layout.fragment_product_history
     private var _bn: FragmentProductHistoryBinding? = null
     private val binding get() = _bn ?: throw NullPointerException("error")
@@ -41,6 +42,7 @@ class ProductHistoryFragment : BaseFragment(), HistoryView {
         itemList = ArrayList()
         loadAdapter()
 
+
         binding.btnBack.setOnClickListener {
             presenter.onBackPressed()
         }
@@ -54,6 +56,7 @@ class ProductHistoryFragment : BaseFragment(), HistoryView {
             inputOrOutput(isInput)
         }
 
+        binding.productSearch.addTextChangedListener(CustomWatcher(this))
     }
 
     private fun loadAdapter() {
@@ -78,6 +81,12 @@ class ProductHistoryFragment : BaseFragment(), HistoryView {
     private fun inputOrOutput(type: Boolean) {
         adapter = HistoryAdapter(type)
 //        adapter.submitList(itemList)
+
+        adapter.setOnFoundListener {
+            binding.tvNotFound.visible(!it)
+            showMessage(it.toString())
+        }
+
         binding.productHistoryRv.adapter = adapter
         if (type) {
             binding.btnIncome.alpha = 0.5f
@@ -124,15 +133,36 @@ class ProductHistoryFragment : BaseFragment(), HistoryView {
         if (list.isNotEmpty()) {
             if (isInput) {
                 adapter = HistoryAdapter((isInput))
-            binding.productHistoryRv.adapter = adapter
+                binding.productHistoryRv.adapter = adapter
             }
             itemList.clear()
             itemList.addAll(list)
-            adapter.submitList(null)
+            adapter.clear()
             adapter.submitList(itemList)
+            binding.tvNotFound.visibility = View.GONE
         } else {
-
+            binding.tvNotFound.visibility = View.VISIBLE
         }
+    }
+
+    override fun onTextChanged(text: String) {
+        val list = ArrayList<ProductHistoryData>()
+
+        itemList.forEach {
+            if (it.name.toLowerCase().contains(text.toLowerCase())){
+                list.add(it)
+            }
+        }
+
+        if (list.isEmpty()){
+            adapter.clear()
+            binding.tvNotFound.visibility = View.VISIBLE
+        } else {
+            adapter.clear()
+            adapter.submitList(list)
+            binding.tvNotFound.visibility = View.GONE
+        }
+
     }
 
 }
