@@ -4,18 +4,21 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/group"
     android:maxWidth="400dp"
-    android:maxHeight="500dp"
+    android:maxHeight="700dp"
     android:layout_width="match_parent"
-    android:layout_height="500dp"
-    android:padding="12dp">
+    android:layout_height="700dp"
+    android:padding="12dp"
+    android:orientation="vertical">
 
 
     <LinearLayout
+        android:paddingLeft="24dp"
+        android:paddingRight="24dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
         android:maxWidth="400dp"
-        android:maxHeight="500dp"
+        android:maxHeight="600dp"
         android:minHeight="300dp"
         android:minWidth="300dp">
 
@@ -30,7 +33,7 @@
                 android:layout_height="wrap_content"
                 android:text="Table Number"
                 android:textColor="@color/black"
-                android:textSize="16sp" />
+                android:textSize="36sp" />
 
             <TextView
                 android:id="@+id/table_number"
@@ -39,7 +42,7 @@
                 android:layout_marginLeft="12dp"
                 android:text="0"
                 android:textColor="@color/black"
-                android:textSize="16sp"
+                android:textSize="36sp"
                 android:textStyle="bold" />
         </LinearLayout>
 
@@ -51,6 +54,8 @@
             android:orientation="horizontal">
 
             <TextView
+                android:textStyle="bold"
+                android:textSize="24sp"
                 android:id="@+id/meal_name"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
@@ -60,6 +65,8 @@
                 android:textColor="@color/black" />
 
             <TextView
+                android:textStyle="bold"
+                android:textSize="24sp"
                 android:id="@+id/plus_minus"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
@@ -75,9 +82,44 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="12dp"
-            android:maxHeight="500dp"
-            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-            tools:listitem="@layout/item_cooker_order" />
+            android:maxHeight="400dp"
+            tools:listitem="@layout/item_cooker_order"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:paddingRight="24dp"
+        android:paddingLeft="24dp"
+        android:layout_gravity="center"
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:id="@+id/waiterName_text"
+            android:gravity="left"
+            android:layout_weight="1"
+            android:layout_marginTop="20dp"
+            android:textStyle="italic"
+            android:textColor="@color/black"
+            android:text="Akmal Normatov"
+            android:textSize="24sp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+        <TextView
+            android:id="@+id/orderTime_text"
+            android:layout_weight="1"
+            android:gravity="right"
+            android:layout_marginTop="20dp"
+            android:textStyle="italic"
+            android:textColor="@color/black"
+            android:text="2021-02-23/09:41:59"
+            android:textSize="24sp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
     </LinearLayout>
 
 </LinearLayout>

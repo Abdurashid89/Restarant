@@ -104,9 +104,21 @@
             android:layout_weight="2.7"
             android:background="@drawable/cashier_order_bgn"
             android:padding="2dp"
+            android:visibility="gone"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             tools:itemCount="10"
             tools:listitem="@layout/item_order_cashier" />
+
+        <TextView
+            android:id="@+id/tvEmpty"
+            android:textStyle="italic"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="2.7"
+            android:gravity="center"
+            android:hint="Empty"
+            android:textSize="50dp" />
+
 
         <LinearLayout
             android:layout_width="match_parent"
