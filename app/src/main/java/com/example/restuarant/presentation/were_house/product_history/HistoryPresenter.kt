@@ -1,5 +1,6 @@
 package com.example.restuarant.presentation.were_house.product_history
 
+import com.example.restuarant.extentions.errorResponse
 import com.example.restuarant.model.interactor.AddProductInteractor
 import com.example.restuarant.model.storage.Prefs
 import com.example.restuarant.model.system.pull.FlowRouter
@@ -27,31 +28,31 @@ class HistoryPresenter @Inject constructor(
         router.exit()
     }
 
-    private fun inputProductHistory() {
+     fun inputProductHistory() {
         addProductInteractor.inputProductHistory()
             .doOnSubscribe {
-
+                viewState.makeLoadingVisible(true)
             }.doAfterTerminate {
-
+                viewState.makeLoadingVisible(false)
             }.subscribe({
                 viewState.listProducts(it)
-//                viewState.showMessage("")
+                viewState.showMessage("Input History Success")
             }, {
-//                viewState.showMessage(it.toString())
+                viewState.showMessage(it.errorResponse())
             }).connect()
     }
 
-    private fun outputProductHistory() {
+    fun outputProductHistory() {
         addProductInteractor.outputProductHistory()
             .doOnSubscribe {
-
+                viewState.makeLoadingVisible(true)
             }.doAfterTerminate {
-
+                viewState.makeLoadingVisible(false)
             }.subscribe({
                 viewState.listProducts(it)
-//                viewState.showMessage("")
+                viewState.showMessage("Output History Success")
             }, {
-//                viewState.showMessage(it.toString())
+                viewState.showMessage(it.errorResponse())
             }).connect()
     }
 

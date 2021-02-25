@@ -8,7 +8,7 @@ import com.example.restuarant.R
 import com.example.restuarant.databinding.FragmentProductHistoryBinding
 import com.example.restuarant.extentions.showSnackMessage
 import com.example.restuarant.model.entities.ProductData
-import com.example.restuarant.model.entities.ProductInData
+import com.example.restuarant.model.entities.ProductHistoryData
 import com.example.restuarant.presentation.were_house.product_history.HistoryView
 import com.example.restuarant.presentation.were_house.product_history.HistoryPresenter
 import com.example.restuarant.ui.global.BaseFragment
@@ -21,9 +21,10 @@ class ProductHistoryFragment : BaseFragment(), HistoryView {
     private var _bn: FragmentProductHistoryBinding? = null
     private val binding get() = _bn ?: throw NullPointerException("error")
     private lateinit var layoutManager: LinearLayoutManager
+    private var isInput = true
 
     //    private var data = ProductData()
-    private lateinit var itemList: ArrayList<ProductData>
+    private lateinit var itemList: ArrayList<ProductHistoryData>
     lateinit var adapter: HistoryAdapter
 
     @InjectPresenter
@@ -45,10 +46,12 @@ class ProductHistoryFragment : BaseFragment(), HistoryView {
         }
 
         binding.btnIncome.setOnClickListener {
-            inputOrOutput(true)
+            isInput = true
+            inputOrOutput(isInput)
         }
         binding.btnSell.setOnClickListener {
-            inputOrOutput(false)
+            isInput = false
+            inputOrOutput(isInput)
         }
 
     }
@@ -74,7 +77,7 @@ class ProductHistoryFragment : BaseFragment(), HistoryView {
     @SuppressLint("SetTextI18n")
     private fun inputOrOutput(type: Boolean) {
         adapter = HistoryAdapter(type)
-        adapter.submitList(itemList)
+//        adapter.submitList(itemList)
         binding.productHistoryRv.adapter = adapter
         if (type) {
             binding.btnIncome.alpha = 0.5f
@@ -84,12 +87,14 @@ class ProductHistoryFragment : BaseFragment(), HistoryView {
             binding.tvCount.text = "Input count"
             binding.tvProductPrice.text = "Price"
             binding.tvAllProductPrice.text = "All price"
+            presenter.inputProductHistory()
         } else {
             binding.tvCount.text = "Output count"
             binding.tvProductPrice.text = "Price"
             binding.tvAllProductPrice.text = "All price"
             binding.btnIncome.alpha = 1f
             binding.btnSell.alpha = 0.5f
+            presenter.outputProductHistory()
 //            binding.btnIncome.setBackgroundResource(R.color.white)
 //            binding.btnSell.setBackgroundResource(R.color.green)
         }
@@ -100,27 +105,31 @@ class ProductHistoryFragment : BaseFragment(), HistoryView {
     }
 
     override fun makeLoadingVisible(status: Boolean) {
-        TODO("Not yet implemented")
+//        TODO("Not yet implemented")
     }
 
     override fun openDialog(message: String, status: Boolean) {
-        TODO("Not yet implemented")
+//        TODO("Not yet implemented")
     }
 
     override fun errorOrNull(str: String) {
-        TODO("Not yet implemented")
+//        TODO("Not yet implemented")
     }
 
     override fun productYON(status: Boolean, message: String) {
-        TODO("Not yet implemented")
+//        TODO("Not yet implemented")
     }
 
-    override fun listProducts(list: List<ProductData>) {
+    override fun listProducts(list: List<ProductHistoryData>) {
         if (list.isNotEmpty()) {
-            binding.productHistoryRv.visibility = View.VISIBLE
+            if (isInput) {
+                adapter = HistoryAdapter((isInput))
             binding.productHistoryRv.adapter = adapter
+            }
             itemList.clear()
             itemList.addAll(list)
+            adapter.submitList(null)
+            adapter.submitList(itemList)
         } else {
 
         }

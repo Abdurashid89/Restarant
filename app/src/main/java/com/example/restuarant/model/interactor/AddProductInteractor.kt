@@ -5,7 +5,6 @@ import com.example.restuarant.model.server.ResApi
 import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
-import okhttp3.MultipartBody
 import javax.inject.Inject
 
 class AddProductInteractor @Inject constructor(
@@ -49,14 +48,14 @@ class AddProductInteractor @Inject constructor(
             .observeOn(AndroidSchedulers.mainThread())
     }
 
-    fun inputProductHistory(): Single<List<ProductData>> {
+    fun inputProductHistory(): Single<List<ProductHistoryData>> {
         return api.productInputHistory().map {
             it
         }.subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
     }
 
-    fun outputProductHistory(): Single<List<ProductData>> {
+    fun outputProductHistory(): Single<List<ProductHistoryData>> {
         return api.productOutputHistory().map {
             it
         }.subscribeOn(Schedulers.io())
