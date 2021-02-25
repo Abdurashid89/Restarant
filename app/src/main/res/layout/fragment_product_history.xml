@@ -38,7 +38,7 @@
                 android:layout_height="match_parent"
                 android:layout_weight="3"
                 android:gravity="center"
-                android:text="History"
+                android:text="@string/history"
                 android:textColor="@color/black"
                 android:textSize="20sp"
                 android:textStyle="bold" />
@@ -64,7 +64,7 @@
                         android:layout_height="match_parent"
                         android:drawableStart="@drawable/ic_search"
                         android:drawablePadding="12dp"
-                        android:hint="search"
+                        android:hint="@string/search"
                         android:imeOptions="actionDone"
                         android:inputType="text"
                         android:maxLength="20"
@@ -142,7 +142,7 @@
                 android:layout_marginLeft="12dp"
                 android:layout_marginRight="12dp"
                 android:backgroundTint="@color/green"
-                android:text="Prixod"
+                android:text="@string/input"
                 android:textColor="@color/white"
                 android:textSize="20sp"
                 android:textStyle="bold"
@@ -165,7 +165,7 @@
                 android:layout_marginStart="12dp"
                 android:layout_marginEnd="12dp"
                 android:backgroundTint="@color/green"
-                android:text="Rasxod"
+                android:text="@string/output"
                 android:textColor="@color/white"
                 android:textSize="20sp"
                 app:cornerRadius="12dp" />
@@ -210,7 +210,7 @@
             android:layout_height="match_parent"
             android:layout_weight="3"
             android:gravity="center"
-            android:text="Product name"
+            android:text="@string/product_name"
             android:textColor="@color/black"
             android:textSize="20sp"
             android:textStyle="bold" />
@@ -222,7 +222,7 @@
             android:layout_height="match_parent"
             android:layout_weight="4"
             android:gravity="center"
-            android:text="Prixod"
+            android:text="@string/input"
             android:textColor="@color/black"
             android:textSize="20sp"
             android:textStyle="bold" />
@@ -233,7 +233,7 @@
             android:layout_height="match_parent"
             android:layout_weight="4"
             android:gravity="center"
-            android:text="Summa rasxoda odnogo(sum)"
+            android:text="Сумма расхода одного  (сум)"
             android:textColor="@color/black"
             android:textSize="18sp"
             android:textStyle="bold" />
@@ -244,7 +244,7 @@
             android:layout_height="match_parent"
             android:layout_weight="4"
             android:gravity="center"
-            android:text="Summa rasxoda obshaya(sum)"
+            android:text="Сумма расхода общая (сум)"
             android:textColor="@color/black"
             android:textSize="18sp"
             android:textStyle="bold" />
@@ -255,7 +255,7 @@
             android:layout_height="match_parent"
             android:layout_weight="4"
             android:gravity="center"
-            android:text="Chislo rasxoda"
+            android:text="Число расхода"
             android:textColor="@color/black"
             android:textSize="18sp"
             android:textStyle="bold" />

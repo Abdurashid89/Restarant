@@ -46,7 +46,6 @@
 
                     <com.google.android.material.textfield.TextInputLayout
                         android:id="@+id/search"
-                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginRight="24dp"
@@ -186,7 +185,7 @@
                 android:layout_marginLeft="12dp"
                 android:layout_marginRight="12dp"
                 android:backgroundTint="@color/green"
-                android:text="История"
+                android:text="@string/history"
                 android:textColor="@color/white"
                 android:textSize="20sp"
                 android:textStyle="bold"
