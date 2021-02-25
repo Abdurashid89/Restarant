@@ -6,8 +6,6 @@ import android.view.View
 import androidx.annotation.RequiresApi
 import com.example.restuarant.R
 import com.example.restuarant.databinding.PinLockViewBinding
-import com.example.restuarant.extentions.currentTimeToLong
-import com.example.restuarant.extentions.customLog
 import com.example.restuarant.extentions.showSnackMessage
 import com.example.restuarant.extentions.visible
 import com.example.restuarant.model.entities.OrderGetData
@@ -26,7 +24,7 @@ class LoginFragment : BaseFragment(), LoginView {
     private val bn get() = _bn ?: throw NullPointerException("error")
 
 
-    private val unPaidListOld = ArrayList<OrderGetData>()
+    private val old = ArrayList<OrderGetData>()
 
     @InjectPresenter
     lateinit var presenter: LoginPresenter
@@ -110,97 +108,83 @@ class LoginFragment : BaseFragment(), LoginView {
         }
     }
 
-    private fun createPdf2(list: List<OrderGetData>) {
-        if (unPaidListOld.isEmpty()) {
-            unPaidListOld.addAll(list)
-            var ls = ArrayList<CookerCheckData>()
-            unPaidListOld.forEach {
-                it.menuSelection.forEach { order ->
-                    if (order.menu.cooker) {
-                        ls.add(CookerCheckData(order.menu.name, order.count.toString()))
-
-                    }
-                }
-                Thread.sleep(1000)
-                createDialog(it.table.name, ls)
-                ls.clear()
-            }
-        } else {
-//            for (i in list.indices){
-//
-//            }
-        }
-    }
 
     @RequiresApi(Build.VERSION_CODES.N)
     override fun ordersFromServer(list: List<OrderGetData>) {
         createPdf(list)
-//        createPdf2(list)
     }
 
-    @RequiresApi(Build.VERSION_CODES.N)
-    private fun createPdf(list: List<OrderGetData>) {
-        var isNew = true
-        if (unPaidListOld.isEmpty()) {
-            unPaidListOld.addAll(list)
-            list.forEach { order ->
+    private fun createPdf(new: List<OrderGetData>) {
+        if (old.isEmpty()) {
+            old.addAll(new)
+            new.forEach {
                 val ls = ArrayList<CookerCheckData>()
-                customLog(order.menuSelection.size.toString())
-                ls.clear()
-                order.menuSelection.forEach { menu ->
-                    if (menu.menu.cooker) {
-                        ls.add(CookerCheckData(menu.menu.name, menu.count.toString()))
+                it.menuSelection.forEach {
+                    if (!it.cooker) {
+                        ls.add(CookerCheckData(it.menu.name, it.count.toString()))
                     }
                 }
-                createDialog(order.table.name, ls)
+                createDialog(it.table.name, ls)
             }
-        }
-        else {
-            for (i in list.indices) {
-
-                unPaidListOld.forEach {
-                    if (it.id == list[i].id) {
-                        isNew = false
-                        if (it.updateAt != list[i].updateAt) {
-                            showMessage("updated: ${list[i]}")
-                            if (list[i].menuSelection.isEmpty()) {
-                                it.menuSelection.forEach {
-                                    val ls2 = ArrayList<CookerCheckData>()
-                                    if (it.menu.cooker) {
-                                        ls2.add(CookerCheckData(it.menu.name, "-${it.count}"))
-                                    }
-                                }
-                            }else{
-
-                                
-                                val lis = ArrayList<CookerCheckData>()
-                                it.menuSelection.forEach { old->
-                                    list[i].menuSelection.forEach { new->
-                                        if (old.menu.id==new.menu.id){
-                                            if (old.count>new.count)
-                                           lis.add(CookerCheckData(old.menu.name,"-${old.count-new.count}"))
-
-                                        }
-                                    }
-                                }
+        } else if (new.size > old.size) {
+            for (i in old.size until new.size) {
+                val ls = ArrayList<CookerCheckData>()
+                new[i].menuSelection.forEach {
+                    if (!it.cooker) {
+                        ls.add(CookerCheckData(it.menu.name, it.count.toString()))
+                    }
+                }
+                createDialog(new[i].table.name, ls)
+            }
+        } else if (new.size == old.size) {
+            for (i in new.indices) {
+                if (new[i].menuSelection.isNullOrEmpty()) {
+                    val ls = ArrayList<CookerCheckData>()
+                    old[i].menuSelection.forEach {
+                        ls.add(CookerCheckData(it.menu.name, "- ${it.count}"))
+                    }
+                    createDialog(old[i].table.name, ls)
+                } else if (new[i].updatedAt != old[i].updatedAt) {
+                    val ls = ArrayList<CookerCheckData>()
+                    if (new[i].menuSelection.size > old[i].menuSelection.size) {
+                        for (k in old[i].menuSelection.size until new[i].menuSelection.size) {
+                            ls.add(
+                                CookerCheckData(
+                                    new[i].menuSelection[k].menu.name,
+                                    new[i].menuSelection[k].count.toString()
+                                )
+                            )
+                        }
+                        createDialog(new[i].table.name, ls)
+                    } else if (new[i].menuSelection.size == old[i].menuSelection.size) {
+                        val list = ArrayList<CookerCheckData>()
+                        for (j in new[i].menuSelection.indices) {
+                            if (new[i].menuSelection[j].count > old[i].menuSelection[j].count) {
+                                list.add(
+                                    CookerCheckData(
+                                        new[i].menuSelection[j].menu.name,
+                                        (new[i].menuSelection[j].count - old[i].menuSelection[j].count).toString()
+                                    )
+                                )
+                            } else if (new[i].menuSelection[j].count < old[i].menuSelection[j].count) {
+                                list.add(
+                                    CookerCheckData(
+                                        new[i].menuSelection[j].menu.name,
+                                        (new[i].menuSelection[j].count - old[i].menuSelection[j].count).toString()
+                                    )
+                                )
                             }
                         }
+                        createDialog(new[i].table.name, list)
                     }
-                }
-                if (isNew) {
-                    val ls = ArrayList<CookerCheckData>()
-                    list[i].menuSelection.forEach {
-                        if (it.menu.cooker) {
-                            ls.add(CookerCheckData(it.menu.name, it.count.toString()))
-                        }
-                    }
-                    createDialog(list[i].table.name, ls)
                 }
             }
-
-            unPaidListOld.clear()
-            unPaidListOld.addAll(list)
         }
+        old.clear()
+        old.addAll(new)
+
+    }
+
 
 //        list.forEach {
 //            val mDoc = Document()
@@ -221,12 +205,13 @@ class LoginFragment : BaseFragment(), LoginView {
 //            val uri = File(mFilePath).toUri()
 ////            CookerCheckDialog(requireContext()).show()
 //        }
-    }
+
 
     private fun createDialog(name: Int, ls: ArrayList<CookerCheckData>) {
-        customLog("Size--->${ls.size}")
-        val dialog = CookerCheckDialog(requireContext(), name, ls)
-        dialog.show()
+        if (ls.isNotEmpty()) {
+            CookerCheckDialog(requireContext(), name, ls).show()
+        }
+
 
     }
 //    private fun createPdf(list: List<OrderGetData>) {
