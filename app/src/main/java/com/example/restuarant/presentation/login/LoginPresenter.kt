@@ -28,7 +28,7 @@ class LoginPresenter @Inject constructor(
     override fun onFirstViewAttach() {
         super.onFirstViewAttach()
         login(LoginData("+998909476154", "123"))
-//        getAllUnPaidOrders()
+        getAllUnPaidOrders()
     }
 
     fun onBackPressed() {
@@ -68,7 +68,7 @@ class LoginPresenter @Inject constructor(
 
                 interactor.unPaid()
                     .subscribe({
-                        viewState.showMessage("Success unpiad-->${it.objectData.size}")
+                      //  viewState.showMessage("Success unpiad-->${it.objectData.size}")
                         viewState.ordersFromServer(it.objectData)
                     }, {
                         viewState.showMessage(it.errorResponse())

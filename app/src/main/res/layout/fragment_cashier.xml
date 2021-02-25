@@ -41,7 +41,7 @@
                     android:layout_gravity="end|center"
                     android:layout_marginEnd="16dp"
                     android:fontFamily="@font/roboto_medium"
-                    android:text="@string/cashier_name"
+                    android:text="Кассир"
                     android:textColor="@color/white"
                     android:textSize="24sp"
                     android:textStyle="bold" />
@@ -345,8 +345,6 @@
                     android:layout_weight="1.5"
                     android:orientation="vertical"
                     tools:ignore="Suspicious0dp">
-
-
 
                     <include
                         android:id="@+id/tables_layout"

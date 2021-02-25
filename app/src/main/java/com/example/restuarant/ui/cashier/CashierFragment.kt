@@ -80,7 +80,6 @@ class CashierFragment : BaseFragment(), CashierView, SwipeRefreshLayout.OnRefres
     private var totalPrice = ""
     private var orderPrice = 0.0
     var historyOpened = false
-    private var orderId = 0
     var check: Check? = null
 
     @InjectPresenter
@@ -465,10 +464,9 @@ class CashierFragment : BaseFragment(), CashierView, SwipeRefreshLayout.OnRefres
         fragmentManager?.let { dialog.show(it, "date") }
     }
 
-
-    override fun onCreateAnimation(transit: Int, enter: Boolean, nextAnim: Int): Animation {
+/*override fun onCreateAnimation(transit: Int, enter: Boolean, nextAnim: Int): Animation {
         return CubeAnimation.create(CubeAnimation.RIGHT, enter, 1000)
-    }
+    }*/
 
 
     private fun setColorMenu() {
