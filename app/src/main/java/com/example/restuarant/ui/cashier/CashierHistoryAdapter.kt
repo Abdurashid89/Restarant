@@ -1,35 +1,47 @@
 package com.example.restuarant.ui.cashier
 
-import android.annotation.SuppressLint
-import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
-import com.example.restuarant.R
-import com.example.restuarant.databinding.ItemCookerOrderBinding
 import com.example.restuarant.databinding.ItemHistoryChashierBinding
+import com.example.restuarant.extentions.ITextWatcher
 import com.example.restuarant.extentions.SingleBlock
 import com.example.restuarant.extentions.bindItem
+import com.example.restuarant.extentions.search.OrderCallBack
+import com.example.restuarant.extentions.search.Search
 import com.example.restuarant.model.entities.OrderGetData
-import com.example.restuarant.ui.cashier.check.CookerCheckData
 
 /**
  * Created by Abdurashid on 08,Февраль,2021
  */
 
 class CashierHistoryAdapter : RecyclerView.Adapter<CashierHistoryAdapter.HistoryViewHolder>() {
-    val list = ArrayList<OrderGetData>()
+    private val list = ArrayList<OrderGetData>()
+    var search: ITextWatcher
+
+    init {
+        search = Search(this, list)
+    }
 
     fun submitList(ls: List<OrderGetData>) {
         list.clear()
         list.addAll(ls)
+        search = Search(this, list)
+
         notifyDataSetChanged()
     }
+
+    fun getAllHistory() = list
 
     var listener: SingleBlock<OrderGetData>? = null
 
     fun setOnClickListener(block: SingleBlock<OrderGetData>) {
         listener = block
+    }
+
+    fun onSearch(text: String) {
+        search.onTextChanged(text)
     }
 
 
@@ -43,17 +55,25 @@ class CashierHistoryAdapter : RecyclerView.Adapter<CashierHistoryAdapter.History
 
     override fun getItemCount() = list.size
 
-    fun showCheckPosition(position: Int) {
+    fun updateOrders(searchedUser: ArrayList<OrderGetData>) {
+        val callBack = OrderCallBack(searchedUser, list)
+        val result = DiffUtil.calculateDiff(callBack)
+        list.clear()
+        list.addAll(searchedUser)
+        result.dispatchUpdatesTo(this)
+        notifyDataSetChanged()
+    }
 
+    fun clear() {
+        list.clear()
+        notifyDataSetChanged()
     }
 
     inner class HistoryViewHolder(val binding: ItemHistoryChashierBinding) :
         RecyclerView.ViewHolder(binding.root) {
 
         init {
-            itemView.setOnClickListener {
-                listener?.invoke(list[adapterPosition])
-            }
+            binding.orderDetail.setOnClickListener { listener!!.invoke(list[adapterPosition]) }
         }
 
         fun bind() = bindItem {
@@ -61,11 +81,11 @@ class CashierHistoryAdapter : RecyclerView.Adapter<CashierHistoryAdapter.History
 
             val d = list[adapterPosition]
             binding.apply {
-                numberTable.text = d.id.toString()
+                tvTransaction.text = d.id.toString()
+                numberTable.text = d.table.id.toString()
                 orderPrice.text = d.orderPrice.toString()
-                payType.text = d.orderType
-//                cashBack.text = d.cashBack
-                orderDetail.setOnClickListener { listener!!.invoke(list[adapterPosition]) }
+                payType.text = d.payType
+                cashBack.text = d.cashBack.toString()
             }
         }
     }
