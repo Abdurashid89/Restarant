@@ -20,6 +20,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.animation.*
 import android.widget.ImageView
 import android.widget.PopupMenu
 import android.widget.Toast
@@ -30,6 +31,7 @@ import androidx.core.widget.ImageViewCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import androidx.recyclerview.widget.RecyclerView
+import com.example.restuarant.model.entities.OrderGetData
 import com.example.restuarant.model.entities.TableData
 import com.example.restuarant.presentation.responseDialog.ResponseStatusDialog
 import com.google.android.material.snackbar.Snackbar
@@ -52,6 +54,42 @@ import java.net.SocketTimeoutException
 import java.text.SimpleDateFormat
 import java.util.*
 import java.util.concurrent.Executors
+
+
+fun RecyclerView.fadeIn() {
+    val set = AnimationSet(true)
+    val fadeIn: Animation = AlphaAnimation(0.0f, 1.0f)
+    fadeIn.duration = 500
+    set.addAnimation(fadeIn)
+    val controller = LayoutAnimationController(set, 0.2f)
+
+    this.layoutAnimation = controller
+}
+
+fun RecyclerView.playAnimation(context: Context, resId: Int) {
+    val animation =
+        AnimationUtils.loadLayoutAnimation(context, resId)
+    this.layoutAnimation = animation
+}
+
+
+fun ArrayList<OrderGetData>.sortHistoryByDate(): ArrayList<OrderGetData> {
+    for (i in 0 until this.size - 1) {
+        val dateI =
+            this[i].createdAt.replace("T", ".").replace("-", ".").substring(0, 16)
+                .convertDateToLong()
+        for (j in i + 1 until this.size) {
+            val dateJ = this[j].createdAt.replace("T", ".").replace("-", ".").substring(0, 16)
+                .convertDateToLong()
+            if (dateJ < dateI) {
+                val temp = this[j]
+                this[j] = this[i]
+                this[i] = temp
+            }
+        }
+    }
+    return this
+}
 
 fun ArrayList<TableData>.sortTable(): ArrayList<TableData> {
     for (i in 0 until this.size - 1) {

@@ -109,18 +109,22 @@ class CashierPresenter @Inject constructor(
 
 
     fun sendPay(paidCheck: PaidCheck) {
-        interactor.sendToServer(paidCheck)
-            .doOnSubscribe {
-                viewState.showProgress(true, 1)
-            }.doAfterTerminate {
-                viewState.showProgress(false, 1)
-            }.subscribe({
-                viewState.showMessage(it.message)
-                getTables()
-                viewState.clearAll()
-            }, {
-                viewState.showMessage(it.errorResponse())
-            }).connect()
+        if (paidCheck.paidPrice <= 0) {
+            viewState.showMessage("Iltimos yetarli mablag' kiriting")
+        } else {
+            interactor.sendToServer(paidCheck)
+                .doOnSubscribe {
+                    viewState.showProgress(true, 1)
+                }.doAfterTerminate {
+                    viewState.showProgress(false, 1)
+                }.subscribe({
+                    viewState.showMessage(it.message)
+                    getTables()
+                    viewState.clearAll()
+                }, {
+                    viewState.showMessage(it.errorResponse())
+                }).connect()
+        }
     }
 
     fun loadHistory() {

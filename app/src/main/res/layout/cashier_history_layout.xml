@@ -104,7 +104,7 @@
                     android:drawablePadding="12dp"
                     android:hint="search"
                     android:imeOptions="actionDone"
-                    android:inputType="numberPassword"
+                    android:inputType="number"
                     android:maxLength="20"
                     android:maxLines="1"
                     android:padding="10dp"
@@ -234,6 +234,7 @@
             android:layout_marginBottom="16dp"
             android:background="@drawable/cashier_order_bgn"
             android:padding="2dp"
+            android:scrollbars="vertical"
             android:visibility="gone"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
     </LinearLayout>
