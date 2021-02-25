@@ -1,11 +1,8 @@
 package com.example.restuarant.ui.waiter.adapters
 
 import android.annotation.SuppressLint
-import android.graphics.Color
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
-import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.SortedList
 import androidx.recyclerview.widget.SortedListAdapterCallback
@@ -13,12 +10,14 @@ import com.example.restuarant.databinding.TableItemBinding
 import com.example.restuarant.extentions.SingleBlock
 import com.example.restuarant.model.entities.TableData
 
-class TableAdapter :RecyclerView.Adapter<TableAdapter.VHolder>(){
+class TableAdapter : RecyclerView.Adapter<TableAdapter.VHolder>() {
 
     private var listener: SingleBlock<TableData>? = null
 
     private val callBack = object : SortedListAdapterCallback<TableData>(this) {
-        override fun areItemsTheSame(item1: TableData?, item2: TableData?) = item1!!.id == item2!!.id
+        override fun areItemsTheSame(item1: TableData?, item2: TableData?) =
+            item1!!.id == item2!!.id
+
         override fun compare(o1: TableData?, o2: TableData?): Int {
             return when {
                 o1!!.id > o2!!.id -> 1
@@ -26,7 +25,9 @@ class TableAdapter :RecyclerView.Adapter<TableAdapter.VHolder>(){
                 else -> -1
             }
         }
-        override fun areContentsTheSame(oldItem: TableData?, newItem: TableData?) = oldItem!!.name == newItem!!.name && oldItem.active == newItem.active
+
+        override fun areContentsTheSame(oldItem: TableData?, newItem: TableData?) =
+            oldItem!!.name == newItem!!.name && oldItem.active == newItem.active
     }
 
     private val sortedList = SortedList(TableData::class.java, callBack)
@@ -55,11 +56,15 @@ class TableAdapter :RecyclerView.Adapter<TableAdapter.VHolder>(){
                 listener?.invoke(sortedList[adapterPosition])
             }
         }
+
         @SuppressLint("Range", "ResourceAsColor")
         fun onBind() {
             val d = sortedList[adapterPosition]
-            if (d.active){ view.tablePageLinear.setBackgroundResource(android.R.color.holo_green_dark) }
-            else{ view.tablePageLinear.setBackgroundResource(android.R.color.holo_red_dark) }
+            if (d.active) {
+                view.tablePageLinear.setBackgroundResource(android.R.color.holo_green_dark)
+            } else {
+                view.tablePageLinear.setBackgroundResource(android.R.color.holo_red_dark)
+            }
             view.tablePageNumberTv.text = d.name.toString()
         }
     }
