@@ -26,7 +26,7 @@ import java.lang.NullPointerException
 class CreateProductDialogFragment : MvpAppCompatDialogFragment(), AddProductView {
     private var _bn: AddNewProductBinding? = null
     private val bn get() = _bn ?: throw NullPointerException("error")
-    private var listener: SingleBlock<ProductData>? = null
+    private var listener: SingleBlock<Boolean>? = null
     private var nullOrErrorListener: ((String, Boolean) -> Unit)? = null
 
     @InjectPresenter
@@ -99,11 +99,11 @@ class CreateProductDialogFragment : MvpAppCompatDialogFragment(), AddProductView
         })
 
         bn.btnDismiss.setOnClickListener {
-            dialog?.dismiss()
+            listener?.invoke(true)
         }
     }
 
-    fun setOnCLickListener(block: SingleBlock<ProductData>) {
+    fun setOnCLickListener(block: SingleBlock<Boolean>) {
         listener = block
     }
 

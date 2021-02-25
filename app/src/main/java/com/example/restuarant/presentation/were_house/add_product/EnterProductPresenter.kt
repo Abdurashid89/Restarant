@@ -35,7 +35,7 @@ class EnterProductPresenter @Inject constructor(
             .doAfterTerminate {
                 viewState.makeLoadingVisible(false)
             }.subscribe({
-                viewState.showMessage("Product Successfully added")
+                viewState.showMessage(" Success")
                 viewState.clearAllOldData()
             }, {
                 viewState.showMessage(it.errorResponse())

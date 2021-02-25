@@ -7,6 +7,7 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.example.restuarant.R
 import com.example.restuarant.databinding.FragmentWareHouseBinding
 import com.example.restuarant.extentions.showSnackMessage
+import com.example.restuarant.extentions.visible
 //import com.example.restuarant.model.entities.CategoryInProductData
 import com.example.restuarant.model.entities.ProductInData
 import com.example.restuarant.presentation.were_house.WareHousePresenter
@@ -39,6 +40,7 @@ class WareHouseFragment() : BaseFragment(), WareHouseView, SwipeRefreshLayout.On
         binding.productRv.layoutManager = layoutManager
         binding.productRv.adapter = adapter
 
+        binding.swiperefresh.setOnRefreshListener(this)
         binding.btnLogOut.setOnClickListener {
             presenter.onBackPressed()
         }
@@ -64,11 +66,21 @@ class WareHouseFragment() : BaseFragment(), WareHouseView, SwipeRefreshLayout.On
     }
 
     private fun inputOrOutputProduct(type: Boolean) {
-        EnterProductDialog(type).show(childFragmentManager, "tag")
+        val dialog = EnterProductDialog(type)
+        dialog.setOnCLickListener {
+            presenter.getAllProduct()
+            dialog.dismiss()
+        }
+            dialog.show(childFragmentManager, "tag")
     }
 
     private fun addProduct() {
-        CreateProductDialogFragment().show(childFragmentManager, "tag")
+        val dialog = CreateProductDialogFragment()
+        dialog.setOnCLickListener {
+            presenter.getAllProduct()
+            dialog.dismiss()
+        }
+            dialog.show(childFragmentManager, "tag")
     }
 
 
@@ -77,15 +89,20 @@ class WareHouseFragment() : BaseFragment(), WareHouseView, SwipeRefreshLayout.On
     }
 
     override fun makeLoadingVisible(status: Boolean) {
-
+        binding.progress.visible(status)
     }
 
     override fun openErrorDialog(message: String, status: Boolean) {
-
+        binding.swiperefresh.isRefreshing = false
     }
 
     override fun listProducts(list: List<ProductInData>) {
-        adapter.submitList(list)
+        binding.swiperefresh.isRefreshing = false
+        if(list.isNotEmpty()){
+            adapter.submitList(null)
+            adapter.submitList(list)
+            binding.notProduct.visible(false)
+        }
     }
 
     override fun onBackPressed() {
@@ -93,7 +110,7 @@ class WareHouseFragment() : BaseFragment(), WareHouseView, SwipeRefreshLayout.On
     }
 
     override fun onRefresh() {
-
+        presenter.getAllProduct()
     }
 
 }

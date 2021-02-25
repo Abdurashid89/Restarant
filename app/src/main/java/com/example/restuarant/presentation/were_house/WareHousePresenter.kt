@@ -52,7 +52,7 @@ class WareHousePresenter @Inject constructor(
     }
 
 
-    private fun getAllProduct() {
+    fun getAllProduct() {
         productInteractor.getAllProduct()
             .doOnSubscribe {
 
@@ -62,6 +62,7 @@ class WareHousePresenter @Inject constructor(
                 viewState.listProducts(it.objectDate)
                 viewState.showMessage(it.objectDate.size.toString())
             }, {
+                viewState.openErrorDialog("error",false)
                 viewState.showMessage(it.toString())
             }).connect()
     }

@@ -21,3 +21,25 @@ data class ProductData(
         }
     }
 }
+
+data class ProductHistoryData(
+    val input: Boolean,
+    val incomePrice: Double,
+    val sellPrice: Double,
+    val presentCount: Double,
+    val createdAt: String,
+    val updatedAt: String,
+    val sold: Boolean,
+    val name: String,
+    val type: String
+) {
+    companion object {
+        val ITEM_CALLBACK = object : DiffUtil.ItemCallback<ProductHistoryData>() {
+            override fun areItemsTheSame(oldItem: ProductHistoryData, newItem: ProductHistoryData): Boolean =
+                oldItem.name == newItem.name
+
+            override fun areContentsTheSame(oldItem: ProductHistoryData, newItem: ProductHistoryData): Boolean =
+                oldItem.type == newItem.type
+        }
+    }
+}

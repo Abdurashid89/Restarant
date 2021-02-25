@@ -4,7 +4,6 @@ import android.app.Application
 import androidx.multidex.BuildConfig
 import com.example.restuarant.di.DI
 import com.example.restuarant.di.module.AppModule
-import com.example.restuarant.extentions.currentTimeToLong
 import timber.log.Timber
 import toothpick.Toothpick
 import toothpick.configuration.Configuration
