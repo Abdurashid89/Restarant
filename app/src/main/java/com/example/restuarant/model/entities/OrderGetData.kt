@@ -18,7 +18,7 @@ data class OrderGetData(
     var cashBack: Double,
     var payStatus: String,
     var menuSelection: List<MenuSelect2>,
-    var updateAt: String
+    var updatedAt: String
 )
 
 data class Table(
