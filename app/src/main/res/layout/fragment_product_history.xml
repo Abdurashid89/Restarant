@@ -26,11 +26,12 @@
                 android:layout_weight="3"
                 android:gravity="center">
 
-                <ImageView
+                <androidx.appcompat.widget.AppCompatImageButton
                     android:id="@+id/btn_back"
-                    android:layout_width="48dp"
-                    android:layout_height="48dp"
-                    android:src="@drawable/ic_arrow_back" />
+                    android:layout_width="wrap_content"
+                    android:background="?selectableItemBackground"
+                    android:src="@drawable/arrow_back"
+                    android:layout_height="wrap_content" />
             </LinearLayout>
 
             <TextView
@@ -136,11 +137,11 @@
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/btn_income"
-                android:alpha="0.5"
                 android:layout_width="match_parent"
                 android:layout_height="60dp"
                 android:layout_marginLeft="12dp"
                 android:layout_marginRight="12dp"
+                android:alpha="0.5"
                 android:backgroundTint="@color/green"
                 android:text="@string/input"
                 android:textColor="@color/white"
@@ -270,7 +271,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintTop_toBottomOf="@id/linear_table"
         app:layout_constraintVertical_bias="0.0"
-        tools:layout_editor_absoluteX="63dp"
+        tools:layout_editor_absoluteX="-313dp"
         tools:listitem="@layout/item_product_history" />
 
     <include
