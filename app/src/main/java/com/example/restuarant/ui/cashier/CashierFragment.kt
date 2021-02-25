@@ -338,6 +338,12 @@ class CashierFragment : BaseFragment(), CashierView, SwipeRefreshLayout.OnRefres
             }
         }
 
+        bn.togoLayout.btnBack.setOnClickListener {
+            bn.togoLayout.cashierOwnLayout.visibility = View.VISIBLE
+            bn.togoLayout.togoOrderConstraint.visibility = View.GONE
+            bn.togoLayout.tableListRv.visibility = View.VISIBLE
+        }
+
         bn.historyLayout.tvToday.setOnClickListener {
             historyList.forEach {
                 val date =

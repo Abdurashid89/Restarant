@@ -82,7 +82,7 @@
                     style="@style/Theme.TVHistory"
                     android:layout_gravity="center"
                     android:gravity="center"
-                    android:text="Today" />
+                    android:text="@string/today" />
 
             </androidx.cardview.widget.CardView>
 
@@ -102,7 +102,7 @@
                     android:layout_height="match_parent"
                     android:drawableStart="@drawable/ic_search"
                     android:drawablePadding="12dp"
-                    android:hint="search"
+                    android:hint="@string/search"
                     android:imeOptions="actionDone"
                     android:inputType="number"
                     android:maxLength="20"
@@ -126,7 +126,7 @@
                     android:layout_height="match_parent"
                     android:background="@color/green"
                     android:gravity="center"
-                    android:text="Export"
+                    android:text="@string/export"
                     android:textColor="@color/white" />
 
             </androidx.cardview.widget.CardView>
@@ -151,7 +151,7 @@
                 android:layout_marginStart="16dp"
                 android:layout_weight="0.8"
                 android:gravity="center"
-                android:text="ID \n transaction "
+                android:text="ID"
                 android:textColor="@color/black"
                 android:textSize="16sp" />
 
@@ -201,7 +201,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1.8"
-                android:gravity="end"
+                android:gravity="center"
                 android:text="@string/order_detail"
                 android:textColor="@color/black"
                 android:textSize="16sp" />
@@ -214,7 +214,7 @@
             android:layout_gravity="center_horizontal"
             android:layout_margin="30dp"
             android:gravity="center"
-            android:hint="Empty History..."
+            android:hint="История пуста..."
             android:textSize="32sp" />
 
         <ProgressBar

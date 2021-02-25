@@ -5,11 +5,14 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.example.restuarant.databinding.ItemProductHistoryBinding
+import com.example.restuarant.extentions.*
 import com.example.restuarant.extentions.ITextWatcher
 import com.example.restuarant.extentions.SingleBlock
 import com.example.restuarant.extentions.bindItem
 import com.example.restuarant.extentions.customLog
 import com.example.restuarant.model.entities.ProductHistoryData
+import com.example.restuarant.model.entities.ProductInData
+import kotlin.random.Random
 import com.example.restuarant.ui.wareHouse.search.ProductHistoryCallBack
 import com.example.restuarant.ui.wareHouse.search.ProductHistorySearch
 
@@ -53,20 +56,22 @@ class HistoryAdapter(val type: Boolean) :
         fun bind() = bindItem {
             val d = list[adapterPosition]
             binding.apply {
-//                productId.text = d.id.toString()
+                productId.text = Random.nextInt(1,100).toString()
                 productName.text = d.name
-                productCount.text = d.presentCount.toString()
+                productUnit.text = d.updatedAt.substring(0, 10)
+                productHours.text = d.updatedAt.substring(11, 16)
+                productCount.text = d.presentCount.formatDouble()
                 if (type) {
                     customLog(d.name + "incomePrice->" + d.incomePrice.toString())
-                    productOnePrice.text = d.incomePrice.toString()
-                    productAllSum.text = "${d.incomePrice * d.presentCount}"
+                    productOnePrice.text = d.incomePrice.formatDouble()
+                    productAllSum.text = (d.incomePrice * d.presentCount).formatDouble()
                 } else {
                     if (d.sold) {
                         productOnePrice.text = "----"
                         productAllSum.text = "----"
                     } else {
-                        productOnePrice.text = d.sellPrice.toString()
-                        productAllSum.text = "${d.sellPrice * d.presentCount}"
+                        productOnePrice.text = d.sellPrice.formatDouble()
+                        productAllSum.text = (d.sellPrice * d.presentCount).formatDouble()
                     }
                 }
             }

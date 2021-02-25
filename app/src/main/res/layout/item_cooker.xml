@@ -31,18 +31,19 @@
                 android:id="@+id/ttnumber"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Table Number"
+                android:text="@string/table_no"
+                android:textStyle="bold"
                 android:textColor="@color/black"
-                android:textSize="36sp" />
+                android:textSize="24sp" />
 
             <TextView
                 android:id="@+id/table_number"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="12dp"
                 android:text="0"
+                android:layout_marginStart="12dp"
                 android:textColor="@color/black"
-                android:textSize="36sp"
+                android:textSize="24sp"
                 android:textStyle="bold" />
         </LinearLayout>
 
@@ -55,25 +56,25 @@
 
             <TextView
                 android:textStyle="bold"
+                android:textColor="@color/black"
                 android:textSize="24sp"
                 android:id="@+id/meal_name"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="2"
                 android:gravity="start"
-                android:text="Meal Name"
-                android:textColor="@color/black" />
+                android:text="@string/meal_name" />
 
             <TextView
                 android:textStyle="bold"
+                android:textColor="@color/black"
                 android:textSize="24sp"
                 android:id="@+id/plus_minus"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:gravity="end"
-                android:text="Count"
-                android:textColor="@color/black" />
+                android:text="@string/how_many" />
 
         </LinearLayout>
 

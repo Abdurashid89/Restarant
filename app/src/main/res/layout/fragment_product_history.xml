@@ -26,11 +26,12 @@
                 android:layout_weight="3"
                 android:gravity="center">
 
-                <ImageView
+                <androidx.appcompat.widget.AppCompatImageButton
                     android:id="@+id/btn_back"
-                    android:layout_width="48dp"
-                    android:layout_height="48dp"
-                    android:src="@drawable/ic_arrow_back" />
+                    android:layout_width="wrap_content"
+                    android:background="?selectableItemBackground"
+                    android:src="@drawable/arrow_back"
+                    android:layout_height="wrap_content" />
             </LinearLayout>
 
             <TextView
@@ -38,7 +39,7 @@
                 android:layout_height="match_parent"
                 android:layout_weight="3"
                 android:gravity="center"
-                android:text="History"
+                android:text="@string/history"
                 android:textColor="@color/black"
                 android:textSize="20sp"
                 android:textStyle="bold" />
@@ -64,7 +65,7 @@
                         android:layout_height="match_parent"
                         android:drawableStart="@drawable/ic_search"
                         android:drawablePadding="12dp"
-                        android:hint="search"
+                        android:hint="@string/search"
                         android:imeOptions="actionDone"
                         android:inputType="text"
                         android:maxLength="20"
@@ -142,7 +143,7 @@
                 android:layout_marginRight="12dp"
                 android:alpha="0.5"
                 android:backgroundTint="@color/green"
-                android:text="Prixod"
+                android:text="@string/input"
                 android:textColor="@color/white"
                 android:textSize="20sp"
                 android:textStyle="bold"
@@ -165,7 +166,7 @@
                 android:layout_marginStart="12dp"
                 android:layout_marginEnd="12dp"
                 android:backgroundTint="@color/green"
-                android:text="Rasxod"
+                android:text="@string/output"
                 android:textColor="@color/white"
                 android:textSize="20sp"
                 app:cornerRadius="12dp" />
@@ -210,7 +211,7 @@
             android:layout_height="match_parent"
             android:layout_weight="3"
             android:gravity="center"
-            android:text="Product name"
+            android:text="@string/product_name"
             android:textColor="@color/black"
             android:textSize="20sp"
             android:textStyle="bold" />
@@ -222,7 +223,7 @@
             android:layout_height="match_parent"
             android:layout_weight="4"
             android:gravity="center"
-            android:text="Prixod"
+            android:text="@string/input"
             android:textColor="@color/black"
             android:textSize="20sp"
             android:textStyle="bold" />
@@ -233,7 +234,7 @@
             android:layout_height="match_parent"
             android:layout_weight="4"
             android:gravity="center"
-            android:text="Summa rasxoda odnogo(sum)"
+            android:text="Сумма расхода одного  (сум)"
             android:textColor="@color/black"
             android:textSize="18sp"
             android:textStyle="bold" />
@@ -244,7 +245,7 @@
             android:layout_height="match_parent"
             android:layout_weight="4"
             android:gravity="center"
-            android:text="Summa rasxoda obshaya(sum)"
+            android:text="Сумма расхода общая (сум)"
             android:textColor="@color/black"
             android:textSize="18sp"
             android:textStyle="bold" />
@@ -255,7 +256,7 @@
             android:layout_height="match_parent"
             android:layout_weight="4"
             android:gravity="center"
-            android:text="Chislo rasxoda"
+            android:text="Число расхода"
             android:textColor="@color/black"
             android:textSize="18sp"
             android:textStyle="bold" />
@@ -270,7 +271,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintTop_toBottomOf="@id/linear_table"
         app:layout_constraintVertical_bias="0.0"
-        tools:layout_editor_absoluteX="63dp"
+        tools:layout_editor_absoluteX="-313dp"
         tools:listitem="@layout/item_product_history" />
 
     <include
