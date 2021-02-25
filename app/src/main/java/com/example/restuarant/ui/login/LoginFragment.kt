@@ -196,7 +196,7 @@ class LoginFragment : BaseFragment(), LoginView {
                     createDialog(list[i].table.name, ls)
                 }
             }
-            
+
             unPaidListOld.clear()
             unPaidListOld.addAll(list)
         }

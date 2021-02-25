@@ -19,8 +19,8 @@
             android:id="@+id/logo_constrait"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_marginRight="10dp"
             android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
             android:background="@color/green"
             app:layout_constraintHeight_percent="0.1"
             app:layout_constraintLeft_toLeftOf="parent"
@@ -41,17 +41,17 @@
                 android:id="@+id/waiter_name"
                 android:layout_width="0dp"
                 android:layout_height="0dp"
-                android:gravity="center|end"
-                android:textColor="@color/white"
-                android:maxLines="2"
                 android:layout_marginEnd="32dp"
-                app:reflectionColor="@color/green"
+                android:gravity="center|end"
+                android:maxLines="2"
                 android:text="Donald Trump"
+                android:textColor="@color/white"
                 android:textSize="24sp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintLeft_toRightOf="@id/logo_image"
                 app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toTopOf="parent"
+                app:reflectionColor="@color/green" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -63,17 +63,17 @@
             android:background="@drawable/black_line"
             android:padding="5dp"
             app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintHeight_percent="0.85"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintHeight_percent="0.85"
             app:layout_constraintTop_toBottomOf="@id/logo_constrait"
             app:layout_constraintWidth_percent="0.9">
 
             <LinearLayout
-                android:gravity="bottom"
                 android:id="@+id/order_linear"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
+                android:gravity="bottom"
                 android:orientation="vertical"
                 app:layout_constraintBottom_toTopOf="@id/order_rv"
                 app:layout_constraintHeight_percent="0.15"
@@ -82,17 +82,17 @@
                 app:layout_constraintTop_toTopOf="parent">
 
                 <LinearLayout
-                    android:layout_marginBottom="10dp"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="24dp"
+                    android:layout_marginBottom="10dp"
                     android:gravity="center"
                     android:orientation="horizontal">
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Table No "
+                        android:text="@string/table_number"
                         android:textColor="@color/black"
                         android:textSize="24sp" />
 
@@ -119,7 +119,7 @@
                         android:layout_marginStart="20dp"
                         android:layout_weight="1"
                         android:gravity="center"
-                        android:text="Meal Name"
+                        android:text="@string/product_name"
                         android:textColor="@color/black"
                         android:textSize="16sp" />
 
@@ -128,7 +128,7 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:gravity="center"
-                        android:text="Price"
+                        android:text="@string/product_price"
                         android:textColor="@color/black"
                         android:textSize="16sp" />
 
@@ -137,7 +137,7 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:gravity="center"
-                        android:text="How many"
+                        android:text="@string/product_how_many"
                         android:textColor="@color/black"
                         android:textSize="16sp" />
 
@@ -147,7 +147,7 @@
                         android:layout_marginEnd="10dp"
                         android:layout_weight="1"
                         android:gravity="end"
-                        android:text="Total"
+                        android:text="@string/total_price"
                         android:textColor="@color/black"
                         android:textSize="16sp" />
                 </LinearLayout>
@@ -168,27 +168,27 @@
                 tools:listitem="@layout/order_item" />
 
             <ProgressBar
-                android:visibility="gone"
                 android:id="@+id/waiter_orderProgress"
-                app:layout_constraintTop_toTopOf="@id/order_rv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:visibility="gone"
                 app:layout_constraintBottom_toBottomOf="@id/order_rv"
                 app:layout_constraintLeft_toLeftOf="@id/order_rv"
                 app:layout_constraintRight_toRightOf="@id/order_rv"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
+                app:layout_constraintTop_toTopOf="@id/order_rv" />
 
             <TextView
                 android:id="@+id/order_text"
-                android:text="Ma'lumot yo'q! "
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/empty"
+                android:textColor="@color/green"
                 android:textSize="36sp"
                 android:textStyle="italic"
-                android:textColor="@color/green"
-                app:layout_constraintTop_toTopOf="@id/order_rv"
                 app:layout_constraintBottom_toBottomOf="@id/order_rv"
                 app:layout_constraintLeft_toLeftOf="@id/order_rv"
                 app:layout_constraintRight_toRightOf="@id/order_rv"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
+                app:layout_constraintTop_toTopOf="@id/order_rv" />
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -200,16 +200,16 @@
                 app:layout_constraintTop_toBottomOf="@id/order_rv">
 
                 <LinearLayout
-                    android:padding="10dp"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:gravity="center"
-                    android:orientation="horizontal">
+                    android:orientation="horizontal"
+                    android:padding="10dp">
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Total : "
+                        android:text="@string/total_price"
                         android:textColor="@color/black"
                         android:textSize="24sp" />
 
@@ -223,16 +223,17 @@
                         android:textSize="24sp"
                         android:textStyle="bold" />
                 </LinearLayout>
+
                 <Button
-                    android:layout_marginTop="10dp"
                     android:id="@+id/btn_print"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="60dp"
+                    android:layout_marginTop="10dp"
                     android:layout_marginRight="60dp"
                     android:layout_marginBottom="12dp"
                     android:background="@drawable/cashier_btn_bgn"
-                    android:text="Print"
+                    android:text="@string/send_order"
                     android:textColor="@color/white"
                     android:textSize="16sp" />
             </LinearLayout>
@@ -255,72 +256,72 @@
             app:layout_constraintTop_toTopOf="parent">
 
             <Button
-                android:textAllCaps="false"
-                android:textStyle="italic"
-                android:textSize="24sp"
                 android:id="@+id/tables_btn"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:background="@color/green"
                 android:maxLines="2"
-                android:text="Table"
+                android:text="Столы"
+                android:textAllCaps="false"
                 android:textColor="@color/white"
+                android:textSize="24sp"
+                android:textStyle="italic"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toLeftOf="@id/order_btn"
                 app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintWidth_percent="0.225" />
+                app:layout_constraintWidth_percent="0.3" />
 
             <Button
-                android:textAllCaps="false"
-                android:textStyle="italic"
-                android:textSize="24sp"
-                android:textColor="@color/white"
                 android:id="@+id/order_btn"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:maxLines="2"
-                android:text="Order"
                 android:background="@color/green"
+                android:maxLines="2"
+                android:text="Меню"
+                android:textAllCaps="false"
+                android:textColor="@color/white"
+                android:textSize="24sp"
+                android:textStyle="italic"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintLeft_toRightOf="@id/tables_btn"
-                app:layout_constraintRight_toLeftOf="@id/dashboard_btn"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintWidth_percent="0.225" />
-
-            <Button
-                android:textAllCaps="false"
-                android:textStyle="italic"
-                android:textSize="24sp"
-                android:textColor="@color/white"
-                android:id="@+id/dashboard_btn"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:maxLines="2"
-                android:text="Dashboard"
-                android:background="@color/green"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintLeft_toRightOf="@id/order_btn"
                 app:layout_constraintRight_toLeftOf="@id/exit_btn"
                 app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintWidth_percent="0.25" />
+                app:layout_constraintWidth_percent="0.3" />
+
+            <!--            <Button-->
+            <!--                android:textAllCaps="false"-->
+            <!--                android:textStyle="italic"-->
+            <!--                android:textSize="24sp"-->
+            <!--                android:textColor="@color/white"-->
+            <!--                android:id="@+id/dashboard_btn"-->
+            <!--                android:layout_width="0dp"-->
+            <!--                android:layout_height="match_parent"-->
+            <!--                android:maxLines="2"-->
+            <!--                android:text="Dashboard"-->
+            <!--                android:background="@color/green"-->
+            <!--                app:layout_constraintBottom_toBottomOf="parent"-->
+            <!--                app:layout_constraintLeft_toRightOf="@id/order_btn"-->
+            <!--                app:layout_constraintRight_toLeftOf="@id/exit_btn"-->
+            <!--                app:layout_constraintTop_toTopOf="parent"-->
+            <!--                app:layout_constraintWidth_percent="0.25" />-->
 
             <Button
-                android:textAllCaps="false"
-                android:textStyle="italic"
-                android:textSize="24sp"
-                android:textColor="@color/white"
                 android:id="@+id/exit_btn"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:maxLines="2"
-                android:text="Log Out"
                 android:background="@color/green"
+                android:maxLines="2"
+                android:text="@string/log_out"
+                android:textAllCaps="false"
+                android:textColor="@color/white"
+                android:textSize="24sp"
+                android:textStyle="italic"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintLeft_toRightOf="@id/dashboard_btn"
+                app:layout_constraintLeft_toRightOf="@id/order_btn"
                 app:layout_constraintRight_toRightOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintWidth_percent="0.225" />
+                app:layout_constraintWidth_percent="0.325" />
 
 
         </androidx.constraintlayout.widget.ConstraintLayout>
@@ -377,11 +378,11 @@
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:visibility="gone"
-            app:layout_constraintBottom_toBottomOf="parent"
             app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
-            app:layout_constraintTop_toBottomOf="@id/category_constraint"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/category_constraint"
             app:layout_constraintWidth_percent="0.9"
             app:spanCount="5"
             tools:listitem="@layout/category_item" />
@@ -401,17 +402,16 @@
 
         <ProgressBar
             android:id="@+id/waiter_itemsProgress"
-            android:visibility="gone"
-            app:layout_constraintVertical_bias="0.1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:layout_constraintTop_toBottomOf="@id/dashboard_constraint"
+            android:visibility="gone"
             app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent"/>
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/dashboard_constraint"
+            app:layout_constraintVertical_bias="0.1" />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>
-
 
 
 </LinearLayout>
