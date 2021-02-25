@@ -170,8 +170,10 @@
                 android:id="@+id/order_price"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:layout_marginRight="20dp"
                 android:layout_weight="1.2"
                 android:gravity="center"
+                android:paddingRight="60dp"
                 android:text="@string/order_price"
                 android:textColor="@color/black"
                 android:textSize="16sp" />
@@ -181,7 +183,8 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1.2"
-                android:gravity="center"
+                android:gravity="start"
+                android:paddingRight="40dp"
                 android:text="@string/pay_type"
                 android:textColor="@color/black"
                 android:textSize="16sp" />
@@ -192,6 +195,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1.2"
                 android:gravity="center"
+                android:paddingRight="50dp"
                 android:text="@string/cash_back"
                 android:textColor="@color/black"
                 android:textSize="16sp" />

@@ -163,17 +163,6 @@ class ProductHistoryFragment : BaseFragment(), HistoryView, ITextWatcher {
             binding.tvNotFound.visibility = View.GONE
         }
 
-      /*  itemList.forEach {
-            if (!it.name.contains(text)) {
-                binding.tvNotFound.visibility = View.VISIBLE
-            //    binding.productHistoryRv.visibility = View.GONE
-            } else {
-                adapter.submitList(itemList)
-                adapter.onSearch(text)
-                binding.tvNotFound.visibility = View.GONE
-                binding.productHistoryRv.visibility = View.VISIBLE
-            }
-        }*/
     }
 
 }
