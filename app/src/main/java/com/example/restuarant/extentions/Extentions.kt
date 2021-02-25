@@ -32,7 +32,6 @@ import androidx.fragment.app.FragmentActivity
 import androidx.recyclerview.widget.RecyclerView
 import com.example.restuarant.model.entities.TableData
 import com.example.restuarant.presentation.responseDialog.ResponseStatusDialog
-import com.example.restuarant.ui.waiter.callback.SwipeToDeleteCallback
 import com.google.android.material.snackbar.Snackbar
 import com.google.gson.JsonSyntaxException
 import com.nabinbhandari.android.permissions.PermissionHandler
@@ -55,12 +54,12 @@ import java.util.*
 import java.util.concurrent.Executors
 
 fun ArrayList<TableData>.sortTable(): ArrayList<TableData> {
-    for (i in 0 until this.size) {
-        for (j in i + 1 until this.size - 1) {
-            if (this[j].id < this[i].id) {
-                val temp = this[i]
-                this[i] = this[j]
-                this[j] = temp
+    for (i in 0 until this.size - 1) {
+        for (j in i + 1 until this.size) {
+            if (this[j].name < this[i].name) {
+                val temp = this[j]
+                this[j] = this[i]
+                this[i] = temp
             }
         }
     }
@@ -139,7 +138,7 @@ fun String.toEditable(): Editable = Editable.Factory.getInstance().newEditable(t
 
 fun convertLongToTime(time: Long): String {
     val date = Date(time)
-    val format = SimpleDateFormat("yyyy.MM.dd")
+    val format = SimpleDateFormat("yyyy.MM.dd  hh:mm")
     return format.format(date)
 }
 
@@ -147,9 +146,9 @@ fun currentTimeToLong(): Long {
     return System.currentTimeMillis()
 }
 
-fun convertDateToLong(date: String): Long {
-    val df = SimpleDateFormat("yyyy.MM.dd")
-    return df.parse(date).time
+fun String.convertDateToLong(): Long {
+    val df = SimpleDateFormat("yyyy.MM.dd.hh:mm")
+    return df.parse(this).time
 }
 
 fun PopupMenu.setForceShowIcon() {
@@ -312,6 +311,9 @@ fun Throwable.errorResponse(): String {
                 401 -> {
                     "Foydalanuvchi ro'yhatdan o'tmagan"
                 }
+                405 -> {
+                    "Server umuman ishlamayapti"
+                }
                 in 500..600 -> {
                     "Server error"
                 }
@@ -343,3 +345,18 @@ fun Fragment.customDialog(message: String, status: Boolean) {
     dialog.show()
 
 }
+
+fun getCurrentDateTime(): Date {
+    return Calendar.getInstance().time
+}
+
+fun formatDate(): String {
+    return getCurrentDateTime().toString("yyyy-MM-dd")
+}
+
+
+fun Date.toString(format: String, locale: Locale = Locale.US): String {
+    val formatter = SimpleDateFormat(format, locale)
+    return formatter.format(this)
+}
+

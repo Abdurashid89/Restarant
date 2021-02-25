@@ -1,5 +1,6 @@
 package com.example.restuarant.presentation.were_house
 
+import com.example.restuarant.model.entities.ProductInData
 import moxy.MvpView
 import moxy.viewstate.strategy.AddToEndSingleTagStrategy
 import moxy.viewstate.strategy.StateStrategyType
@@ -19,4 +20,5 @@ interface WareHouseView : MvpView {
 
     @StateStrategyType(AddToEndSingleTagStrategy::class)
     fun openErrorDialog(message: String, status: Boolean)
+    fun listProducts(list: List<ProductInData>)
 }

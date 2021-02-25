@@ -26,19 +26,41 @@ class AddProductInteractor @Inject constructor(
             .doOnError { }
     }
 
-//    fun productPurchase(data: ReqPurchaseData): Single<MessageData> {
-//        return api.productPurchase(data).map {
-//            it
-//        }.subscribeOn(Schedulers.io())
-//            .observeOn(AndroidSchedulers.mainThread())
-//            .doOnError { }
-//    }
-//
-//    fun getAllProduct(): Single<GetResponseData<List<ProductInData>>> {
-//        return api.getAllProduct().map {
-//            it
-//        }.subscribeOn(Schedulers.io())
-//            .observeOn(AndroidSchedulers.mainThread())
-//    }
+    fun inputProduct(data: ProductInData): Single<MessageData> {
+        return api.inputProduct(data).map {
+            it
+        }.subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .doOnError { }
+    }
+
+    fun outputProduct(data: ProductInData): Single<MessageData> {
+        return api.outputProduct(data).map {
+            it
+        }.subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .doOnError { }
+    }
+
+    fun getAllProduct(): Single<GetResponseData<List<ProductInData>>> {
+        return api.getAllProduct().map {
+            it
+        }.subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+    }
+
+    fun inputProductHistory(): Single<List<ProductData>> {
+        return api.productInputHistory().map {
+            it
+        }.subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+    }
+
+    fun outputProductHistory(): Single<List<ProductData>> {
+        return api.productOutputHistory().map {
+            it
+        }.subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+    }
 
 }

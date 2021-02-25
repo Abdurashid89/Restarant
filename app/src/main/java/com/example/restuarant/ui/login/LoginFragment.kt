@@ -6,6 +6,7 @@ import android.view.View
 import androidx.annotation.RequiresApi
 import com.example.restuarant.R
 import com.example.restuarant.databinding.PinLockViewBinding
+import com.example.restuarant.extentions.currentTimeToLong
 import com.example.restuarant.extentions.customLog
 import com.example.restuarant.extentions.showSnackMessage
 import com.example.restuarant.extentions.visible
@@ -288,4 +289,5 @@ class LoginFragment : BaseFragment(), LoginView {
         super.onDestroy()
         _bn = null
     }
+
 }

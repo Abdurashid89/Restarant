@@ -1,10 +1,12 @@
 package com.example.restuarant
 
 import android.os.Bundle
+import android.util.Log
 import android.view.WindowManager
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentTransaction
 import com.example.restuarant.di.DI
+import com.example.restuarant.extentions.convertDateToLong
 import com.example.restuarant.presentation.appLauncher.AppLauncher
 import com.example.restuarant.ui.global.BaseFragment
 import moxy.MvpAppCompatActivity
@@ -13,6 +15,7 @@ import ru.terrakok.cicerone.NavigatorHolder
 import ru.terrakok.cicerone.android.support.SupportAppNavigator
 import ru.terrakok.cicerone.commands.Command
 import toothpick.Toothpick
+import java.util.*
 import javax.inject.Inject
 
 class MainActivity : MvpAppCompatActivity() {
@@ -28,8 +31,10 @@ class MainActivity : MvpAppCompatActivity() {
         get() = supportFragmentManager.findFragmentById(R.id.container) as? BaseFragment
 
     private val navigator: Navigator =
-        object : SupportAppNavigator(this, supportFragmentManager,
-            R.id.container) {
+        object : SupportAppNavigator(
+            this, supportFragmentManager,
+            R.id.container
+        ) {
             override fun setupFragmentTransaction(
                 command: Command?,
                 currentFragment: Fragment?,

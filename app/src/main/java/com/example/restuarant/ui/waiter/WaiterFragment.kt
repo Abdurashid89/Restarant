@@ -114,11 +114,11 @@ class WaiterFragment : BaseFragment(), WaiterView {
             bn.orderBtn.setBackgroundResource(R.color.teal_1000)
         }
 
-        bn.dashboardBtn.setOnClickListener {
-            presenter.changeColor()
-            btnId = 3
-            bn.dashboardBtn.setBackgroundResource(R.color.teal_1000)
-        }
+//        bn.dashboardBtn.setOnClickListener {
+//            presenter.changeColor()
+//            btnId = 3
+//            bn.dashboardBtn.setBackgroundResource(R.color.teal_1000)
+//        }
 
         bn.exitBtn.setOnClickListener {
             presenter.changeColor()
@@ -291,7 +291,7 @@ class WaiterFragment : BaseFragment(), WaiterView {
         when (btnId) {
             1 -> bn.tablesBtn.setBackgroundResource(R.color.green)
             2 -> bn.orderBtn.setBackgroundResource(R.color.green)
-            3 -> bn.dashboardBtn.setBackgroundResource(R.color.green)
+//            3 -> bn.dashboardBtn.setBackgroundResource(R.color.green)
             4 -> bn.exitBtn.setBackgroundResource(R.color.green)
         }
     }
