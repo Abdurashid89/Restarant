@@ -22,7 +22,7 @@ interface ResApi {
     @POST("/api/product")
     fun addProduct(@Body data: ProductData): Single<MessageData>
 
-    @POST("/api/product")
+    @POST("/api/product/input")
     fun inputProduct(@Body data: ProductInData): Single<MessageData>
 
     @POST("/api/product/output")
@@ -36,10 +36,10 @@ interface ResApi {
     ): Single<GetResponseData<List<ProductInData>>>
 
     @GET("/api/product/inputHistory")
-    fun productInputHistory(): Single<List<ProductData>>
+    fun productInputHistory(): Single<List<ProductHistoryData>>
 
     @GET("/api/product/outputHistory")
-    fun productOutputHistory(): Single<List<ProductData>>
+    fun productOutputHistory(): Single<List<ProductHistoryData>>
 
     @GET("/api/table")
     fun getAllTable(): Single<ResData<List<TableData>>>

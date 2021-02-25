@@ -27,11 +27,12 @@ class EnterProductDialog(var inputOrOutput: Boolean) : MvpAppCompatDialogFragmen
     EnterProductView {
     private var _bn: ItemProductBinding? = null
     private val binding get() = _bn ?: throw NullPointerException("error")
-    private var listener: SingleBlock<ProductData>? = null
+    private var listener: SingleBlock<Boolean>? = null
     private var itemList = ArrayList<ProductInData>()
     private var adapter = EnterProductAdapter()
     private var nullOrErrorListener: ((String, Boolean) -> Unit)? = null
     private var productId = -1
+    private var isSold = false
 
     @InjectPresenter
     lateinit var presenterNew: EnterProductPresenter
@@ -65,6 +66,7 @@ class EnterProductDialog(var inputOrOutput: Boolean) : MvpAppCompatDialogFragmen
             binding.inputProductSellPrice.isVisible = false
         }
         adapter.setOnClickListener {
+            isSold = it.sold
             binding.inputProductName.setText(it.name)
             adapter.clear()
             binding.productRv.visibility = View.GONE
@@ -81,9 +83,7 @@ class EnterProductDialog(var inputOrOutput: Boolean) : MvpAppCompatDialogFragmen
                     binding.productType.text = Constants.liter
                 }
             }
-//            binding.inputProductSellPrice.visible(true)
-
-
+            binding.inputProductSellPrice.visible(false)
         }
 
 
@@ -108,8 +108,9 @@ class EnterProductDialog(var inputOrOutput: Boolean) : MvpAppCompatDialogFragmen
         binding.btnAdd.setOnClickListener {
             val name = binding.inputProductName.text.toString().trim()
             val weight = binding.inputProductWeight.text.toString().trim()
-            val inComePrice = binding.inputProductInComePrice.text.toString().trim()
+            val inComePrice = binding.inputProductInComePrice.text.toString()
             val sellPrice = binding.inputProductSellPrice.text.toString()
+            customLog("income->$inComePrice sell -> $sellPrice")
 
             when {
                 name.isEmpty() -> {
@@ -133,19 +134,9 @@ class EnterProductDialog(var inputOrOutput: Boolean) : MvpAppCompatDialogFragmen
                     return@setOnClickListener
                 }
 
-                inComePrice.isEmpty() -> {
-                    binding.inputProductInComePrice.startAnimation(
-                        AnimationUtils.loadAnimation(
-                            requireContext(),
-                            R.anim.shake
-                        )
-                    )
-                    vibrate(requireContext())
-                    return@setOnClickListener
-                }
-
-//                sellPrice.isEmpty() -> {
-//                    binding.inputProductSellPrice.startAnimation(
+//                inputOrOutput -> {
+//                    if (inComePrice.isEmpty()) {
+//                    binding.inputProductInComePrice.startAnimation(
 //                        AnimationUtils.loadAnimation(
 //                            requireContext(),
 //                            R.anim.shake
@@ -154,20 +145,34 @@ class EnterProductDialog(var inputOrOutput: Boolean) : MvpAppCompatDialogFragmen
 //                    vibrate(requireContext())
 //                    return@setOnClickListener
 //                }
+//
+//                }
+//
+//                inputOrOutput -> {
+//                    if (sellPrice.isEmpty()) {
+//                        binding.inputProductSellPrice.startAnimation(
+//                            AnimationUtils.loadAnimation(
+//                                requireContext(),
+//                                R.anim.shake
+//                            )
+//                        )
+//                        vibrate(requireContext())
+//                        return@setOnClickListener
+//                    }
+//                }
                 else -> {
-//                    val d = if (binding.inputProductSellPrice.visibility == View.VISIBLE) {
-//                        binding.inputProductSellPrice.text.toString().toInt().toDouble()
-//                    } else 0.0
+                    val income_price = if (inComePrice.isNotEmpty()) inComePrice else "50"
+                    val sell_price = if (sellPrice.isNotEmpty()) sellPrice else "50"
                     presenterNew.inputOrOutput(
                         inputOrOutput,
                         ProductInData(
                             productId,
                             binding.productType.text.toString(),
-                            false,
+                            isSold,
                             name,
-                            inComePrice.toDouble(),
-                            sellPrice.toInt().toDouble(),
-                            weight.toDouble(),
+                            income_price.toInt().toDouble(),
+                            sell_price.toInt().toDouble(),
+                            weight.toInt().toDouble(),
                             10.0
                         )
                     )
@@ -178,7 +183,7 @@ class EnterProductDialog(var inputOrOutput: Boolean) : MvpAppCompatDialogFragmen
         }
 
         binding.btnDismiss.setOnClickListener {
-            dialog?.dismiss()
+            listener?.invoke(true)
         }
     }
 
@@ -209,7 +214,7 @@ class EnterProductDialog(var inputOrOutput: Boolean) : MvpAppCompatDialogFragmen
         adapter.submitList(ls)
     }
 
-    fun setOnCLickListener(block: SingleBlock<ProductData>) {
+    fun setOnCLickListener(block: SingleBlock<Boolean>) {
         listener = block
     }
 
@@ -242,8 +247,6 @@ class EnterProductDialog(var inputOrOutput: Boolean) : MvpAppCompatDialogFragmen
 
     override fun listProducts(list: List<ProductInData>) {
         if (list.isNotEmpty()) {
-            binding.productRv.visibility = View.VISIBLE
-            binding.productRv.adapter = adapter
             itemList.clear()
             itemList.addAll(list)
             adapter.setOnClickListener {
