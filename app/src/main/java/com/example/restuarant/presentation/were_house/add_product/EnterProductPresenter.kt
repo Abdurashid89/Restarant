@@ -75,7 +75,7 @@ class EnterProductPresenter @Inject constructor(
 
             }.subscribe({
                 viewState.listProducts(it.objectDate)
-                viewState.showMessage(it.objectDate.size.toString())
+//                viewState.showMessage(it.objectDate.size.toString())
             }, {
                 viewState.showMessage(it.toString())
             }).connect()

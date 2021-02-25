@@ -161,8 +161,8 @@ class EnterProductDialog(var inputOrOutput: Boolean) : MvpAppCompatDialogFragmen
 //                    }
 //                }
                 else -> {
-                    val income_price = if (inComePrice.isNotEmpty()) inComePrice else "50"
-                    val sell_price = if (sellPrice.isNotEmpty()) sellPrice else "50"
+                    val income_price = if (inComePrice.isNotEmpty()) inComePrice else "0"
+                    val sell_price = if (sellPrice.isNotEmpty()) sellPrice else "0"
                     presenterNew.inputOrOutput(
                         inputOrOutput,
                         ProductInData(
