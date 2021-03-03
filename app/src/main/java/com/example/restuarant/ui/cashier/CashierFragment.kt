@@ -42,7 +42,7 @@ class CashierFragment : BaseFragment(), CashierView, SwipeRefreshLayout.OnRefres
     override val layoutRes: Int = R.layout.fragment_cashier
     val calendar = Calendar.getInstance()
 
-    //    lateinit var times
+    //  times
     var startDay: Long = 0
     var endDay: Long = 0
 
