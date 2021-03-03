@@ -81,7 +81,7 @@ fun ArrayList<OrderGetData>.sortHistoryByDate(): ArrayList<OrderGetData> {
         for (j in i + 1 until this.size) {
             val dateJ = this[j].createdAt.replace("T", ".").replace("-", ".").substring(0, 16)
                 .convertDateToLong()
-            if (dateJ < dateI) {
+            if (dateJ > dateI) {
                 val temp = this[j]
                 this[j] = this[i]
                 this[i] = temp

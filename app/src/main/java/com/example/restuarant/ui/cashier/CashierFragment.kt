@@ -5,7 +5,6 @@ import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.view.View
-import android.view.animation.Animation
 import android.widget.ProgressBar
 import androidx.annotation.RequiresApi
 import androidx.core.view.isVisible
@@ -27,7 +26,6 @@ import com.example.restuarant.ui.waiter.adapters.CategoryAdapter
 import com.example.restuarant.ui.waiter.adapters.CategoryItemAdapter
 import com.example.restuarant.ui.waiter.adapters.OrderAdapter
 import com.example.restuarant.ui.waiter.callback.SwipeToDeleteCallback
-import com.labo.kaji.fragmentanimations.CubeAnimation
 import com.wdullaer.materialdatetimepicker.date.DatePickerDialog
 import com.wdullaer.materialdatetimepicker.time.TimePickerDialog
 import moxy.presenter.InjectPresenter
@@ -93,7 +91,6 @@ class CashierFragment : BaseFragment(), CashierView, SwipeRefreshLayout.OnRefres
     @SuppressLint("ResourceAsColor", "TimberArgCount")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
         _bn = FragmentCashierBinding.bind(view)
 //        firstMillisecond = convertDateToLong(Date().time.toString())
         bn.historyLayout.tvEndDay.text = formatDate()
@@ -345,24 +342,24 @@ class CashierFragment : BaseFragment(), CashierView, SwipeRefreshLayout.OnRefres
         }
 
         bn.historyLayout.tvToday.setOnClickListener {
+            val todayHistoryList = ArrayList<OrderGetData>()
             historyList.forEach {
                 val date =
                     it.createdAt.replace("T", ".").replace("-", ".").substring(0, 16)
                         .convertDateToLong()
                 if (date > DI.CURRENT_MILLISECOND) {
-                    filterList.add(it)
+                    todayHistoryList.add(it)
                     Log.d("CashierFragment", "${date > DI.CURRENT_MILLISECOND}")
                     Log.d("OrderData", "-> $it")
                 } else showSnackMessage("Buyurtma qabul qilinmagan")
             }
-            historyAdapter.submitList(filterList)
+            historyAdapter.submitList(todayHistoryList)
             bn.historyLayout.listHistoryCashier.fadeIn()
             if (filterList.isEmpty()) {
                 bn.historyLayout.tvEmptyHistory.visibility = View.VISIBLE
                 bn.historyLayout.listHistoryCashier.visibility = View.GONE
 
             }
-            filterList.clear()
             Log.d("CashierFragment", "${DI.CURRENT_MILLISECOND}")
         }
 
@@ -701,6 +698,7 @@ class CashierFragment : BaseFragment(), CashierView, SwipeRefreshLayout.OnRefres
             }
             totalSum()
         }
+        bn.tablesLayout.cashierOrderList.fadeIn()
     }
 
     override fun showProgress(isShow: Boolean, type: Int) {
@@ -774,6 +772,7 @@ class CashierFragment : BaseFragment(), CashierView, SwipeRefreshLayout.OnRefres
 
     override fun submitTables(list: List<TableData>) {
         tableList.clear()
+        Log.d("TablesOrder", list.size.toString())
         tableList.addAll(list)
         Timber.d(list.size.toString())
         bn.tableProgress.visibility = View.GONE
@@ -836,7 +835,28 @@ class CashierFragment : BaseFragment(), CashierView, SwipeRefreshLayout.OnRefres
 
     override fun onTextChanged(text: String) {
         historyAdapter.onSearch(text)
-        Log.d("onTextChanged", text)
-        bn.historyLayout.listHistoryCashier.fadeIn()
+        val list = ArrayList<OrderGetData>()
+
+        historyList.forEach {
+            if (it.table.name.toString().toLowerCase()
+                    .contains(text.toLowerCase()) || it.id.toString().toLowerCase()
+                    .contains(text.toLowerCase())
+            ) {
+                list.add(it)
+                bn.historyLayout.tvEmptyHistory.visibility = View.VISIBLE
+            }
+        }
+
+        if (list.isEmpty()) {
+            historyAdapter.clear()
+            bn.historyLayout.tvEmptyHistory.visibility = View.VISIBLE
+            bn.historyLayout.listHistoryCashier.visibility = View.GONE
+        } else {
+            historyAdapter.clear()
+            historyAdapter.submitList(list)
+            bn.historyLayout.tvEmptyHistory.visibility = View.GONE
+            bn.historyLayout.listHistoryCashier.visibility = View.VISIBLE
+        }
+
     }
 }

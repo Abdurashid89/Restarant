@@ -20,7 +20,7 @@ class Search(
         } else {
             val searchedUser = ArrayList<OrderGetData>()
             for (data in contents) {
-                if (data.table.id.toString().contains(text) || data.id.toString().contains(text)) {
+                if (data.table.name.toString().contains(text) || data.id.toString().contains(text)) {
                     searchedUser.add(data)
                 }
             }
